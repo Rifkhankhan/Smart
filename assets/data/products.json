@@ -1,0 +1,877 @@
+[
+  {
+    "name": "Wireless Charger",
+    "description": "Fast wireless charger compatible with most smartphones.",
+    "price": 29.99,
+    "category": "Electronics",
+    "brand": "ChargePro",
+    "stock": 150,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Wireless Charger"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Charger Pad"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user001",
+        "rating": 4,
+        "review": "Works well, but charging speed could be improved."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user002",
+        "comment": "Very convenient for daily use.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop001",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Bluetooth Speaker",
+    "description": "Portable Bluetooth speaker with high-quality sound and long battery life.",
+    "price": 79.99,
+    "category": "Electronics",
+    "brand": "SoundWave",
+    "stock": 200,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Bluetooth Speaker"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Speaker Controls"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user003",
+        "rating": 5,
+        "review": "Fantastic sound quality and battery life."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user004",
+        "comment": "Perfect for parties and outdoor use.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop002",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Smartwatch",
+    "description": "Stylish smartwatch with fitness tracking and notification features.",
+    "price": 149.99,
+    "category": "Electronics",
+    "brand": "TechWatch",
+    "stock": 75,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Smartwatch"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Watch Display"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user005",
+        "rating": 4,
+        "review": "Great features but a bit pricey."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user006",
+        "comment": "Love the health tracking features.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop003",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Digital Camera",
+    "description": "High-resolution digital camera with advanced features for professional photography.",
+    "price": 499.99,
+    "category": "Electronics",
+    "brand": "PhotoMax",
+    "stock": 30,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Digital Camera"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Camera Lens"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user007",
+        "rating": 5,
+        "review": "Excellent image quality and easy to use."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user008",
+        "comment": "Great for professional photography.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop004",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Gaming Console",
+    "description": "Latest gaming console with high-definition graphics and a variety of games.",
+    "price": 299.99,
+    "category": "Electronics",
+    "brand": "GameBox",
+    "stock": 50,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Gaming Console"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Console Controller"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user009",
+        "rating": 5,
+        "review": "Amazing graphics and game selection."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user010",
+        "comment": "Best gaming console on the market.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop005",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Electric Toothbrush",
+    "description": "Advanced electric toothbrush with multiple brushing modes and a built-in timer.",
+    "price": 89.99,
+    "category": "Health & Beauty",
+    "brand": "CleanSmile",
+    "stock": 100,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Electric Toothbrush"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Toothbrush Modes"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user011",
+        "rating": 4,
+        "review": "Effective for maintaining dental hygiene."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user012",
+        "comment": "Very efficient and easy to use.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop006",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Camping Stove",
+    "description": "Portable camping stove with easy setup and adjustable flame control.",
+    "price": 59.99,
+    "category": "Outdoor",
+    "brand": "CampChef",
+    "stock": 90,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Camping Stove"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Stove Flame Control"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user013",
+        "rating": 5,
+        "review": "Great for outdoor cooking."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user014",
+        "comment": "Essential for camping trips.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop007",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Portable Air Conditioner",
+    "description": "Compact portable air conditioner with remote control and adjustable cooling settings.",
+    "price": 229.99,
+    "category": "Home Appliances",
+    "brand": "CoolBreeze",
+    "stock": 40,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Portable Air Conditioner"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Air Conditioner Remote"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user015",
+        "rating": 4,
+        "review": "Effective cooling but a bit loud."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user016",
+        "comment": "Good for small rooms.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop008",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Electric Blanket",
+    "description": "Soft electric blanket with adjustable heat settings for comfort.",
+    "price": 89.99,
+    "category": "Home Appliances",
+    "brand": "CozyWarm",
+    "stock": 60,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Electric Blanket"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Blanket Heat Settings"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user017",
+        "rating": 5,
+        "review": "Keeps me warm on cold nights."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user018",
+        "comment": "Very cozy and warm.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop009",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Fitness Tracker",
+    "description": "Wearable fitness tracker with heart rate monitoring and step counting.",
+    "price": 49.99,
+    "category": "Electronics",
+    "brand": "FitTrack",
+    "stock": 150,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Fitness Tracker"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Tracker Display"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user019",
+        "rating": 4,
+        "review": "Accurate tracking and easy to use."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user020",
+        "comment": "Great for monitoring workouts.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop010",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Portable Charger",
+    "description": "High-capacity portable charger with fast charging capability.",
+    "price": 39.99,
+    "category": "Electronics",
+    "brand": "PowerBoost",
+    "stock": 220,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Portable Charger"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Charger Ports"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user021",
+        "rating": 5,
+        "review": "Very handy and reliable."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user022",
+        "comment": "Great for traveling.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop011",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Camping Tent",
+    "description": "Durable camping tent with waterproof fabric and easy setup.",
+    "price": 159.99,
+    "category": "Outdoor",
+    "brand": "OutdoorGear",
+    "stock": 60,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Camping Tent"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Tent Setup"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user023",
+        "rating": 4,
+        "review": "Spacious and easy to assemble."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user024",
+        "comment": "Perfect for camping trips.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop012",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Electric Kettle",
+    "description": "Fast-boiling electric kettle with automatic shut-off and temperature control.",
+    "price": 34.99,
+    "category": "Home Appliances",
+    "brand": "QuickBoil",
+    "stock": 150,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Electric Kettle"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Kettle Temperature Control"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user025",
+        "rating": 5,
+        "review": "Boils water quickly and efficiently."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user026",
+        "comment": "Great for making tea.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop013",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Bluetooth Headphones",
+    "description": "Wireless Bluetooth headphones with noise cancellation and long battery life.",
+    "price": 129.99,
+    "category": "Electronics",
+    "brand": "SoundBliss",
+    "stock": 80,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Bluetooth Headphones"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Headphones Noise Cancellation"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user027",
+        "rating": 5,
+        "review": "Excellent sound and noise cancellation."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user028",
+        "comment": "Perfect for music lovers.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop014",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Cordless Drill",
+    "description": "Powerful cordless drill with multiple speed settings and accessories.",
+    "price": 89.99,
+    "category": "Tools",
+    "brand": "DrillMaster",
+    "stock": 45,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Cordless Drill"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Drill Accessories"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user029",
+        "rating": 4,
+        "review": "Great for DIY projects."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user030",
+        "comment": "Powerful and reliable.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop015",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Wireless Keyboard",
+    "description": "Compact wireless keyboard with backlit keys and rechargeable battery.",
+    "price": 49.99,
+    "category": "Electronics",
+    "brand": "TypeMaster",
+    "stock": 100,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Wireless Keyboard"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Keyboard Backlight"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user031",
+        "rating": 5,
+        "review": "Great for typing in low light."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user032",
+        "comment": "Very comfortable to type on.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop016",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Coffee Maker",
+    "description": "Drip coffee maker with programmable timer and keep-warm function.",
+    "price": 69.99,
+    "category": "Home Appliances",
+    "brand": "BrewMaster",
+    "stock": 140,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Coffee Maker"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Coffee Maker Features"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user033",
+        "rating": 4,
+        "review": "Brews great coffee, a bit noisy."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user034",
+        "comment": "Perfect for my morning routine.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop017",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Electric Blanket",
+    "description": "Soft electric blanket with adjustable heat settings for comfort.",
+    "price": 89.99,
+    "category": "Home Appliances",
+    "brand": "CozyWarm",
+    "stock": 60,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Electric Blanket"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Blanket Heat Settings"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user035",
+        "rating": 5,
+        "review": "Keeps me warm on cold nights."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user036",
+        "comment": "Very cozy and warm.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop018",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Electric Toothbrush",
+    "description": "Advanced electric toothbrush with multiple brushing modes and a built-in timer.",
+    "price": 89.99,
+    "category": "Health & Beauty",
+    "brand": "CleanSmile",
+    "stock": 100,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Electric Toothbrush"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Toothbrush Modes"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user037",
+        "rating": 4,
+        "review": "Effective for maintaining dental hygiene."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user038",
+        "comment": "Very efficient and easy to use.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop019",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Bluetooth Speaker",
+    "description": "Portable Bluetooth speaker with high-quality sound and long battery life.",
+    "price": 79.99,
+    "category": "Electronics",
+    "brand": "SoundWave",
+    "stock": 200,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Bluetooth Speaker"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Speaker Controls"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user039",
+        "rating": 5,
+        "review": "Fantastic sound quality and battery life."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user040",
+        "comment": "Perfect for parties and outdoor use.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop020",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Smartwatch",
+    "description": "Stylish smartwatch with fitness tracking and notification features.",
+    "price": 149.99,
+    "category": "Electronics",
+    "brand": "TechWatch",
+    "stock": 75,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Smartwatch"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Watch Display"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user041",
+        "rating": 4,
+        "review": "Great features but a bit pricey."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user042",
+        "comment": "Love the health tracking features.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop021",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Digital Camera",
+    "description": "High-resolution digital camera with advanced features for professional photography.",
+    "price": 499.99,
+    "category": "Electronics",
+    "brand": "PhotoMax",
+    "stock": 30,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Digital Camera"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Camera Lens"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user043",
+        "rating": 5,
+        "review": "Excellent image quality and easy to use."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user044",
+        "comment": "Great for professional photography.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop022",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Gaming Console",
+    "description": "Latest gaming console with high-definition graphics and a variety of games.",
+    "price": 299.99,
+    "category": "Electronics",
+    "brand": "GameBox",
+    "stock": 50,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Gaming Console"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Console Controller"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user045",
+        "rating": 5,
+        "review": "Amazing graphics and game selection."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user046",
+        "comment": "Best gaming console on the market.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop023",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Wireless Charger",
+    "description": "Fast wireless charger compatible with most smartphones.",
+    "price": 29.99,
+    "category": "Electronics",
+    "brand": "ChargePro",
+    "stock": 150,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Wireless Charger"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Charger Pad"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user047",
+        "rating": 4,
+        "review": "Works well, but charging speed could be improved."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user048",
+        "comment": "Very convenient for daily use.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop024",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  },
+  {
+    "name": "Portable Air Conditioner",
+    "description": "Compact portable air conditioner with remote control and adjustable cooling settings.",
+    "price": 229.99,
+    "category": "Home Appliances",
+    "brand": "CoolBreeze",
+    "stock": 40,
+    "images": [
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Portable Air Conditioner"
+      },
+      {
+        "url": "https://via.placeholder.com/150",
+        "alt": "Air Conditioner Remote"
+      }
+    ],
+    "ratings": [
+      {
+        "userId": "user049",
+        "rating": 4,
+        "review": "Effective cooling but a bit loud."
+      }
+    ],
+    "comments": [
+      {
+        "userId": "user050",
+        "comment": "Good for small rooms.",
+        "timestamp": "2024-07-21T00:00:00Z"
+      }
+    ],
+    "shopId": "shop025",
+    "createdAt": "2024-07-21T00:00:00Z",
+    "updatedAt": "2024-07-21T00:00:00Z"
+  }
+]
