@@ -8,23 +8,32 @@ import {
 	FlatList,
 	SafeAreaView
 } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import CategoryComponent from '../components/CategoryComponent'
 import HomeItemList from '../components/HomeItemList'
 import BigItemList from '../components/BigItemList'
 import Card from '../components/Card'
 import CardContainer from '../components/CardContainer'
+import { Ionicons } from '@expo/vector-icons'
 
 const AdminHome = ({ navigation }) => {
 	const [isClicked, setIsClicked] = useState(false)
 
-	const toggleSearchHandler = () => {
-		setIsClicked(prevState => !prevState)
-	}
-
-	const createIdea = () => {
-		navigation.navigate('CreateIdea')
-	}
+	useEffect(() => {
+		navigation.setOptions({
+			headerRight: ({ size, color }) => {
+				return (
+					<Ionicons
+						onPress={() => navigation.navigate('SearchScreen')}
+						style={{ marginRight: 10 }}
+						name="search"
+						color="white"
+						size={24}
+					/>
+				)
+			}
+		})
+	}, [])
 
 	const renderComponents = () => (
 		<>

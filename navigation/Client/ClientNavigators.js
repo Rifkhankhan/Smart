@@ -43,6 +43,7 @@ import {
 	getUserCarts
 } from '../../utils/Subscribefunctions/Client'
 import Cart from '../../screens/Cart'
+import SearchScreen from '../../screens/SearchScreen'
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -163,16 +164,7 @@ const TabNavigators = () => {
 					),
 					headerStyle: { backgroundColor: '#333333' },
 					headerTitle: '',
-					headerRight: ({ size, color }) => {
-						return (
-							<Ionicons
-								style={{ marginRight: 10 }}
-								name="search"
-								color="white"
-								size={24}
-							/>
-						)
-					},
+
 					headerLeft: ({ size, color }) => {
 						return (
 							<Text
@@ -319,7 +311,7 @@ export const HomeOverView = () => {
 					}}
 				/>
 
-				<Stack.Screen
+				{/* <Stack.Screen
 					name="ButNowSheet"
 					component={BuyNowBottomSheet}
 					options={{
@@ -331,23 +323,23 @@ export const HomeOverView = () => {
 						// headerTitle: () => <SearchBar width="0.6" />,
 						headerTitleAlign: 'left'
 					}}
-				/>
+				/> */}
 			</Stack.Group>
 
 			<Stack.Group screenOptions={{ presentation: 'containedModal' }}>
-				<Stack.Screen
+				{/* <Stack.Screen
 					name="BuyNowModal"
 					component={BuyNowModal}
-					// options={{
-					// 	headerShown: true,
+					options={{
+						headerShown: true,
 
-					// 	// headerTransparent: true,
+						// headerTransparent: true,
 
-					// 	// headerTintColor: 'white',
-					// 	// headerTitle: () => <SearchBar width="0.6" />,
-					// 	headerTitleAlign: 'left'
-					// }}
-				/>
+						// headerTintColor: 'white',
+						// headerTitle: () => <SearchBar width="0.6" />,
+						headerTitleAlign: 'left'
+					}}
+				/> */}
 
 				<Stack.Screen
 					name="SettingsScreen"
@@ -356,6 +348,14 @@ export const HomeOverView = () => {
 						headerShown: true,
 						headerTitle: '',
 						headerTitleAlign: 'left'
+					}}
+				/>
+
+				<Stack.Screen
+					name="SearchScreen"
+					component={SearchScreen}
+					options={{
+						headerShown: false
 					}}
 				/>
 			</Stack.Group>
