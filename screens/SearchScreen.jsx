@@ -1,117 +1,104 @@
-import { Ionicons } from '@expo/vector-icons'
-import React, { useEffect, useState } from 'react'
+import { Ionicons } from "@expo/vector-icons";
+import React, { useEffect, useState } from "react";
 import {
-	Pressable,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	View
-} from 'react-native'
-import { useDispatch } from 'react-redux'
-import PageContainer from '../components/PageContainer'
+  Pressable,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useDispatch } from "react-redux";
+import PageContainer from "../components/PageContainer";
+import { useDebouncedCallback } from "use-debounce";
+import { searchItems } from "../utils/actions/searchAction";
 
 const SearchScreen = ({ navigation }) => {
-	const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-	const [searchTerm, setSearchTerm] = useState('')
-	const [isLoading, setIsLoading] = useState(false)
-	const [noResultsFound, setNoResultsFound] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const [noResultsFound, setNoResultsFound] = useState(false);
 
-	useEffect(() => {
-		const delaySearch = setTimeout(async () => {
-			if (!searchTerm || searchTerm === '') {
-				setNoResultsFound(false)
-				return
-			}
+  const handleSearch = useDebouncedCallback(async (searchTerm) => {
+    if (searchTerm && searchTerm.length > 2) {
+      const result = await searchItems(searchTerm, (type = "products"));
+      console.log(result);
+    } else {
+      setNoResultsFound(false);
+    }
+  }, 300);
 
-			setIsLoading(true)
+  const headerLeft = () => (
+    <Pressable
+      onPress={() => navigation.goBack()}
+      style={{ marginRight: "auto" }}
+    >
+      <Ionicons name="chevron-back" size={24} color="black" />
+    </Pressable>
+  );
 
-			// Perform search logic here
-			// const usersResult = await searchUsers(searchTerm);
-			// delete usersResult[userData.userId];
-			// setUsers(usersResult);
+  const headerRight = () => (
+    <TouchableOpacity
+      onPress={() => console.log("pressed")}
+      style={{
+        width: "auto",
+        paddingLeft: 16,
+      }}
+    >
+      <Text>Search</Text>
+    </TouchableOpacity>
+  );
 
-			// Simulate search result handling
-			// if (Object.keys(usersResult).length === 0) {
-			setNoResultsFound(true)
-			// } else {
-			// 	setNoResultsFound(false)
-			// 	dispatch(setStoredUsers({ newUsers: usersResult }))
-			// }
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+      headerLeft: headerLeft,
+      headerRight,
+    });
+  }, [navigation]);
 
-			setIsLoading(false)
-		}, 500)
+  return (
+    <PageContainer>
+      <View
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: 10,
+          flexDirection: "row",
+        }}
+      >
+        <Pressable
+          onPress={() => navigation.goBack()}
+          style={{ marginRight: "auto" }}
+        >
+          <Ionicons name="chevron-back" size={24} color="black" />
+        </Pressable>
+        <TextInput
+          placeholder="Search"
+          onChangeText={handleSearch}
+          style={{
+            padding: 2,
+            borderWidth: 1,
+            width: "70%",
+            paddingHorizontal: 8,
+            borderRadius: 8,
 
-		return () => clearTimeout(delaySearch)
-	}, [searchTerm])
+            borderColor: "red",
+            fontSize: 16,
+          }}
+        />
 
-	const headerLeft = () => (
-		<Pressable
-			onPress={() => navigation.goBack()}
-			style={{ marginRight: 'auto' }}>
-			<Ionicons name="chevron-back" size={24} color="black" />
-		</Pressable>
-	)
+        <TouchableOpacity
+          onPress={() => console.log("pressed")}
+          style={{
+            width: "auto",
+            paddingLeft: 16,
+          }}
+        >
+          <Text>Search</Text>
+        </TouchableOpacity>
+      </View>
+    </PageContainer>
+  );
+};
 
-	const headerRight = () => (
-		<TouchableOpacity
-			onPress={() => console.log('pressed')}
-			style={{
-				width: 'auto',
-				paddingLeft: 16
-			}}>
-			<Text>Search</Text>
-		</TouchableOpacity>
-	)
-
-	useEffect(() => {
-		navigation.setOptions({
-			headerShown: false,
-			headerLeft: headerLeft,
-			headerRight
-		})
-	}, [navigation])
-
-	return (
-		<PageContainer>
-			<View
-				style={{
-					justifyContent: 'center',
-					alignItems: 'center',
-					marginTop: 10,
-					flexDirection: 'row'
-				}}>
-				<Pressable
-					onPress={() => navigation.goBack()}
-					style={{ marginRight: 'auto' }}>
-					<Ionicons name="chevron-back" size={24} color="black" />
-				</Pressable>
-				<TextInput
-					placeholder="Search"
-					onChangeText={text => setSearchTerm(text)}
-					style={{
-						padding: 2,
-						borderWidth: 1,
-						width: '70%',
-						paddingHorizontal: 8,
-						borderRadius: 8,
-
-						borderColor: 'red',
-						fontSize: 16
-					}}
-				/>
-
-				<TouchableOpacity
-					onPress={() => console.log('pressed')}
-					style={{
-						width: 'auto',
-						paddingLeft: 16
-					}}>
-					<Text>Search</Text>
-				</TouchableOpacity>
-			</View>
-		</PageContainer>
-	)
-}
-
-export default SearchScreen
+export default SearchScreen;

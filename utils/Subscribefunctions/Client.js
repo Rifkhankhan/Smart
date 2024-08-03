@@ -1,114 +1,120 @@
 // get user Carts
 
-import { child, onValue } from 'firebase/database'
-import { setCarts } from '../../store/cartSlice'
-import { setOrders } from '../../store/orderSlice'
-import { setProducts } from '../../store/productSlice'
-import { setOrderedUsers } from '../../store/userSlice'
+import { child, onValue } from "firebase/database";
+import { resetCarts, setCarts } from "../../store/cartSlice";
+import { setOrders } from "../../store/orderSlice";
+import { setProducts } from "../../store/productSlice";
+import { setOrderedUsers } from "../../store/userSlice";
 
 export const getUserCarts = (dbRef, cartIdsRef, refs) => {
-	return dispatch => {
-		// Fetch user cart IDs
-		onValue(cartIdsRef, cartSnapshot => {
-			const rawCartData = cartSnapshot.val() || {}
+  return (dispatch) => {
+    // Fetch user cart IDs
+    onValue(cartIdsRef, (cartSnapshot) => {
+      const rawCartData = cartSnapshot.val() || {};
 
-			const cartsIds = Object.values(rawCartData)
+      // Fetch products
+      const carts = [];
 
-			// Fetch products
-			const productsRef = child(dbRef, 'products')
-			refs.push(productsRef)
+      const products = getProducts(dbRef, refs);
 
-			onValue(productsRef, productsRefSnapshot => {
-				const productsObjects = productsRefSnapshot.val() || {}
+      dispatch(resetCarts());
+      Object.entries(rawCartData).forEach(([cartKey, cartProductKey]) => {
+        if (products.find((product) => product.productKey === cartProductKey)) {
+          if (cartKey) {
+            carts.push({
+              ...products.find(
+                (product) => product.productKey === cartProductKey
+              ),
+              productKey: cartProductKey,
+              cartkey: cartKey,
+            });
+          }
+        }
+      });
 
-				// Flatten the nested products map
-				const products = []
-				for (const [shopKey, productsByShop] of Object.entries(
-					productsObjects
-				)) {
-					for (const [productKey, productData] of Object.entries(
-						productsByShop
-					)) {
-						// Only include products whose keys are in cartsIds
+      dispatch(setCarts(carts));
+    });
+  };
+};
 
-						if (cartsIds.includes(productKey)) {
-							const key = findKeyByValue(rawCartData, productKey)
-							if (key) {
-								products.push({
-									...productData,
-									productKey,
-									cartkey: key
-								})
-							}
-						}
-					}
-				}
+const getProducts = (dbRef, refs) => {
+  const productsRef = child(dbRef, "products");
+  refs.push(productsRef);
+  const products = [];
 
-				// Dispatch the final cart data
-				dispatch(setCarts({ carts: products }))
-			})
-		})
-	}
-}
+  onValue(productsRef, (productsRefSnapshot) => {
+    const productsObjects = productsRefSnapshot.val() || {};
 
+    // Flatten the nested products map
+    Object.entries(productsObjects).map(([productKey, productData]) => {
+      const product = { ...productData, productKey: productKey };
+
+      products.push(product);
+    });
+  });
+  return products;
+};
 // Function to find the key by value
 function findKeyByValue(obj, value) {
-	return Object.keys(obj).find(key => obj[key] === value)
+  return Object.keys(obj).find((key) => obj[key] === value);
 }
 
 // Function to find product by key
 function findProductByKey(data, key) {
-	for (const item of data) {
-		if (item[key]) {
-			return item
-		}
-	}
-	return null
+  for (const item of data) {
+    if (item[key]) {
+      return item;
+    }
+  }
+  return null;
 }
 
-export const getProductOfaShop = productsRef => {
-	return dispatch => {
-		onValue(productsRef, productsSnapShot => {
-			const productsObjects = productsSnapShot.val() || {}
+export const getProductOfaShop = (productsRef, refs) => {
+  return (dispatch) => {
+    onValue(productsRef, (productsSnapShot) => {
+      const productsObjects = productsSnapShot.val() || {};
 
-			const products = []
+      const productKeys = [];
 
-			// Iterate over each product using Object.entries()
-			Object.entries(productsObjects).forEach(([productKey, product]) => {
-				// Add the productKey to the product data
-				product['productKey'] = productKey
-				products.push(product)
-			})
-			dispatch(setProducts({ products }))
-		})
-	}
-}
+      // Iterate over each product using Object.entries()
+      Object.entries(productsObjects).forEach(([key, productKey]) => {
+        // Add the productKey to the product data
+        productKeys.push(productKey);
+      });
 
-export const getOrdersOfaShop = (dbRef, orderRef, orderId, refs) => {
-	return dispatch => {
-		// get orders for the shop
-		// console.log(refs.length)
+      console.log(productKeys);
 
-		onValue(orderRef, orderRefSnapshot => {
-			const order = orderRefSnapshot.val() || {}
-			dispatch(setOrders({ order: { ...order, orderKey: orderId } }))
+      // onValue()
+      //   dispatch(setProducts({ products }));
+    });
+  };
+};
 
-			const userRef = child(dbRef, `users/${order?.uid}`)
-			refs.push(userRef)
+export const getOrdersOfaShop = (dbRef, orderRef, orderId, refs, key) => {
+  return (dispatch) => {
+    // get orders for the shop
+    // console.log(refs.length)
 
-			const userAction = getOrderedUsers(userRef)
-			dispatch(userAction)
-		})
-	}
-}
+    onValue(orderRef, (orderRefSnapshot) => {
+      const order = orderRefSnapshot.val() || {};
+      dispatch(setOrders({ order: { ...order, orderKey: orderId, key } }));
 
-export const getOrderedUsers = userRef => {
-	return dispatch => {
-		// get orders for the shop
-		onValue(userRef, userRefSnapshot => {
-			const user = userRefSnapshot.val() || {}
+      const userRef = child(dbRef, `users/${order?.uid}`);
+      refs.push(userRef);
 
-			dispatch(setOrderedUsers({ user }))
-		})
-	}
-}
+      const userAction = getOrderedUsers(userRef);
+      dispatch(userAction);
+    });
+  };
+};
+
+export const getOrderedUsers = (userRef) => {
+  return (dispatch) => {
+    // get orders for the shop
+    onValue(userRef, (userRefSnapshot) => {
+      const user = userRefSnapshot.val() || {};
+
+      dispatch(setOrderedUsers({ user }));
+    });
+  };
+};
