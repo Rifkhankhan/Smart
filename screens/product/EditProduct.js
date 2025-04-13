@@ -1,5 +1,6 @@
 import {
   Button,
+  Dimensions,
   Image,
   Pressable,
   ScrollView,
@@ -31,13 +32,60 @@ import { updateCutomer } from "./../../utils/actions/userActions";
 import SubmitButton from "./../../components/SubmitButton";
 import Input from "./../../components/Input";
 import { updateProduct } from "../../utils/actions/productActions";
+import Carousel from "react-native-reanimated-carousel";
+import uploadImages from "../../functions/uploadImages";
+import * as ImagePicker from 'expo-image-picker';
+
+// import UpdateProductImages from "./UpdateProductImages";
+
+const screenWidth = Dimensions.get("window").width;
 
 const EditProduct = ({ route, navigation }) => {
   const [error, setError] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-
   const { product, shop } = route?.params;
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [uploadedImages,setUploadedImages] = useState([])
+
+  const [images, setImages] = useState(
+    product?.images || [
+      "https://res.cloudinary.com/deoh6ya4t/image/upload/v1708938721/man_nvajfu.png",
+      "https://res.cloudinary.com/deoh6ya4t/image/upload/v1708938721/man_nvajfu.png",
+      "https://res.cloudinary.com/deoh6ya4t/image/upload/v1708938721/man_nvajfu.png",
+  
+    ]
+  );
+
+   // Handler to delete an image
+   const deleteImageHandler = (index) => {
+    Alert.alert(
+      "Delete Image",
+      "Are you sure you want to delete this image?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: () => {
+            const updatedImages = images.filter((_, i) => i !== index);
+            setImages(updatedImages);
+          },
+        },
+      ]
+    );
+  };
+
+  // Handler to replace an image
+  const replaceImageHandler = (index) => {
+    // Example: Replace with a placeholder image (you can integrate an image picker)
+    const newImage = "https://res.cloudinary.com/deoh6ya4t/image/upload/v1708938721/placeholder.png";
+    const updatedImages = [...images];
+    updatedImages[index] = newImage;
+    setImages(updatedImages);
+  };
+
+
 
   const initialState = {
     inputValues: {
@@ -105,10 +153,12 @@ const EditProduct = ({ route, navigation }) => {
       Alert.alert("An error occured", error, [{ text: "Okay" }]);
     }
   }, [error]);
-
+  
   const authHandler = useCallback(async () => {
     try {
       setIsLoading(true);
+
+      // const imageUrls = await UpdateProductImages( 'products', uploadedImages, formState.inputValues.shop)
 
       const userData = {
         brand: formState.inputValues.brand,
@@ -119,6 +169,7 @@ const EditProduct = ({ route, navigation }) => {
         price: formState.inputValues.price,
 
         stock: formState.inputValues.stock,
+        // images:[...imageUrls]
       };
 
       await updateProduct(product?.shopKey, product?.productKey, userData);
@@ -167,16 +218,72 @@ const EditProduct = ({ route, navigation }) => {
     );
   };
 
-  console.log(hasChanges());
+
+  
+
+   const pickImages = async () => {
+     try {
+       const result = await ImagePicker.launchImageLibraryAsync({
+         mediaTypes: ImagePicker.MediaTypeOptions.Images,
+ 
+         allowsMultipleSelection: true, // Requires SDK 48+
+       });
+ 
+       if (!result.canceled) {
+       
+         setUploadedImages(result.assets);
+       }
+ 
+       
+     } catch (error) {
+       console.error("Image picker error:", error);
+     }
+   };
+
+  // console.log(hasChanges());
   return (
     <ScrollView style={styles.container}>
-      <View style={{ margin: "auto" }}>
-        <ProfileImage
-          size={150}
-          userId={product?.productKey}
-          uri={product?.profilePicture}
-          showEditButton={true}
+      <View style={{justifyContent:'center',alignItems:'center',width:'90%',margin:'auto'}}>
+      
+
+        {/* Carousel */}
+        <Carousel
+          width={screenWidth}
+          height={300}
+          data={images}
+          renderItem={({ item, index }) => (
+            <View style={styles.imageContainer}>
+              <Image source={{ uri: item }} style={styles.image} />
+              <View style={styles.buttonContainer}>
+                <Pressable
+                  style={styles.deleteButton}
+                  onPress={() => deleteImageHandler(index)}
+                >
+                  <Text style={styles.buttonText}>Delete</Text>
+                </Pressable>
+                <Pressable
+                  style={styles.replaceButton}
+                  onPress={() => replaceImageHandler(index)}
+                >
+                  <Text style={styles.buttonText}>Replace</Text>
+                </Pressable>
+              </View>
+            </View>
+          )}
         />
+
+          {/* Dots for Pagination */}
+              <View style={styles.pagination}>
+                {images.map((_, index) => (
+                  <View
+                    key={index}
+                    style={[
+                      styles.dot,
+                      currentIndex === index ? styles.activeDot : styles.inactiveDot,
+                    ]}
+                  />
+                ))}
+              </View>
       </View>
       <View style={styles.formContainer}>
         <Input
@@ -267,6 +374,26 @@ const EditProduct = ({ route, navigation }) => {
           onInputChanged={inputChangedHandler}
           errorText={formState.inputValidities["stock"]}
         />
+
+        <View style={{flex: 1, padding: 20}}>
+            {/* Button to trigger image selection */}
+            <Button title="Upload new Images" onPress={pickImages} />
+      
+            {/* Display selected images */}
+            <ScrollView horizontal style={styles.imageScroll}>
+              {uploadedImages?.length > 0 ? (
+                uploadedImages?.map((image, index) => (
+                  <Image
+                    key={index}
+                    source={{ uri: image.uri }}
+                    style={styles.imagePreview}
+                  />
+                ))
+              ) : (
+                <Text>No images selected</Text>
+              )}
+            </ScrollView> 
+        </View>
 
         <View style={{ marginTop: 20 }}>
           {showSuccessMessage && <Text>Saved!</Text>}
@@ -368,5 +495,67 @@ const styles = StyleSheet.create({
   },
   invalid: {
     borderColor: "red",
+  },
+  imageContainer: {
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 10,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginTop: 10,
+    position: "absolute",
+    bottom: 10,
+    width: "80%",
+  },
+  deleteButton: {
+    backgroundColor: "red",
+    padding: 10,
+    borderRadius: 5,
+  },
+  replaceButton: {
+    backgroundColor: "blue",
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 14,
+  },  pagination: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 5,
+  },
+  dot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginHorizontal: 5,
+  },
+  activeDot: {
+    backgroundColor: "blue",
+    width:15,
+    height:15,
+    borderRadius: 10,
+
+  },
+  inactiveDot: {
+    backgroundColor: "gray",
+  },   imageScroll: {
+    marginTop: 20,
+  },
+  imagePreview: {
+    width: 100,
+    height: 100,
+    marginRight: 10,
+    borderRadius: 8,
   },
 });

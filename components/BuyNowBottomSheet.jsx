@@ -49,7 +49,8 @@ const BuyNowBottomSheet = ({ product, open, setOpen, placeOrderHandler }) => {
       uid: authData.uid,
       productKey: product?.productKey,
       shopKey: product?.shopKey,
-
+      orderStatus: "new",
+      status: true,
       total: product?.price * formState.inputValues.qty + 100,
     });
   };
@@ -117,7 +118,7 @@ const BuyNowBottomSheet = ({ product, open, setOpen, placeOrderHandler }) => {
     >
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.headerTitle}>But now</Text>
+        <Text style={styles.headerTitle}>Buy now</Text>
         <Pressable onPress={() => setOpen(false)} style={styles.closeButton}>
           <AntDesign
             style={styles.closeButtonText}
@@ -134,10 +135,13 @@ const BuyNowBottomSheet = ({ product, open, setOpen, placeOrderHandler }) => {
             <View style={{ flex: 2 }}>
               <Image
                 style={{ width: 150, height: 150, borderRadius: 5 }}
-                source={{
-                  uri: "https://res.cloudinary.com/deoh6ya4t/image/upload/v1708858980/cld-sample-5.jpg",
-                }}
+                source={
+                  product?.images?.length > 0
+                    ? { uri: product?.images[0] }
+                    : { uri: "https://res.cloudinary.com/deoh6ya4t/image/upload/v1708858980/cld-sample-5.jpg" }
+                }
               />
+
             </View>
             <View style={{ flex: 2.3, paddingVertical: 5 }}>
               <Text style={{ fontSize: 20, fontWeight: "bold" }}>

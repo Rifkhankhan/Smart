@@ -1,0 +1,16 @@
+{
+  "expo": {
+    "android": {
+      "newArchEnabled": true,
+      "package": "com.rifkhan.smart"
+    },
+    "ios": {
+      "newArchEnabled": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ab00163c-6c82-40ba-ae70-d2ad964775f9"
+      }
+    }
+  }
+}

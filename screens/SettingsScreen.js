@@ -5,7 +5,9 @@ import {
 	Text,
 	StyleSheet,
 	ActivityIndicator,
-	ScrollView
+	ScrollView,
+	TouchableOpacity,
+	Button,Image
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import Input from '../components/Input'
@@ -33,7 +35,6 @@ const SettingsScreen = props => {
 	const lastName = authData?.lastName || ''
 	const email = authData?.email || ''
 	const about = authData?.about || ''
-
 	const initialState = {
 		inputValues: {
 			firstName,
@@ -90,6 +91,8 @@ const SettingsScreen = props => {
 			currentValues.about != about
 		)
 	}
+
+	
 
 	return (
 		<PageContainer>
@@ -169,6 +172,7 @@ const SettingsScreen = props => {
 					)}
 				</View>
 
+				
 				<SubmitButton
 					title="Logout"
 					onPress={() => dispatch(userLogout())}

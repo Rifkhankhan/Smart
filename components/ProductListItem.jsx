@@ -27,12 +27,23 @@ const ProductListItem = ({ product }) => {
         })
       }
     >
-      <Image
+      {/* <Image
         source={
           product?.profilePicture ? { uri: product?.profilePicture } : image
         }
         style={styles.propic}
+      /> */}
+
+
+      <Image
+        source={
+          product?.images?.length > 0
+            ? { uri: product?.images[0] }
+            : { uri: "https://res.cloudinary.com/deoh6ya4t/image/upload/v1708858980/cld-sample-5.jpg" }
+        }
+        style={styles.propic}
       />
+
       <View style={styles.textContainer}>
         <Text style={styles.name}>{product?.name}</Text>
         <Text style={styles.name}>{shop?.name}</Text>

@@ -1,64 +1,69 @@
-import { StyleSheet, Text, View, Dimensions } from 'react-native'
-import React, { useState } from 'react'
-import { Pressable } from 'react-native'
-import { FlatList } from 'react-native'
-import { Image } from 'react-native'
-import OrderCard from './../components/OrderCard'
-import { ScrollView } from 'react-native'
-import TopTabBar from './../components/TopTabBar'
-
+import { StyleSheet, Text, View, Dimensions } from "react-native";
+import React, { useState } from "react";
+import { Pressable } from "react-native";
+import { FlatList } from "react-native";
+import { Image } from "react-native";
+import OrderCard from "./../components/OrderCard";
+import { ScrollView } from "react-native";
+import TopTabBar from "./../components/TopTabBar";
+import { useSelector } from "react-redux";
+const tabs = [
+  { id: "all", label: "All" },
+  { id: "toPay", label: "To Pay" },
+  { id: "toReceive", label: "To Receive" },
+  { id: "toReveiw", label: "To Review" },
+  { id: "return", label: "Returns" },
+  { id: "cancel", label: "Cancelled" },
+];
 const Orders = ({ route, navigation }) => {
-	navigation.setOptions({
-		tabBarVisible: false
-	})
-	const type = route.params?.type
-	const items = [
-		{ id: 1 },
-		{ id: 2 },
-		{ id: 3 },
-		{ id: 3 },
-		{ id: 5 },
-		{ id: 6 },
-		{ id: 7 },
-		{ id: 8 },
-		{ id: 9 },
-		{ id: 10 },
-		{ id: 11 },
-		{ id: 12 }
-	]
-	const lists = []
+  navigation.setOptions({
+    tabBarVisible: false,
+  });
 
-	const displayProducts = items.slice(0, 10)
+  const { userOrders } = useSelector((state) => state.order);
 
-	return (
-		<>
-			<TopTabBar type={type} />
+  const [activeTab, setActiveTab] = useState("all");
 
-			{displayProducts.length > 0 && (
-				<FlatList
-					data={displayProducts}
-					renderItem={() => <OrderCard />}
-					keyExtractor={item => item.id}
-					showsVerticalScrollIndicator={false}
-				/>
-			)}
+  const type = route.params?.type;
 
-			{displayProducts.length === 0 && (
-				<View
-					style={{
-						justifyContent: 'center',
-						alignItems: 'center',
-						flex: 1
-					}}>
-					<Text style={{ fontSize: 24, color: 'black' }}>
-						There is no product
-					</Text>
-				</View>
-			)}
-		</>
-	)
-}
+  const displayProducts = userOrders.slice(0, 10);
 
-export default Orders
+  return (
+    <>
+      <TopTabBar
+        type={type}
+        tabs={tabs}
+        customeStyles={{ backgroundColor: "black", paddingVertical: 5 }}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
 
-const styles = StyleSheet.create({})
+      {displayProducts.length > 0 && (
+        <FlatList
+          data={displayProducts}
+          renderItem={(item) => <OrderCard order={item.item} />}
+          keyExtractor={(item) => item.orderKey}
+          showsVerticalScrollIndicator={false}
+        />
+      )}
+
+      {displayProducts.length === 0 && (
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            flex: 1,
+          }}
+        >
+          <Text style={{ fontSize: 24, color: "black" }}>
+            There is no product
+          </Text>
+        </View>
+      )}
+    </>
+  );
+};
+
+export default Orders;
+
+const styles = StyleSheet.create({});

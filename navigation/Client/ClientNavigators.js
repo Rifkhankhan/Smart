@@ -39,12 +39,19 @@ import BuyNowBottomSheet from "../../components/BuyNowBottomSheet";
 import SettingsScreen from "../../screens/SettingsScreen";
 import {
   getOrdersOfaShop,
+  getOrdersOfaUser,
   getProductOfaShop,
   getUserCarts,
+  getUserWishes,
 } from "../../utils/Subscribefunctions/Client";
 import Cart from "../../screens/Cart";
 import SearchScreen from "../../screens/SearchScreen";
 import { getProducts, getShops } from "../../utils/Subscribefunctions/Admin";
+import SearchedProductsScreen from "../../screens/SearchedProductsScreen";
+import { resetOrders } from "../../store/orderSlice";
+import ViewService from "../../screens/Services/ViewService";
+import ServiceListPage from "../../screens/Services/ServiceListPage";
+import ViewServicesByCategory from "../../screens/Services/ViewServicesByCategory";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -90,11 +97,11 @@ export const SellerNavigators = () => {
     onValue(shopordersRef, (shopOrdersSnapShot) => {
       const ordersObjects = shopOrdersSnapShot.val() || {};
 
+      dispatch(resetOrders());
       Object.entries(ordersObjects).forEach(([key, orderKey]) => {
         const orderRef = child(dbRef, `orders/${orderKey}`);
 
         refs.push(orderRef);
-
         // get orders for the shop
         const orderFetchAction = getOrdersOfaShop(
           dbRef,
@@ -108,11 +115,24 @@ export const SellerNavigators = () => {
       });
     });
 
+    // get user's orders
+
+    const orderIdsRef = child(dbRef, `usersOrders/${authData?.uid}`);
+    refs.push(orderIdsRef);
+    const getUserOrdersAction = getOrdersOfaUser(dbRef, orderIdsRef, refs);
+    dispatch(getUserOrdersAction);
+
     // get user Carts
     const cartIdsRef = child(dbRef, `carts/${authData?.uid}`);
     refs.push(cartIdsRef);
     const getUserCartsAction = getUserCarts(dbRef, cartIdsRef, refs);
     dispatch(getUserCartsAction);
+
+    // get user wishLists
+    const wishIdsRef = child(dbRef, `wishes/${authData?.uid}`);
+    refs.push(cartIdsRef);
+    const getUserwishListsAction = getUserWishes(dbRef, wishIdsRef, refs);
+    dispatch(getUserwishListsAction);
   }, [authData]);
 
   if (isUsersLoading || shopsIsLoading) {
@@ -295,36 +315,57 @@ export const HomeOverView = () => {
           }}
         />
 
-        {/* <Stack.Screen
-					name="ButNowSheet"
-					component={BuyNowBottomSheet}
-					options={{
-						headerShown: false,
+      <Stack.Screen
+          name="ViewService"
+          component={ViewService}
+          options={{
+            headerShown: false,
 
-						// headerTransparent: true,
+            // headerTransparent: true,
 
-						// headerTintColor: 'white',
-						// headerTitle: () => <SearchBar width="0.6" />,
-						headerTitleAlign: 'left'
-					}}
-				/> */}
+            // headerTintColor: 'white',
+            // headerTitle: () => <SearchBar width="0.6" />,
+            headerTitleAlign: "left",
+          }}
+        />
+
+        
+      <Stack.Screen
+          name="ViewServicesByCategory"
+          component={ViewServicesByCategory}
+          options={{
+            headerShown: false,
+
+            // headerTransparent: true,
+
+            // headerTintColor: 'white',
+            // headerTitle: () => <SearchBar width="0.6" />,
+            headerTitleAlign: "left",
+          }}
+        />
+
+          <Stack.Screen
+          name="ServiceListPage"
+          component={ServiceListPage}
+          options={{
+            headerShown: false,
+            headerTitleAlign: "left",
+          }}
+        />
+
+
+        <Stack.Screen
+          name="CartScreen"
+          component={Cart}
+          options={{
+            headerShown: false,
+
+            headerTitleAlign: "left",
+          }}
+        />
       </Stack.Group>
 
       <Stack.Group screenOptions={{ presentation: "containedModal" }}>
-        {/* <Stack.Screen
-					name="BuyNowModal"
-					component={BuyNowModal}
-					options={{
-						headerShown: true,
-
-						// headerTransparent: true,
-
-						// headerTintColor: 'white',
-						// headerTitle: () => <SearchBar width="0.6" />,
-						headerTitleAlign: 'left'
-					}}
-				/> */}
-
         <Stack.Screen
           name="SettingsScreen"
           component={SettingsScreen}
@@ -338,6 +379,14 @@ export const HomeOverView = () => {
         <Stack.Screen
           name="SearchScreen"
           component={SearchScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="SearchedProductsScreen"
+          component={SearchedProductsScreen}
           options={{
             headerShown: false,
           }}
@@ -504,11 +553,7 @@ export const ProductStacks = () => {
         name="ProductListPage"
         component={ProductListPage}
         options={{
-          headerShown: true,
-          title: "Products",
-          headerStyle: { backgroundColor: "black" },
-          headerTintColor: "white",
-
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" size={24} color={color} />
           ),

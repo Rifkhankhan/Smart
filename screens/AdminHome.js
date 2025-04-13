@@ -13,6 +13,9 @@ import HomeItemList from './../components/HomeItemList'
 import BigItemList from './../components/BigItemList'
 import Card from './../components/Card'
 import CardContainer from '../components/CardContainer'
+import { Asset } from "expo-asset";
+import plusImage from "./../assets/images/plus.png";
+
 
 const AdminHome = ({ navigation }) => {
 	const [isClicked, setIsClicked] = useState(false)
@@ -43,7 +46,7 @@ const AdminHome = ({ navigation }) => {
 				activeOpacity={0.8}
 				onPress={createIdea}>
 				<Image
-					source={require('./../assets/images/plus.png')}
+					source={plusImage}
 					style={styles.plusImage}
 				/>
 			</TouchableOpacity>

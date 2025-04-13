@@ -12,6 +12,8 @@ import IconButton from "../UI/IconButton";
 import UserListItem from "./../components/UserListItem";
 import PageTitle from "../components/PageTitle";
 import PageContainer from "../components/PageContainer";
+import { Asset } from "expo-asset";
+import plusImage from "./../assets/images/plus.png";
 
 const CustomerListPage = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -75,7 +77,8 @@ const CustomerListPage = ({ navigation }) => {
           style={styles.plusBtnContainer}
         >
           <Image
-            source={require("./../assets/images/plus.png")}
+           					source={plusImage}
+
             style={styles.plusbtn}
           />
         </TouchableOpacity>

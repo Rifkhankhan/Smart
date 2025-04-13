@@ -49,24 +49,25 @@ export const createProduct = async (data) => {
   const db = getDatabase(app);
 
   try {
-    console.log("Creating product with data:", data);
+    // console.log("Creating product with data:", data);
 
     // Add timestamps to the product data
     const userData = {
       ...data,
-      createdAt: new Date().toISOString(),
+      createdAt: new Date().toISOString(), 
       updatedAt: new Date().toISOString(),
     };
 
     // Reference to the products node
     const productRef = child(ref(db), "products");
     const newProductRef = await push(productRef, userData);
-    console.log("Product added with key:", newProductRef.key);
+    // console.log("Product added with key:", newProductRef.key);
 
     // Reference to the shopProducts node
     const userProductRef = child(ref(db), `shopProducts/${data.shopKey}`);
     await push(userProductRef, newProductRef.key);
-    console.log("Product reference added to shopProducts");
+  
+
   } catch (error) {
     console.error("Error creating product:", error);
     const errorCode = error.code;
@@ -82,6 +83,9 @@ export const createProduct = async (data) => {
 
     throw new Error(message);
   }
+
+
+
 };
 
 export const updateProduct = async (shopKey, productKey, data) => {

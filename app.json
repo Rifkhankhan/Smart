@@ -1,34 +1,18 @@
 {
   "expo": {
-    "name": "Smart",
-    "slug": "smart",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.rifkhan.smart"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
     "extra": {
       "eas": {
-        "projectId": "4dbbce37-1d73-4bf8-bdb9-febb0a1a91ac"
+        "projectId": "ab00163c-6c82-40ba-ae70-d2ad964775f9"
       }
     },
-    "owner": "rifkhan"
+    "owner": "rifkhan",
+    "android": {
+      "package": "com.rifkhan.smart"
+    },
+    "name": "Smart",
+    "slug": "Smart",
+    "version": "1.0.0",
+    "icon": "./assets/logo.png",
+    "platforms": ["ios", "android"]
   }
 }

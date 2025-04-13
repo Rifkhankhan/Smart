@@ -15,6 +15,7 @@ import {
   deleteProduct,
   updateProduct,
 } from "../../utils/actions/productActions";
+import ProductImageCarousel from "./ProductImageCarousel"
 
 const ViewProduct = ({ route, navigation }) => {
   const { product, shop } = route.params || {}; // Destructure customer
@@ -67,14 +68,9 @@ const ViewProduct = ({ route, navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.imageContainer}>
-        <Image
-          source={{
-            uri:
-              product?.profilePicture ||
-              "https://res.cloudinary.com/deoh6ya4t/image/upload/v1708938721/man_nvajfu.png",
-          }}
-          style={styles.image}
-        />
+       
+        <ProductImageCarousel  productImages={product?.images} />
+      
       </View>
 
       <View style={styles.section}>

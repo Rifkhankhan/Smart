@@ -32,8 +32,8 @@ export default CardContainer
 const styles = StyleSheet.create({
 	productCardContainer: {
 		flexDirection: 'column',
-		padding: 4,
-		marginHorizontal: 8
+		justifyContent:'center',
+		alignItems:'center'
 	},
 	title: {
 		paddingLeft: 8,
@@ -44,6 +44,6 @@ const styles = StyleSheet.create({
 	},
 	cards: {
 		flexDirection: 'row',
-		flexWrap: 'wrap'
+		flexWrap: 'wrap',
 	}
 })

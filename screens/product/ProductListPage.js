@@ -13,10 +13,17 @@ import UserListItem from "./../../components/UserListItem";
 import PageTitle from "./../../components/PageTitle";
 import PageContainer from "./../../components/PageContainer";
 import ProductListItem from "../../components/ProductListItem";
+import { Ionicons } from "@expo/vector-icons";
+import { Asset } from "expo-asset";
+import plusImage from "./../../assets/images/plus.png";
 
 const ProductListPage = ({ navigation }) => {
   const dispatch = useDispatch();
   let products = useSelector((state) => state.product.products);
+  const [isClicked, setIsClicked] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  console.log(isClicked);
 
   const { authData } = useSelector((state) => state.auth);
 
@@ -30,10 +37,8 @@ const ProductListPage = ({ navigation }) => {
 
   products = useMemo(() => Object.values(products), [products]);
 
-  const [isClicked, setIsClicked] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-
   const searchHandler = () => {
+    setSearchQuery("");
     setIsClicked((current) => !current);
   };
 
@@ -45,30 +50,31 @@ const ProductListPage = ({ navigation }) => {
     [products, searchQuery]
   );
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerTitle: "",
-      headerTitleStyle: {
-        width: "100%",
-      },
-      headerRight: () => (
-        <IconButton
-          name={isClicked ? "close" : "search"}
-          color="white"
-          size={24}
-          onPress={searchHandler}
-        />
-      ),
-    });
-  }, [isClicked, navigation, searchHandler]);
-
   const addCustomerHandler = () => {
     navigation.navigate("CreateProduct");
   };
 
   return (
     <PageContainer>
-      <PageTitle text="Products" />
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingHorizontal: 8,
+        }}
+      >
+        <PageTitle text="Products" />
+
+        {!isClicked && (
+          <Ionicons
+            name="search"
+            color="lightgray"
+            size={30}
+            onPress={searchHandler}
+          />
+        )}
+      </View>
       {isClicked && (
         <View style={styles.searchBarContainer}>
           <TextInput
@@ -76,6 +82,14 @@ const ProductListPage = ({ navigation }) => {
             style={styles.searchBar}
             onChangeText={setSearchQuery}
             value={searchQuery}
+          />
+
+          <Ionicons
+            name="close"
+            color="gray"
+            size={20}
+            style={{ position: "absolute", right: 0, top: 2 }}
+            onPress={searchHandler}
           />
         </View>
       )}
@@ -91,7 +105,8 @@ const ProductListPage = ({ navigation }) => {
           style={styles.plusBtnContainer}
         >
           <Image
-            source={require("./../../assets/images/plus.png")}
+          					source={plusImage}
+
             style={styles.plusbtn}
           />
         </TouchableOpacity>
@@ -115,17 +130,18 @@ const styles = StyleSheet.create({
     height: 50,
   },
   searchBarContainer: {
+    position: "relative",
+    flexDirection: "row",
     marginHorizontal: "5%",
     marginVertical: 5,
     borderWidth: 1,
     borderRadius: 5,
     width: "90%",
-    padding: 5,
   },
   searchBar: {
     padding: 5,
-    fontSize: 18,
-    height: 40,
+    fontSize: 16,
+    height: 25,
     width: "100%",
   },
 });

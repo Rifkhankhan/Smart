@@ -9,6 +9,7 @@ import React, {
 	useState
 } from 'react'
 import colors from '../constants/colors'
+import { Asset } from "expo-asset";
 
 import { launchImagePicker } from '../utils/imagePickerHelper'
 
@@ -19,6 +20,7 @@ import { Feather, FontAwesome } from '@expo/vector-icons'
 import { reducer } from '../utils/reducers/formReducer'
 import SubmitButton from '../components/SubmitButton'
 import { createCutomer } from '../utils/actions/userActions'
+import logoImage from "./../assets/images/logo.jpg";
 
 const initialState = {
 	inputValues: {
@@ -109,7 +111,7 @@ const CreatePerson = ({ route, navigation }) => {
 		<ScrollView style={styles.container}>
 			<View style={styles.logoContainer}>
 				<Image
-					source={require('./../assets/images/logo.jpg')}
+					source={logoImage}
 					style={styles.logo}
 				/>
 			</View>

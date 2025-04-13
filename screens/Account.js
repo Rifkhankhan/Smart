@@ -19,10 +19,10 @@ import {
 import { useSelector } from "react-redux";
 
 const Account = ({ route, navigation }) => {
-  const list = [{ id: 1 }, { id: 12 }, { id: "sdf" }];
   const trackPackageRef = useRef(null);
   const deliveredProductsRef = useRef(null);
   const { authData } = useSelector((state) => state.auth);
+  const { userOrders } = useSelector((state) => state.order);
 
   useEffect(() => {
     navigation.setOptions({
@@ -155,7 +155,7 @@ const Account = ({ route, navigation }) => {
 
   return (
     <FlatList
-      data={list}
+      data={userOrders}
       ListHeaderComponent={renderHeader}
       ListFooterComponent={() => (
         <>
@@ -163,28 +163,33 @@ const Account = ({ route, navigation }) => {
             <Text style={styles.header}>Track Package</Text>
             <FlatList
               ref={trackPackageRef}
-              data={list}
+              data={userOrders}
               renderItem={renderItem}
-              keyExtractor={(item) => item.id.toString()}
+              keyExtractor={(item) => item.orderKey}
               horizontal
               pagingEnabled
               showsHorizontalScrollIndicator={false}
             />
           </View>
-          <View style={styles.deliveryProducts}>
-            <Text style={styles.header}>Delivered Products</Text>
-            <FlatList
-              ref={deliveredProductsRef}
-              data={list}
-              renderItem={renderProduct}
-              keyExtractor={(item) => item.id.toString()}
-              showsVerticalScrollIndicator={false}
-              numColumns={1}
-            />
-          </View>
+          {userOrders.filter((order) => order.orderStatus === "delivered")
+            .length > 0 && (
+            <View style={styles.deliveryProducts}>
+              <Text style={styles.header}>Delivered Products</Text>
+              <FlatList
+                ref={deliveredProductsRef}
+                data={userOrders.filter(
+                  (order) => order.orderStatus === "delivered"
+                )}
+                renderItem={renderProduct}
+                keyExtractor={(item) => item.orderKey}
+                showsVerticalScrollIndicator={false}
+                numColumns={1}
+              />
+            </View>
+          )}
         </>
       )}
-      keyExtractor={(item) => item.id.toString()}
+      keyExtractor={(item) => item.orderKey}
       showsVerticalScrollIndicator={false}
     />
   );

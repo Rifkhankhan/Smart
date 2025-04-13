@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import React from 'react'
 import HomeCard from './HomeCard'
+import CardDesign1 from '../screens/product/CardDesign1'
 
 const HomeItemList = ({ title, subTitle }) => {
 	return (
@@ -14,12 +15,13 @@ const HomeItemList = ({ title, subTitle }) => {
 				horizontal
 				contentContainerStyle={styles.scrollContainer}
 				showsHorizontalScrollIndicator={false}>
-				<HomeCard />
-				<HomeCard />
-				<HomeCard />
-				<HomeCard />
-				<HomeCard />
-				<HomeCard />
+				<CardDesign1 />
+				<CardDesign1 />
+				<CardDesign1 />
+				<CardDesign1 />
+				<CardDesign1 />
+				<CardDesign1 />
+				
 			</ScrollView>
 		</View>
 	)

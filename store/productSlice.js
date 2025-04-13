@@ -5,6 +5,7 @@ const productSlice = createSlice({
   initialState: {
     products: [],
     userShopProducts: [],
+    searchProducts: [],
     productsIsLoading: false,
   },
   reducers: {
@@ -23,6 +24,9 @@ const productSlice = createSlice({
         }
       }
     },
+    setSearchProducts: (state, action) => {
+      console.log(action.payload);
+    },
     setProductsLoading: (state) => {
       state.productsIsLoading = !state.productsIsLoading;
     },
@@ -36,6 +40,11 @@ const productSlice = createSlice({
     },
   },
 });
-export const { setProducts, setProductsLoading, resetProducts, removeProduct } =
-  productSlice.actions;
+export const {
+  setProducts,
+  setProductsLoading,
+  resetProducts,
+  removeProduct,
+  setSearchProducts,
+} = productSlice.actions;
 export default productSlice.reducer;

@@ -6,6 +6,7 @@ import {
   FlatList,
   Button,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
 import React, {
   memo,
@@ -17,6 +18,8 @@ import React, {
 } from "react";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { Image } from "react-native";
+import { Asset } from "expo-asset";
+
 import {
   Ionicons,
   FontAwesome5,
@@ -29,26 +32,35 @@ import { TouchableOpacity } from "react-native";
 import Card from "./../components/Card";
 import { useDispatch, useSelector } from "react-redux";
 import CardContainer from "../components/CardContainer";
+import shop3Image from "./../assets/images/shop3.jpg";
 
 import BuyNowBottomSheet from "../components/BuyNowBottomSheet";
 import { BottomTabBar } from "@react-navigation/bottom-tabs";
-import { createCart, placeOrder } from "../utils/actions/cartActions";
-import { checkCartExistance } from "../store/cartSlice";
+import {
+  addIntoWish,
+  createCart,
+  deleteWishItem,
+  placeOrder,
+} from "../utils/actions/cartActions";
+import { checkCartExistance, removeWishItem } from "../store/cartSlice";
+import { useRoute } from "@react-navigation/native";
+import ProductScreen from "./product/ProductImageCarousel";
 
 // Memoize the Card component
 const MemoizedCard = memo(({ product }) => (
   <HomeCard key={product.productKey} product={product} />
 ));
-
 const ProductDetails = ({ route, navigation }) => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
-
   const { product } = route?.params;
   const { products } = useSelector((state) => state.product);
   const { shops } = useSelector((state) => state.shop);
   const { authData } = useSelector((state) => state.auth);
-  const { carts } = useSelector((state) => state.cart);
+  const { carts, wishList } = useSelector((state) => state.cart);
+  const [loading, setLoading] = useState(false);
+
+  
 
   const shop = shops?.filter((shop) => shop.shopKey === product.shopKey)[0];
 
@@ -62,6 +74,7 @@ const ProductDetails = ({ route, navigation }) => {
 
   const ShoppingCart = () => (
     <Pressable
+      onPress={() => navigation.navigate("CartScreen")}
       style={{
         paddingHorizontal: 10,
         paddingVertical: 0,
@@ -110,15 +123,63 @@ const ProductDetails = ({ route, navigation }) => {
     </>
   );
 
+  const wishHandler = useCallback(async () => {
+    setLoading(true);
+    const itemExist = await wishList?.find(
+      (pro) => pro.productKey === product?.productKey
+    );
+
+    if (!!itemExist) {
+      console.log("yes");
+
+      const data = {
+        uid: authData?.uid,
+        wishKey: itemExist?.wishKey,
+      };
+
+      const action = await deleteWishItem(data);
+      dispatch(action);
+      setLoading(false);
+    } else {
+      console.log("no");
+
+      const data = {
+        uid: authData?.uid,
+        productKey: product?.productKey,
+      };
+
+      await addIntoWish(data);
+
+      setLoading(false);
+    }
+  }, [wishList, loading]);
+
   useEffect(() => {
     const headerRight = () => (
       <>
-        <Pressable style={{ paddingHorizontal: 10, paddingVertical: 0 }}>
-          <AntDesign name="hearto" size={30} color="black" />
-        </Pressable>
-        <Pressable style={{ paddingHorizontal: 10, paddingVertical: 0 }}>
+        {!loading ? (
+          <TouchableOpacity
+            style={{ paddingHorizontal: 10, paddingVertical: 0 }}
+            onPress={wishHandler}
+          >
+            <View>
+              {wishList.some(
+                (prod) => prod.productKey === product.productKey
+              ) ? (
+                <AntDesign name="heart" size={30} color="red" />
+              ) : (
+                <AntDesign name="hearto" size={30} color="black" />
+              )}
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <View style={{ paddingHorizontal: 10, paddingVertical: 0 }}>
+            <ActivityIndicator size="small" color="#0000ff" />
+          </View>
+        )}
+        {/* <Pressable style={{ paddingHorizontal: 10, paddingVertical: 0 }}>
           <AntDesign name="search1" size={30} color="black" />
-        </Pressable>
+        </Pressable> */}
         <ShoppingCart carts={carts} />
       </>
     );
@@ -126,7 +187,7 @@ const ProductDetails = ({ route, navigation }) => {
     navigation.setOptions({
       headerRight,
     });
-  }, [carts, navigation]);
+  }, [carts, navigation, loading, wishList]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -188,12 +249,14 @@ const ProductDetails = ({ route, navigation }) => {
   const renderHeader = () => {
     return (
       <>
-        <Image
-          source={{
-            uri: "https://res.cloudinary.com/deoh6ya4t/image/upload/v1708858980/cld-sample-5.jpg",
-          }}
-          style={styles.image}
-        />
+          <ProductScreen
+            productImages={
+              product?.images?.length > 0
+                ? product.images
+                : [{ uri: "https://res.cloudinary.com/deoh6ya4t/image/upload/v1708938721/man_nvajfu.png" }]
+            }
+          />
+
         <View style={styles.cardComponent}>
           <Text style={styles.name}>{product?.name}</Text>
           {/* price */}
@@ -223,7 +286,7 @@ const ProductDetails = ({ route, navigation }) => {
           {/* shop */}
           <View style={styles.shopContainer}>
             <Image
-              source={require("./../assets/images/shop3.jpg")}
+              source={shop3Image}
               style={styles.shopImage}
             />
             <Text style={styles.shopName}>{shop?.name}</Text>
@@ -350,6 +413,8 @@ const ProductDetails = ({ route, navigation }) => {
 export default ProductDetails;
 
 const styles = StyleSheet.create({
+  loadinContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
+
   image: {
     width: "100%",
     height: 300,

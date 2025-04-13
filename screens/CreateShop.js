@@ -23,6 +23,8 @@ import SubmitButton from '../components/SubmitButton'
 import colors from '../constants/colors'
 import { reducer } from '../utils/reducers/formReducer'
 import { createShop } from '../utils/actions/shopActions'
+import { Asset } from "expo-asset";
+import logoImage from "./../assets/images/logo.jpg";
 
 const initialState = {
 	inputValues: {
@@ -110,7 +112,7 @@ const CreateShop = ({ navigation }) => {
 		<ScrollView contentContainerStyle={styles.container}>
 			<View style={styles.logoContainer}>
 				<Image
-					source={require('./../assets/images/logo.jpg')}
+					source={logoImage}
 					style={styles.logo}
 				/>
 			</View>

@@ -11,13 +11,17 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { Image } from "react-native";
-
+import { Asset } from "expo-asset";
 import { Ionicons } from "@expo/vector-icons";
+// import ImagePickerScreen from "../components/ImagePickerScreen";
+
+
 
 const AddItem = () => {
   const [ingredient, setIngredient] = useState("");
   const [ingredientList, setIngredientList] = useState([]);
   const [name, setName] = useState("");
+  const [imageUri, setImageUri] = useState(null);
   const handleAddIngredient = () => {
     if (ingredient.trim() !== "") {
       setIngredientList([...ingredientList, ingredient]);
@@ -25,13 +29,28 @@ const AddItem = () => {
     }
   };
 
+  useEffect(() => {
+    (async () => {
+      const asset = Asset.fromModule(require("./../assets/images/photo.png"));
+      await asset.downloadAsync();
+      setImageUri(asset.uri);
+    })();
+  }, []);
+
+
+  // image select
+  
+
   return (
     <ScrollView>
       <TouchableOpacity activeOpacity={0.8} style={styles.imageContainer}>
-        <Image
-          source={require("./../assets/images/photo.png")}
+      <>
+      imageUri ? <Image
+          source={ {uri:imageUri}}
           style={styles.photo}
-        />
+          /> : null
+          </>
+
       </TouchableOpacity>
       <View>
         <TextInput
@@ -83,6 +102,10 @@ const AddItem = () => {
                 />
               </Pressable>
             )}
+          </View>
+
+          <View>
+            {/* <ImagePickerScreen /> */}
           </View>
         </View>
       </View>

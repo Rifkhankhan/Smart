@@ -4,11 +4,15 @@ const cartSlice = createSlice({
   name: "cart",
   initialState: {
     carts: [],
+    wishList: [],
     cartsIsLoading: false,
   },
   reducers: {
     setCarts: (state, action) => {
       state.carts = action.payload;
+    },
+    setWishItem: (state, action) => {
+      state.wishList = action.payload;
     },
     setCartLoading: (state) => {
       state.cartsIsLoading = !state.cartsIsLoading;
@@ -17,6 +21,12 @@ const cartSlice = createSlice({
       // console.log(action.payload)
       state.carts = state.carts.filter(
         (cart) => cart.productKey !== action.payload.productKey
+      );
+    },
+    removeWishItem: (state, action) => {
+      // console.log(action.payload)
+      state.wishList = state.wishList.filter(
+        (cart) => cart.wishKey !== action.payload.wishKey
       );
     },
     checkCartExistance: (state, action) => {
@@ -29,6 +39,9 @@ const cartSlice = createSlice({
     resetCarts: (state) => {
       state.carts = [];
     },
+    resetWishes: (state) => {
+      state.wishList = [];
+    },
   },
 });
 export const {
@@ -37,5 +50,8 @@ export const {
   resetCarts,
   removeCart,
   checkCartExistance,
+  setWishItem,
+  resetWishes,
+  removeWishItem,
 } = cartSlice.actions;
 export default cartSlice.reducer;

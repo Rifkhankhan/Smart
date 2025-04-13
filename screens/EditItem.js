@@ -12,6 +12,8 @@ import {
 import React, { useState } from 'react'
 import { Image } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+import { Asset } from "expo-asset";
+import containerImage from "./../assets/images/photo.png";
 
 const EditItem = () => {
 	const [ingredient, setIngredient] = useState('')
@@ -28,7 +30,7 @@ const EditItem = () => {
 		<ScrollView>
 			<TouchableOpacity activeOpacity={0.8} style={styles.imageContainer}>
 				<Image
-					source={require('./../assets/images/photo.png')}
+					source={containerImage}
 					style={styles.photo}
 				/>
 			</TouchableOpacity>

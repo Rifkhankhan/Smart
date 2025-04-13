@@ -9,6 +9,7 @@ import React, {
 	useState
 } from 'react'
 import colors from '../constants/colors'
+import { Asset } from "expo-asset";
 
 import { launchImagePicker } from '../utils/imagePickerHelper'
 import { Picker } from '@react-native-picker/picker'
@@ -21,6 +22,7 @@ import SubmitButton from '../components/SubmitButton'
 import { createCutomer } from '../utils/actions/userActions'
 import SelectPicker from '../components/SelectPicker'
 import { createProduct } from '../utils/actions/productActions'
+import logoImage from "./../assets/images/logo.jpg";
 
 const initialState = {
 	inputValues: {
@@ -115,7 +117,7 @@ const CreateIdea = ({ navigation }) => {
 		<ScrollView style={styles.container}>
 			<View style={styles.logoContainer}>
 				<Image
-					source={require('./../assets/images/logo.jpg')}
+					source={logoImage}
 					style={styles.logo}
 				/>
 			</View>

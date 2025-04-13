@@ -10,8 +10,7 @@ import React, {
 } from "react";
 import colors from "./../../constants/colors";
 
-import { launchImagePicker } from "./../../utils/imagePickerHelper";
-import { Picker } from "@react-native-picker/picker";
+import { getAuth } from "firebase/auth";
 import { validateInput } from "./../../utils/actions/formActions";
 import { ActivityIndicator, Alert } from "react-native";
 import Input from "./../../components/Input";
@@ -20,10 +19,60 @@ import { reducer } from "./../../utils//reducers/formReducer";
 import SubmitButton from "./../../components/SubmitButton";
 import SelectPicker from "./../../components/SelectPicker";
 import { createProduct } from "./../../utils/actions/productActions";
+import logoImage from "./../../assets/images/logo.jpg";
+import * as ImagePicker from 'expo-image-picker';
+
+import uploadImages from "../../functions/uploadImages";
+
+
+
+
 
 const CreateProduct = ({ navigation }) => {
   const { authData } = useSelector((state) => state.auth);
   const shops = useSelector((state) => state.shop.shops);
+  const [images, setImages] = useState([]); // State to store selected images
+  
+
+  useEffect(() => {
+    const requestPermissions = async () => {
+      const {status} = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        alert('Sorry, we need media permissions to make this work!');
+      }
+    };
+    requestPermissions();
+  }, []);
+
+  const handleImageUpload = async (images, shopName) => {
+    
+      try {
+     
+        const urls = await uploadImages(images, shopName); // Call the function
+        return urls
+      } catch (error) {
+        console.error("Error uploading images:", error.message);
+      }
+    };
+
+  const pickImages = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+
+        allowsMultipleSelection: true, // Requires SDK 48+
+      });
+
+      if (!result.canceled) {
+      
+        setImages(result.assets);
+      }
+
+      
+    } catch (error) {
+      console.error("Image picker error:", error);
+    }
+  };
 
   const initialState = {
     inputValues: {
@@ -78,20 +127,50 @@ const CreateProduct = ({ navigation }) => {
 
   const createProductHandler = useCallback(async () => {
     try {
-      setIsLoading(true);
+      setIsLoading(true);   
 
-      await createProduct({
-        name: formState.inputValues.name,
-        description: formState.inputValues.description,
-        stock: formState.inputValues.stock,
-        oPrice: formState.inputValues.oPrice,
-        price: formState.inputValues.price,
-        brand: formState.inputValues.brand,
-        category: formState.inputValues.category,
-        shopKey: formState.inputValues.shop,
-        uid: authData.uid,
-      });
+      // check user authentication
+      // const auth = getAuth();
+      // if (!auth.currentUser) {
+      //   console.error("User is not authenticated.");
+      //   return;
+      // }
+      
+
+    
+   
+    
+        
+        const imageUrls = await handleImageUpload(
+          images,
+          formState.inputValues.shop,
+        );
+
+       if(imageUrls?.length > 0) {
+            await createProduct({
+              name: formState.inputValues.name,
+              description: formState.inputValues.description,
+              stock: formState.inputValues.stock,
+              oPrice: formState.inputValues.oPrice,
+              price: formState.inputValues.price,
+              brand: formState.inputValues.brand,
+              category: formState.inputValues.category,
+              shopKey: formState.inputValues.shop,
+              uid: authData.uid,
+              images:[...imageUrls]
+            });
+     
+       } else {
+        throw new Error("File upload problem");
+        
+        
+       }
+
       setError(null);
+
+      //  await saveProductWithImages(formState.inputValues.shop, imageUrls);
+       console.log("Images uploaded and product saved successfully!");
+ 
 
       setIsLoading(false);
 
@@ -100,7 +179,7 @@ const CreateProduct = ({ navigation }) => {
       setError(error.message);
       setIsLoading(false);
     }
-  }, [dispatch, formState]);
+  }, [dispatch, formState,images]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -111,20 +190,12 @@ const CreateProduct = ({ navigation }) => {
     });
   }, [navigation]);
 
-  const pickImage = useCallback(async () => {
-    try {
-      const tempUri = await launchImagePicker();
-      if (tempUri) setTempImageUri(tempUri);
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.logoContainer}>
         <Image
-          source={require("./../../assets/images/logo.jpg")}
+          source={logoImage}
           style={styles.logo}
         />
       </View>
@@ -229,6 +300,26 @@ const CreateProduct = ({ navigation }) => {
           />
         )}
 
+          <View style={{flex: 1, padding: 20}}>
+              {/* Button to trigger image selection */}
+              <Button title="Select Images" onPress={pickImages} />
+        
+              {/* Display selected images */}
+              <ScrollView horizontal style={styles.imageScroll}>
+                {images?.length > 0 ? (
+                  images?.map((image, index) => (
+                    <Image
+                      key={index}
+                      source={{ uri: image.uri }}
+                      style={styles.imagePreview}
+                    />
+                  ))
+                ) : (
+                  <Text>No images selected</Text>
+                )}
+            </ScrollView>
+            </View>
+
         {isLoading ? (
           <ActivityIndicator
             size={"small"}
@@ -236,11 +327,13 @@ const CreateProduct = ({ navigation }) => {
             style={{ marginTop: 10 }}
           />
         ) : (
+
+       
           <SubmitButton
             title="Create"
             onPress={createProductHandler}
             style={{ marginTop: 20 }}
-            disabled={!formState.formIsValid}
+            disabled={!formState.formIsValid || (!images || !Array.isArray(images)|| images?.length === 0 )}
           />
         )}
       </View>
@@ -323,5 +416,14 @@ const styles = StyleSheet.create({
   },
   invalid: {
     borderColor: "red",
+  },
+  imageScroll: {
+    marginTop: 20,
+  },
+  imagePreview: {
+    width: 100,
+    height: 100,
+    marginRight: 10,
+    borderRadius: 8,
   },
 });

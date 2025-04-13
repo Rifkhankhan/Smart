@@ -10,6 +10,8 @@ import {
 import React from 'react'
 import ItemsList from './ItemsList'
 import { useNavigation } from '@react-navigation/native'
+import { Asset } from "expo-asset";
+import plusImage from "./../assets/images/plus.png";
 
 const SellerHome = ({ route, navigation }) => {
 	const navigate = useNavigation()
@@ -21,7 +23,7 @@ const SellerHome = ({ route, navigation }) => {
 			<ItemsList />
 			<TouchableOpacity activeOpacity={0.8} onPress={itemAddHandler}>
 				<Image
-					source={require('./../assets/images/plus.png')}
+					source={plusImage}
 					style={styles.plusbtn}
 				/>
 			</TouchableOpacity>

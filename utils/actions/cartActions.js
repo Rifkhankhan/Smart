@@ -13,7 +13,11 @@ import {
   update,
 } from "firebase/database";
 import { getFirebaseApp } from "../firebaseHelper";
-import { checkCartExistance, removeCart } from "../../store/cartSlice";
+import {
+  checkCartExistance,
+  removeCart,
+  removeWishItem,
+} from "../../store/cartSlice";
 
 export const searchCarts = async (queryText) => {
   const searchTerm = queryText.toLowerCase();
@@ -219,6 +223,66 @@ export const checkOut = (uid, selectedItemList) => {
         message = "This email is already in use";
       } else {
         message = errorCode;
+      }
+
+      throw new Error(message);
+    }
+  };
+};
+
+export const addIntoWish = async (data) => {
+  const app = getFirebaseApp();
+
+  try {
+    const dbRef = ref(getDatabase(app));
+    const dataRef = child(dbRef, `wishes/${data.uid}`);
+
+    // need to check already is there are not
+
+    await push(dataRef, data.productKey);
+  } catch (error) {
+    console.log(error);
+    const errorCode = error.code;
+
+    let message = "Something went wrong.";
+
+    if (errorCode === "auth/email-already-in-use") {
+      message = "This email is already in use";
+    } else {
+      message = errorCode;
+    }
+
+    throw new Error(message);
+  }
+};
+
+export const deleteWishItem = (data) => {
+  return async (dispatch) => {
+    const app = getFirebaseApp();
+    const dbRef = ref(getDatabase(app));
+
+    // Reference to the shop to be deleted
+
+    try {
+      const wishRef = child(dbRef, `wishes/${data.uid}/${data.wishKey}`);
+
+      await Promise.all([remove(wishRef)]);
+      dispatch(removeWishItem(data.wishKey));
+    } catch (error) {
+      console.error("Error deleting shop:", error);
+
+      const errorCode = error.code || "unknown";
+
+      let message = "Something went wrong.";
+
+      // Customize error messages based on Firebase error codes
+      switch (errorCode) {
+        case "auth/email-already-in-use":
+          message = "This email is already in use";
+          break;
+        // Add other cases as needed
+        default:
+          message = "An unexpected error occurred";
       }
 
       throw new Error(message);

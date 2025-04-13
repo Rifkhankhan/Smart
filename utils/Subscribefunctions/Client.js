@@ -1,8 +1,18 @@
 // get user Carts
 
 import { child, onValue } from "firebase/database";
-import { resetCarts, setCarts } from "../../store/cartSlice";
-import { setOrders } from "../../store/orderSlice";
+import {
+  resetCarts,
+  resetWishes,
+  setCarts,
+  setWishItem,
+} from "../../store/cartSlice";
+import {
+  resetOrders,
+  resetUserOrders,
+  setOrders,
+  setUserOrders,
+} from "../../store/orderSlice";
 import { setProducts } from "../../store/productSlice";
 import { setOrderedUsers } from "../../store/userSlice";
 
@@ -33,6 +43,37 @@ export const getUserCarts = (dbRef, cartIdsRef, refs) => {
       });
 
       dispatch(setCarts(carts));
+    });
+  };
+};
+
+export const getUserWishes = (dbRef, wishIdsRef, refs) => {
+  return (dispatch) => {
+    // Fetch user cart IDs
+    onValue(wishIdsRef, (cartSnapshot) => {
+      const rawCartData = cartSnapshot.val() || {};
+
+      // Fetch products
+      const wishes = [];
+
+      const products = getProducts(dbRef, refs);
+
+      dispatch(resetWishes());
+      Object.entries(rawCartData).forEach(([wishKey, wishProductKey]) => {
+        if (products.find((product) => product.productKey === wishProductKey)) {
+          if (wishKey) {
+            wishes.push({
+              ...products.find(
+                (product) => product.productKey === wishProductKey
+              ),
+              productKey: wishProductKey,
+              wishKey: wishKey,
+            });
+          }
+        }
+      });
+
+      dispatch(setWishItem(wishes));
     });
   };
 };
@@ -97,7 +138,10 @@ export const getOrdersOfaShop = (dbRef, orderRef, orderId, refs, key) => {
 
     onValue(orderRef, (orderRefSnapshot) => {
       const order = orderRefSnapshot.val() || {};
-      dispatch(setOrders({ order: { ...order, orderKey: orderId, key } }));
+
+      dispatch(
+        setOrders({ order: { ...order, orderKey: orderId, shopOrderKey: key } })
+      );
 
       const userRef = child(dbRef, `users/${order?.uid}`);
       refs.push(userRef);
@@ -115,6 +159,31 @@ export const getOrderedUsers = (userRef) => {
       const user = userRefSnapshot.val() || {};
 
       dispatch(setOrderedUsers({ user }));
+    });
+  };
+};
+
+export const getOrdersOfaUser = (dbRef, orderIdsRef, refs) => {
+  return (dispatch) => {
+    // get orders for the user
+
+    dispatch(resetUserOrders());
+
+    onValue(orderIdsRef, (orderRefSnapshot) => {
+      const ordersIds = orderRefSnapshot.val() || {};
+
+      Object.entries(ordersIds)?.forEach(([key, orderKey]) => {
+        const orderRef = child(dbRef, `orders/${orderKey}`);
+        refs.push(orderRef);
+
+        onValue(orderRef, (orderSnafshot) => {
+          const orderObject = orderSnafshot.val() || {};
+          if (orderObject) {
+            const order = { ...orderObject, orderKey: orderKey, key: key };
+            dispatch(setUserOrders(order));
+          }
+        });
+      });
     });
   };
 };
