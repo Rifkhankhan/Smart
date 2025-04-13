@@ -22,9 +22,6 @@ const ServicesCard = ({service}) => {
                 style={styles.image}
             />
 
-
-
-
         <Text style={styles.name} numberOfLines={2}>
                     {service?.name}
         </Text>
