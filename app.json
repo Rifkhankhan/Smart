@@ -10,7 +10,7 @@
       "package": "com.rifkhan.smart"
     },
     "name": "Smart",
-    "slug": "Smart",
+    "slug": "smart",
     "version": "1.0.0",
     "icon": "./assets/logo.png",
     "platforms": ["ios", "android"]
