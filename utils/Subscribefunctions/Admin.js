@@ -30,6 +30,8 @@ export const getUsers = (usersRef) => {
 };
 
 export const getShops = (userShopsRef, authData) => {
+
+  
   return (dispatch) => {
     onValue(userShopsRef, (querySnapshot) => {
       dispatch(resetShops());
@@ -49,6 +51,7 @@ export const getShops = (userShopsRef, authData) => {
         shops.push(shop);
       });
 
+      
       dispatch(setStoredShops(shops));
     });
   };

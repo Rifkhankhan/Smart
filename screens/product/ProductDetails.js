@@ -27,49 +27,54 @@ import {
   MaterialIcons,
   AntDesign,
 } from "@expo/vector-icons";
-import HomeCard from "./../components/HomeCard";
+import HomeCard from "./../../components/HomeCard";
 import { TouchableOpacity } from "react-native";
-import Card from "./../components/Card";
+import Card from "../../components/Card";
 import { useDispatch, useSelector } from "react-redux";
-import CardContainer from "../components/CardContainer";
-import shop3Image from "./../assets/images/shop3.jpg";
+import CardContainer from "../../components/CardContainer";
+import shop3Image from "./../../assets/images/shop3.jpg";
 
-import BuyNowBottomSheet from "../components/BuyNowBottomSheet";
+import BuyNowBottomSheet from "../../components/BuyNowBottomSheet";
 import { BottomTabBar } from "@react-navigation/bottom-tabs";
 import {
   addIntoWish,
   createCart,
   deleteWishItem,
   placeOrder,
-} from "../utils/actions/cartActions";
-import { checkCartExistance, removeWishItem } from "../store/cartSlice";
-import { useRoute } from "@react-navigation/native";
-import ProductScreen from "./product/ProductImageCarousel";
+} from "../../utils/actions/cartActions";
 
-// Memoize the Card component
-const MemoizedCard = memo(({ product }) => (
-  <HomeCard key={product.productKey} product={product} />
-));
+import ProductScreen from "./ProductImageCarousel";
+import defaultImage from "./../../assets/images/man.png";
+import {
+  getRatingText,
+  StartRating,
+} from "../../components/Common/StartRating";
+
 const ProductDetails = ({ route, navigation }) => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
+
   const { product } = route?.params;
   const { products } = useSelector((state) => state.product);
   const { shops } = useSelector((state) => state.shop);
   const { authData } = useSelector((state) => state.auth);
   const { carts, wishList } = useSelector((state) => state.cart);
   const [loading, setLoading] = useState(false);
+  const bottomSheetRef = useRef(null);
 
-  
-
-  const shop = shops?.filter((shop) => shop.shopKey === product.shopKey)[0];
+  const shop = shops?.filter((shop) => shop.shopKey === product?.shopKey)[0];
 
   const productsInSameStore = products
     ?.filter((pro) => pro.shopKey === product?.shopKey)
-    .filter((pro) => pro.productKey !== product.productKey);
+    .filter((pro) => pro.productKey !== product?.productKey);
+
+  // Memoize the Card component
+  const MemoizedCard = memo(({ product }) => (
+    <HomeCard key={product?.productKey} product={product || {}} />
+  ));
 
   const renderItem = ({ item }) => {
-    return <MemoizedCard key={item.productKey} product={item} />;
+    return <MemoizedCard key={item?.productKey} product={item} />;
   };
 
   const ShoppingCart = () => (
@@ -130,7 +135,7 @@ const ProductDetails = ({ route, navigation }) => {
     );
 
     if (!!itemExist) {
-      console.log("yes");
+      // console.log("yes");
 
       const data = {
         uid: authData?.uid,
@@ -141,7 +146,7 @@ const ProductDetails = ({ route, navigation }) => {
       dispatch(action);
       setLoading(false);
     } else {
-      console.log("no");
+      // console.log("no");
 
       const data = {
         uid: authData?.uid,
@@ -164,7 +169,7 @@ const ProductDetails = ({ route, navigation }) => {
           >
             <View>
               {wishList.some(
-                (prod) => prod.productKey === product.productKey
+                (prod) => prod.productKey === product?.productKey
               ) ? (
                 <AntDesign name="heart" size={30} color="red" />
               ) : (
@@ -203,7 +208,7 @@ const ProductDetails = ({ route, navigation }) => {
       uid: authData?.uid,
     };
 
-    console.log(carts);
+    // console.log(carts);
 
     const cartExists = carts.some(
       (cart) => cart.productKey === data.productKey
@@ -216,6 +221,9 @@ const ProductDetails = ({ route, navigation }) => {
     }
   }, [dispatch, product?.productKey, authData?.uid, carts]);
 
+  const handleBuyNowPress = () => {
+    bottomSheetRef.current?.expand(); // show the bottom sheet
+  };
   const CustomBottomBar = () => {
     return (
       <View style={styles.container}>
@@ -231,10 +239,7 @@ const ProductDetails = ({ route, navigation }) => {
           </View>
         </View>
         <View style={styles.rightBtnsContainer}>
-          <Pressable
-            style={styles.buyNowbutton}
-            onPress={() => setOpen((prev) => !prev)}
-          >
+          <Pressable style={styles.buyNowbutton} onPress={handleBuyNowPress}>
             <Text style={styles.buttonText}>Buy now</Text>
           </Pressable>
 
@@ -249,13 +254,11 @@ const ProductDetails = ({ route, navigation }) => {
   const renderHeader = () => {
     return (
       <>
-          <ProductScreen
-            productImages={
-              product?.images?.length > 0
-                ? product.images
-                : [{ uri: "https://res.cloudinary.com/deoh6ya4t/image/upload/v1708938721/man_nvajfu.png" }]
-            }
-          />
+        <ProductScreen
+          productImages={
+            product?.images?.length > 0 ? product?.images : [defaultImage]
+          }
+        />
 
         <View style={styles.cardComponent}>
           <Text style={styles.name}>{product?.name}</Text>
@@ -269,7 +272,7 @@ const ProductDetails = ({ route, navigation }) => {
             <Text style={styles.icon}>
               <Ionicons name="star" color="red" size={18} />
             </Text>
-            <Text style={styles.reviewRate}>5/5 (5)</Text>
+            <Text style={styles.reviewRate}>{product?.ratings} (5)</Text>
           </View>
           {/* options */}
           <View style={styles.shareOptions}>
@@ -285,10 +288,7 @@ const ProductDetails = ({ route, navigation }) => {
 
           {/* shop */}
           <View style={styles.shopContainer}>
-            <Image
-              source={shop3Image}
-              style={styles.shopImage}
-            />
+            <Image source={shop3Image} style={styles.shopImage} />
             <Text style={styles.shopName}>{shop?.name}</Text>
           </View>
         </View>
@@ -299,15 +299,13 @@ const ProductDetails = ({ route, navigation }) => {
           {/* Rating */}
 
           <View style={styles.ratingInnerContainer}>
-            <Text style={styles.ratePoints}>5.0</Text>
-            <Text style={styles.ratingStars}>
-              <Ionicons name="star" color="#FF8C00" size={24} />
-              <Ionicons name="star" color="#FF8C00" size={24} />
-              <Ionicons name="star" color="#FF8C00" size={24} />
-              <Ionicons name="star" color="#FF8C00" size={24} />
-              <Ionicons name="star" color="#FF8C00" size={24} />
+            <Text style={styles.ratePoints}>{product?.ratings}</Text>
+            <View style={styles.ratingStars}>
+              {StartRating(product?.ratings || 0)}
+            </View>
+            <Text style={styles.ratingText}>
+              {getRatingText(product?.ratings || 0)}
             </Text>
-            <Text style={styles.ratingText}>Excellent</Text>
           </View>
 
           <View style={styles.boxContainer}>
@@ -391,26 +389,168 @@ const ProductDetails = ({ route, navigation }) => {
           )}
         />
 
-        {/* bottomSheet */}
-
-        {open && (
-          <BuyNowBottomSheet
-            product={product}
-            open={open}
-            setOpen={setOpen}
-            placeOrderHandler={placeOrderHandler}
-          />
-        )}
-
-        {!open && <CustomBottomBar />}
+        <CustomBottomBar />
 
         {/* buttonBar */}
       </View>
+      {/* bottomSheet */}
+
+      {/* {open && ( */}
+      <BuyNowBottomSheet
+        product={product}
+        bottomSheetRef={bottomSheetRef}
+        placeOrderHandler={placeOrderHandler}
+      />
+      {/* )} */}
     </>
   );
 };
 
 export default ProductDetails;
+
+// import React, { useCallback, useEffect, useState, useMemo, } from "react";
+// import {
+//   ScrollView,
+//   Text,
+//   View,
+//   FlatList,
+//   Pressable,
+//   ActivityIndicator,
+//   Image,
+//   StyleSheet
+// } from "react-native";
+// import { useDispatch, useSelector } from "react-redux";
+// import { AntDesign, Ionicons, FontAwesome5, MaterialIcons } from "@expo/vector-icons";
+// import { addIntoWish, createCart, deleteWishItem } from "../utils/actions/cartActions";
+// import { checkCartExistance } from "../store/cartSlice";
+// import ProductScreen from "./product/ProductImageCarousel";
+// import defaultImage from './../assets/images/man.png';
+
+// const MemoizedCard = React.memo(({ product }) => (
+//   <HomeCard key={product.productKey} product={product} />
+// ));
+
+// export const ProductDetails = ({ route, navigation }) => {
+//   const { product } = route?.params;
+//   const { products } = useSelector((state) => state.product);
+//   const { shops } = useSelector((state) => state.shop);
+//   const { authData } = useSelector((state) => state.auth);
+//   const { carts, wishList } = useSelector((state) => state.cart);
+//   const [loading, setLoading] = useState(false);
+
+//   const shop = useMemo(() => {
+//     return shops?.find((shop) => shop.shopKey === product.shopKey);
+//   }, [shops, product.shopKey]);
+
+//   const productsInSameStore = useMemo(() => {
+//     return products?.filter((pro) => pro.shopKey === product?.shopKey && pro.productKey !== product.productKey);
+//   }, [products, product?.shopKey, product.productKey]);
+
+//   const dispatch = useDispatch();
+
+//   const wishHandler = useCallback(async () => {
+//     setLoading(true);
+//     const itemExist = wishList?.find((pro) => pro.productKey === product?.productKey);
+//     if (itemExist) {
+//       await dispatch(deleteWishItem({ uid: authData?.uid, wishKey: itemExist?.wishKey }));
+//     } else {
+//       await dispatch(addIntoWish({ uid: authData?.uid, productKey: product?.productKey }));
+//     }
+//     setLoading(false);
+//   }, [dispatch, wishList, product?.productKey, authData?.uid]);
+
+//   const addToCartHandler = useCallback(async () => {
+//     const data = { productKey: product?.productKey, uid: authData?.uid };
+//     if (!carts.some((cart) => cart.productKey === data.productKey)) {
+//       await dispatch(createCart(data));
+//     }
+//   }, [dispatch, product?.productKey, authData?.uid, carts]);
+
+//   useEffect(() => {
+//     navigation.setOptions({
+//       headerLeft: () => (
+//         <Pressable onPress={() => navigation.goBack()}>
+//           <Ionicons name="chevron-back" size={24} color="black" />
+//         </Pressable>
+//       ),
+//       headerRight: () => (
+//         <Pressable onPress={wishHandler} style={{ paddingHorizontal: 10 }}>
+//           {!loading ? (
+//             <AntDesign
+//               name={wishList.some((prod) => prod.productKey === product.productKey) ? "heart" : "hearto"}
+//               size={30}
+//               color={wishList.some((prod) => prod.productKey === product.productKey) ? "red" : "black"}
+//             />
+//           ) : (
+//             <ActivityIndicator size="small" color="#0000ff" />
+//           )}
+//         </Pressable>
+//       ),
+//     });
+//   }, [navigation, wishList, loading]);
+
+//   const CustomBottomBar = () => (
+//     <View style={styles.container}>
+//       <View style={styles.leftBtnsContainer}>
+//         <View style={styles.storeBtn}>
+//           <FontAwesome5 name="store" size={18} color="red" />
+//           <Text>Store</Text>
+//         </View>
+//         <View style={styles.chatBtn}>
+//           <MaterialIcons name="chat" size={20} color="red" />
+//           <Text>Chat</Text>
+//         </View>
+//       </View>
+//       <View style={styles.rightBtnsContainer}>
+//         <Pressable style={styles.buyNowbutton} onPress={() => setOpen((prev) => !prev)}>
+//           <Text style={styles.buttonText}>Buy now</Text>
+//         </Pressable>
+//         <Pressable style={styles.addToCardbutton} onPress={addToCartHandler}>
+//           <Text style={styles.buttonText}>Add to cart</Text>
+//         </Pressable>
+//       </View>
+//     </View>
+//   );
+
+//   return (
+//     <ScrollView>
+//       <ProductScreen productImages={product?.images?.length > 0 ? product.images : [defaultImage]} />
+//       <View style={styles.cardComponent}>
+//         <Text style={styles.name}>{product?.name}</Text>
+//         <View style={styles.price}>
+//           <Text style={styles.newPrice}>Rs.{product?.price}</Text>
+//           <Text style={styles.oldPrice}>Rs.{product?.oPrice}</Text>
+//         </View>
+//         <View style={styles.startContainer}>
+//           <Ionicons name="star" color="red" size={18} />
+//           <Text style={styles.reviewRate}>5/5 (5)</Text>
+//         </View>
+//         <View style={styles.shareOptions}>
+//           <View style={styles.wishContainer}>
+//             <Ionicons name="heart" color="red" size={20} />
+//             <Text>Add to Wishlist(5)</Text>
+//           </View>
+//           <View style={styles.shareContainer}>
+//             <Ionicons name="share" color="red" size={20} />
+//             <Text>Share Product</Text>
+//           </View>
+//         </View>
+//         <View style={styles.shopContainer}>
+//           <Image source={shop?.image || defaultImage} style={styles.shopImage} />
+//           <Text style={styles.shopName}>{shop?.name}</Text>
+//         </View>
+//       </View>
+
+//       <FlatList
+//         data={productsInSameStore}
+//         renderItem={({ item }) => <MemoizedCard product={item} />}
+//         keyExtractor={(item) => item.productKey}
+//       />
+
+//       <CustomBottomBar />
+//     </ScrollView>
+//   );
+// };
 
 const styles = StyleSheet.create({
   loadinContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
@@ -675,6 +815,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
+    zIndex: 0,
   },
 
   leftBtnsContainer: {

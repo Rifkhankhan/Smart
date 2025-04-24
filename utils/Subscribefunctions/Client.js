@@ -93,6 +93,8 @@ const getProducts = (dbRef, refs) => {
       products.push(product);
     });
   });
+
+  
   return products;
 };
 // Function to find the key by value
@@ -123,7 +125,7 @@ export const getProductOfaShop = (productsRef, refs) => {
         productKeys.push(productKey);
       });
 
-      console.log(productKeys);
+      // console.log(productKeys);
 
       // onValue()
       //   dispatch(setProducts({ products }));
