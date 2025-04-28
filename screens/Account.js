@@ -306,7 +306,6 @@
 //   },
 // });
 
-
 import React, { useEffect, useMemo } from "react";
 import {
   StyleSheet,
@@ -326,7 +325,7 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
-import defaultImage from './../assets/images/man.png';
+import defaultImage from "./../assets/images/man.png";
 
 const Account = ({ route, navigation }) => {
   const { authData } = useSelector((state) => state.auth);
@@ -335,65 +334,75 @@ const Account = ({ route, navigation }) => {
   useEffect(() => {
     navigation.setOptions({
       headerTitle: authData?.firstLast,
-      headerRight: () => {
-        return (
-          <TouchableOpacity onPress={() => navigation.navigate("SettingsScreen")}>
-            <AntDesign name="setting" size={24} color="white" />
-          </TouchableOpacity>
-        );
-      },
+      // headerRight: () => {
+      //   return (
+      //     <TouchableOpacity
+      //       onPress={() => navigation.navigate("SettingsScreen")}
+      //     >
+      //       <AntDesign name="setting" size={24} color="white" />
+      //     </TouchableOpacity>
+      //   );
+      // },
     });
   }, [navigation, route?.params]);
 
   // Memoized renderItem for tracking package and products to prevent unnecessary re-renders
-  const renderItem = useMemo(() => ({ item }) => (
-    <View style={styles.trackProduct}>
-      <View style={styles.trackImageContainer}>
-        <Image
-          source={defaultImage}
-          style={styles.trackImage}
-        />
-      </View>
-      <View style={styles.trackDetailsContainer}>
-        <Text style={styles.trackingStatus}>Delivered</Text>
-        <Text
-          style={styles.trackingMessage}
-          numberOfLines={2}
-          ellipsizeMode="tail"
-        >
-          Your Package has been delivered, Please Tap here to share a review
-        </Text>
-      </View>
-    </View>
-  ), []);
+  const renderItem = useMemo(
+    () =>
+      ({ item }) =>
+        (
+          <View style={styles.trackProduct}>
+            <View style={styles.trackImageContainer}>
+              <Image source={defaultImage} style={styles.trackImage} />
+            </View>
+            <View style={styles.trackDetailsContainer}>
+              <Text style={styles.trackingStatus}>Delivered</Text>
+              <Text
+                style={styles.trackingMessage}
+                numberOfLines={2}
+                ellipsizeMode="tail"
+              >
+                Your Package has been delivered, Please Tap here to share a
+                review
+              </Text>
+            </View>
+          </View>
+        ),
+    []
+  );
 
   // Memoized renderProduct to prevent unnecessary re-renders
-  const renderProduct = useMemo(() => ({ item }) => (
-    <TouchableOpacity
-      style={[styles.trackProduct, { borderBottomColor: "gray", borderBottomWidth: 1 }]}
-    >
-      <View style={styles.trackImageContainer}>
-        <Image
-          source={defaultImage}
-          style={styles.trackImage}
-        />
-      </View>
-      <View style={styles.trackDetailsContainer}>
-        <Text
-          style={styles.productDescription}
-          numberOfLines={2}
-          ellipsizeMode="tail"
-        >
-          Mens Cotton t-shirt neck short sleeve 3g3 g34gg34 trfb brbrtthrt nrtn
-          bnyn errbf rbrtbrb
-        </Text>
-        <View style={styles.productPriceContainer}>
-          <Text style={styles.productPrice}>Rs.5618</Text>
-          <Text style={styles.productStatus}>Delivered</Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  ), []);
+  const renderProduct = useMemo(
+    () =>
+      ({ item }) =>
+        (
+          <TouchableOpacity
+            style={[
+              styles.trackProduct,
+              { borderBottomColor: "gray", borderBottomWidth: 1 },
+            ]}
+          >
+            <View style={styles.trackImageContainer}>
+              <Image source={defaultImage} style={styles.trackImage} />
+            </View>
+            <View style={styles.trackDetailsContainer}>
+              <Text
+                style={styles.productDescription}
+                numberOfLines={2}
+                ellipsizeMode="tail"
+              >
+                Mens Cotton t-shirt neck short sleeve 3g3 g34gg34 trfb brbrtthrt
+                nrtn bnyn errbf rbrtbrb
+              </Text>
+              <View style={styles.productPriceContainer}>
+                <Text style={styles.productPrice}>Rs.5618</Text>
+                <Text style={styles.productStatus}>Delivered</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        ),
+    []
+  );
 
   const renderHeader = () => (
     <View style={styles.ordersContainer}>
@@ -421,7 +430,11 @@ const Account = ({ route, navigation }) => {
           <Text>To Receive</Text>
         </Pressable>
         <Pressable style={styles.iconsList} onPress={() => {}}>
-          <Ionicons name="ios-chatbox-ellipses-outline" size={35} color="gray" />
+          <Ionicons
+            name="ios-chatbox-ellipses-outline"
+            size={35}
+            color="gray"
+          />
           <Text>Messages</Text>
         </Pressable>
       </View>
@@ -439,7 +452,11 @@ const Account = ({ route, navigation }) => {
           style={styles.actionInnerContainer}
           onPress={() => navigation.navigate("Orders", { type: "cancel" })}
         >
-          <MaterialCommunityIcons name="text-box-remove-outline" size={32} color="black" />
+          <MaterialCommunityIcons
+            name="text-box-remove-outline"
+            size={32}
+            color="black"
+          />
           <Text style={styles.actionText}>My Cancellations</Text>
         </Pressable>
       </View>
@@ -466,11 +483,14 @@ const Account = ({ route, navigation }) => {
               windowSize={7}
             />
           </View>
-          {userOrders.filter((order) => order.orderStatus === "delivered").length > 0 && (
+          {userOrders.filter((order) => order.orderStatus === "delivered")
+            .length > 0 && (
             <View style={styles.deliveryProducts}>
               <Text style={styles.header}>Delivered Products</Text>
               <FlatList
-                data={userOrders.filter((order) => order.orderStatus === "delivered")}
+                data={userOrders.filter(
+                  (order) => order.orderStatus === "delivered"
+                )}
                 renderItem={renderProduct}
                 keyExtractor={(item) => item.orderKey}
                 showsVerticalScrollIndicator={false}

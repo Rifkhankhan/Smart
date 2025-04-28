@@ -28,7 +28,6 @@
 
 // export default MainNavigator;
 
-
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { KeyboardAvoidingView, Platform } from "react-native";
@@ -48,14 +47,14 @@ const MainNavigator = (props) => {
 
   // Use useMemo to prevent unnecessary re-renders of the navigation components
   const navigatorToRender = useMemo(() => {
-    if (authData?.role === "admin") {
-      return <MemoizedAdminNavigator />;
-    } else if (authData?.role === "shop") {
-      return <MemoizedSellerNavigators />;
-    } else if (authData?.role === "customer") {
-      return <MemoizedCustomerNavigators />;
-    }
-    return null;
+    // if (authData?.role === "admin") {
+    //   return <MemoizedAdminNavigator />;
+    // } else if (authData?.role === "shop") {
+    //   return <MemoizedSellerNavigators />;
+    // } else if (authData?.role === "customer") {
+    //   return <CustomerNavigators />;
+    // }
+    return <CustomerNavigators />;
   }, [authData?.role]);
 
   return (

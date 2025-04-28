@@ -190,13 +190,20 @@
 //   },
 // });
 
-
 import React, { useLayoutEffect, useCallback } from "react";
-import { Button, Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Button,
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
-import { deleteShop, updateShop } from "../utils/actions/shopActions";
-import defaultImage from './../assets/images/man.png';
+import { deleteShop, updateShop } from "../../../utils/actions/shopActions";
+import defaultImage from "./../../../assets/images/man.png";
 
 const ViewShop = ({ route, navigation }) => {
   const dispatch = useDispatch();
@@ -244,7 +251,9 @@ const ViewShop = ({ route, navigation }) => {
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.imageContainer}>
         <Image
-          source={shop?.profilePicture ? { uri: shop.profilePicture } : defaultImage}
+          source={
+            shop?.profilePicture ? { uri: shop.profilePicture } : defaultImage
+          }
           style={styles.image}
         />
       </View>
@@ -273,7 +282,11 @@ const ViewShop = ({ route, navigation }) => {
             onPress={toggleBlock}
           />
           <View style={styles.spacer} />
-          <Button title="Delete Shop" color="black" onPress={deleteShopHandler} />
+          <Button
+            title="Delete Shop"
+            color="black"
+            onPress={deleteShopHandler}
+          />
         </View>
       </View>
     </ScrollView>

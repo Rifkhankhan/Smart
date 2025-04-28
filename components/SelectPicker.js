@@ -93,23 +93,22 @@
 
 // export default SelectPicker;
 
-
 import React, { useState, useCallback } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 
 import colors from "../constants/colors";
 
-const SelectPicker = ({ 
-  initialValue, 
-  label, 
-  icon, 
-  iconPack, 
-  iconSize = 15, 
-  datas, 
-  onInputChanged, 
-  errorText, 
-  id 
+const SelectPicker = ({
+  initialValue,
+  label,
+  icon,
+  iconPack: IconPack,
+  iconSize = 15,
+  datas,
+  onInputChanged,
+  errorText,
+  id,
 }) => {
   const [value, setValue] = useState(initialValue);
 
@@ -127,12 +126,8 @@ const SelectPicker = ({
       <Text style={styles.label}>{label}</Text>
 
       <View style={styles.inputContainer}>
-        {icon && iconPack && (
-          <iconPack
-            name={icon}
-            size={iconSize}
-            style={styles.icon}
-          />
+        {icon && IconPack && (
+          <IconPack name={icon} size={iconSize} style={styles.icon} />
         )}
 
         <Picker

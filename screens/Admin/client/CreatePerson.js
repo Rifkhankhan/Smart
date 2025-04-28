@@ -1,5 +1,5 @@
 // import { Button, Image, StyleSheet, Text, TextInput, View } from 'react-native'
-// import { useDispatch, useSelector } from 'react-redux'
+// import { useDispatch } from 'react-redux'
 // import { ScrollView } from 'react-native'
 // import React, {
 // 	useCallback,
@@ -12,7 +12,7 @@
 // import { Asset } from "expo-asset";
 
 // import { launchImagePicker } from '../utils/imagePickerHelper'
-// import { Picker } from '@react-native-picker/picker'
+
 // import { validateInput } from '../utils/actions/formActions'
 // import { ActivityIndicator, Alert } from 'react-native'
 // import Input from '../components/Input'
@@ -20,43 +20,34 @@
 // import { reducer } from '../utils/reducers/formReducer'
 // import SubmitButton from '../components/SubmitButton'
 // import { createCutomer } from '../utils/actions/userActions'
-// import SelectPicker from '../components/SelectPicker'
-// import { createProduct } from '../utils/actions/productActions'
 // import logoImage from "./../assets/images/logo.jpg";
 
 // const initialState = {
 // 	inputValues: {
-// 		name: '',
-// 		description: '',
-// 		oPrice: 0,
-// 		price: 0,
-// 		category: '',
-// 		brand: '',
-// 		stock: 0,
-// 		shop: ''
+// 		firstName: '',
+// 		lastName: '',
+// 		email: '',
+// 		password: '',
+// 		nic: '',
+// 		address: ''
 // 	},
 // 	inputValidities: {
-// 		name: false,
-// 		description: false,
-// 		oPrice: false,
-// 		price: false,
-// 		brand: false,
-// 		category: false,
-// 		stock: false,
-// 		shop: false
+// 		firstName: false,
+// 		lastName: false,
+// 		email: false,
+// 		password: false,
+// 		nic: false,
+// 		address: false
 // 	},
 // 	formIsValid: false
 // }
 
-// const CreateIdea = ({ navigation }) => {
+// const CreatePerson = ({ route, navigation }) => {
 // 	const [error, setError] = useState()
 // 	const [isLoading, setIsLoading] = useState(false)
 // 	const [formState, dispatchFormState] = useReducer(reducer, initialState)
 // 	const [tempImageUri, setTempImageUri] = useState('')
 // 	const dispatch = useDispatch()
-
-// 	const shopsObjects = useSelector(state => state.shop.shops)
-// 	const shops = Object.values(shopsObjects)
 
 // 	const inputChangedHandler = useCallback(
 // 		(inputId, inputValue) => {
@@ -72,23 +63,22 @@
 // 		}
 // 	}, [error])
 
-// 	const createProductHandler = useCallback(async () => {
+// 	const authHandler = useCallback(async () => {
 // 		try {
 // 			setIsLoading(true)
 
-// 			await createProduct({
-// 				name: formState.inputValues.name,
-// 				description: formState.inputValues.description,
-// 				stock: formState.inputValues.stock,
-// 				oPrice: formState.inputValues.oPrice,
-// 				price: formState.inputValues.price,
-// 				brand: formState.inputValues.brand,
-// 				category: formState.inputValues.category,
-// 				shop: formState.inputValues.shop
-// 			})
+// 			await createCutomer(
+// 				formState.inputValues.firstName,
+// 				formState.inputValues.lastName,
+// 				formState.inputValues.email,
+// 				formState.inputValues.nic,
+// 				formState.inputValues.address,
+// 				formState.inputValues.password
+// 			)
 // 			setError(null)
 
 // 			setIsLoading(false)
+// 			navigation.navigate('CustomerList')
 // 		} catch (error) {
 // 			setError(error.message)
 // 			setIsLoading(false)
@@ -97,12 +87,16 @@
 
 // 	useLayoutEffect(() => {
 // 		navigation.setOptions({
-// 			title: 'Create a Product',
+// 			title: 'Create Person',
 // 			headerStyle: { backgroundColor: 'black' },
 // 			headerTintColor: 'white',
 // 			contentStyle: { backgroundColor: '#12845f' }
 // 		})
 // 	}, [navigation])
+
+// 	const cancelHandler = () => {
+// 		navigation.goBack()
+// 	}
 
 // 	const pickImage = useCallback(async () => {
 // 		try {
@@ -123,100 +117,76 @@
 // 			</View>
 
 // 			<View style={styles.formContainer}>
-// 				<Text style={styles.heading}>Create a Product</Text>
+// 				<Text style={styles.heading}>Create a Customer</Text>
 
 // 				<Input
-// 					placeholder="Name"
-// 					id="name"
-// 					label="Name"
+// 					placeholder="First Name"
+// 					id="firstName"
+// 					label="First name"
 // 					icon="user-o"
 // 					iconPack={FontAwesome}
 // 					onInputChanged={inputChangedHandler}
 // 					autoCapitalize="none"
-// 					errorText={formState.inputValidities['name']}
+// 					errorText={formState.inputValidities['firstName']}
 // 				/>
 
 // 				<Input
-// 					placeholder="Description"
-// 					id="description"
-// 					label="Description"
+// 					placeholder="Last Name"
+// 					id="lastName"
+// 					label="Last name"
 // 					icon="user-o"
 // 					iconPack={FontAwesome}
 // 					onInputChanged={inputChangedHandler}
 // 					autoCapitalize="none"
-// 					errorText={formState.inputValidities['description']}
+// 					errorText={formState.inputValidities['lastName']}
 // 				/>
 
 // 				<Input
-// 					placeholder="New Price"
-// 					id="price"
-// 					label="New Price"
+// 					placeholder="Address"
+// 					id="address"
+// 					label="Address"
 // 					icon="user-o"
-// 					keyboardType="numeric"
-// 					keyboard
 // 					iconPack={FontAwesome}
 // 					onInputChanged={inputChangedHandler}
 // 					autoCapitalize="none"
-// 					errorText={formState.inputValidities['price']}
+// 					errorText={formState.inputValidities['address']}
 // 				/>
 
 // 				<Input
-// 					placeholder="Old Price"
-// 					id="oPrice"
-// 					label="Old Price"
-// 					keyboardType="numeric"
-// 					icon="lock"
+// 					placeholder="Email"
+// 					id="email"
+// 					label="Email"
+// 					keyboardType="email-address"
+// 					icon="mail"
 // 					iconPack={Feather}
 // 					keyboard
 // 					onInputChanged={inputChangedHandler}
 // 					autoCapitalize="none"
-// 					errorText={formState.inputValidities['oPrice']}
+// 					errorText={formState.inputValidities['email']}
 // 				/>
 
 // 				<Input
-// 					placeholder="Category"
-// 					id="category"
-// 					label="Category"
+// 					placeholder="Nic"
+// 					id="nic"
+// 					label="Nic"
 // 					icon="lock"
 // 					autoCapitalize="none"
+// 					secureTextEntry
 // 					iconPack={Feather}
 // 					onInputChanged={inputChangedHandler}
-// 					errorText={formState.inputValidities['category']}
+// 					errorText={formState.inputValidities['nic']}
 // 				/>
 
 // 				<Input
-// 					placeholder="Brand"
-// 					id="brand"
-// 					label="Brand"
+// 					placeholder="Password"
+// 					id="password"
+// 					label="Password"
 // 					icon="lock"
 // 					autoCapitalize="none"
+// 					secureTextEntry
 // 					iconPack={Feather}
 // 					onInputChanged={inputChangedHandler}
-// 					errorText={formState.inputValidities['brand']}
-// 				/>
-
-// 				<Input
-// 					placeholder="Stock"
-// 					id="stock"
-// 					label="Stock"
-// 					keyboardType="number-pad"
-// 					icon="lock"
-// 					autoCapitalize="none"
-// 					iconPack={Feather}
-// 					onInputChanged={inputChangedHandler}
-// 					errorText={formState.inputValidities['stock']}
-// 				/>
-
-// 				<SelectPicker
-// 					placeholder="Shop"
-// 					id="shop"
-// 					label="Shop"
-// 					icon="lock"
-// 					datas={shops}
-// 					autoCapitalize="none"
-// 					iconPack={Feather}
-// 					onInputChanged={inputChangedHandler}
-// 					errorText={formState.inputValidities['shop']}
+// 					errorText={formState.inputValidities['password']}
 // 				/>
 
 // 				{isLoading ? (
@@ -228,7 +198,7 @@
 // 				) : (
 // 					<SubmitButton
 // 						title="Create"
-// 						onPress={createProductHandler}
+// 						onPress={authHandler}
 // 						style={{ marginTop: 20 }}
 // 						disabled={!formState.formIsValid}
 // 					/>
@@ -238,7 +208,7 @@
 // 	)
 // }
 
-// export default CreateIdea
+// export default CreatePerson
 
 // const styles = StyleSheet.create({
 // 	container: {
@@ -316,92 +286,109 @@
 // 	}
 // })
 
-
-import React, { useCallback, useEffect, useReducer, useState, useLayoutEffect } from 'react';
-import { Button, Image, StyleSheet, Text, TextInput, View, ScrollView, ActivityIndicator, Alert } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { Feather, FontAwesome } from '@expo/vector-icons';
-import { launchImagePicker } from '../utils/imagePickerHelper';
-import { validateInput } from '../utils/actions/formActions';
-import { createProduct } from '../utils/actions/productActions';
-import Input from '../components/Input';
-import SubmitButton from '../components/SubmitButton';
-import SelectPicker from '../components/SelectPicker';
-import logoImage from "../assets/images/logo.jpg";
+import React, {
+  useCallback,
+  useEffect,
+  useReducer,
+  useState,
+  useLayoutEffect,
+} from "react";
+import {
+  Button,
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  ScrollView,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
+import { useDispatch } from "react-redux";
+import colors from "../../../constants/colors";
+import { Asset } from "expo-asset";
+import { launchImagePicker } from "../../../utils/imagePickerHelper";
+import { validateInput } from "../../../utils/actions/formActions";
+import { FontAwesome, Feather } from "@expo/vector-icons";
+import { reducer } from "../../../utils/reducers/formReducer";
+import SubmitButton from "../../../components/SubmitButton";
+import { createCutomer } from "../../../utils/actions/userActions";
+import logoImage from "./../../../assets/logo.png";
+import Input from "./../../../components/Input";
 
 const initialState = {
   inputValues: {
-    name: '',
-    description: '',
-    oPrice: 0,
-    price: 0,
-    category: '',
-    brand: '',
-    stock: 0,
-    shop: ''
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    nic: "",
+    address: "",
   },
   inputValidities: {
-    name: false,
-    description: false,
-    oPrice: false,
-    price: false,
-    brand: false,
-    category: false,
-    stock: false,
-    shop: false
+    firstName: false,
+    lastName: false,
+    email: false,
+    password: false,
+    nic: false,
+    address: false,
   },
-  formIsValid: false
+  formIsValid: false,
 };
 
-const CreateIdea = ({ navigation }) => {
-  const [error, setError] = useState();
+const CreatePerson = ({ route, navigation }) => {
+  const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [formState, dispatchFormState] = useReducer(reducer, initialState);
-  const [tempImageUri, setTempImageUri] = useState('');
-
+  const [tempImageUri, setTempImageUri] = useState("");
   const dispatch = useDispatch();
-  const shops = useSelector(state => Object.values(state.shop.shops));
 
-  const inputChangedHandler = useCallback((inputId, inputValue) => {
-    const result = validateInput(inputId, inputValue);
-    dispatchFormState({ inputId, validationResult: result, inputValue });
-  }, []);
+  const inputChangedHandler = useCallback(
+    (inputId, inputValue) => {
+      const result = validateInput(inputId, inputValue);
+      dispatchFormState({ inputId, validationResult: result, inputValue });
+    },
+    [dispatchFormState]
+  );
 
   useEffect(() => {
     if (error) {
-      Alert.alert('An error occurred', error, [{ text: 'Okay' }]);
+      Alert.alert("An error occurred", error, [{ text: "Okay" }]);
     }
   }, [error]);
 
-  const createProductHandler = useCallback(async () => {
+  const authHandler = useCallback(async () => {
     try {
       setIsLoading(true);
-      await createProduct({
-        name: formState.inputValues.name,
-        description: formState.inputValues.description,
-        stock: formState.inputValues.stock,
-        oPrice: formState.inputValues.oPrice,
-        price: formState.inputValues.price,
-        brand: formState.inputValues.brand,
-        category: formState.inputValues.category,
-        shop: formState.inputValues.shop
-      });
+      await createCutomer(
+        formState.inputValues.firstName,
+        formState.inputValues.lastName,
+        formState.inputValues.email,
+        formState.inputValues.nic,
+        formState.inputValues.address,
+        formState.inputValues.password
+      );
       setError(null);
       setIsLoading(false);
+      navigation.navigate("CustomerList");
     } catch (error) {
       setError(error.message);
       setIsLoading(false);
     }
-  }, [formState]);
+  }, [formState, navigation]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: 'Create a Product',
-      headerStyle: { backgroundColor: 'black' },
-      headerTintColor: 'white',
-      contentStyle: { backgroundColor: '#12845f' }
+      title: "Create Person",
+      headerStyle: { backgroundColor: "black" },
+      headerTintColor: "white",
+      contentStyle: { backgroundColor: "#12845f" },
     });
   }, [navigation]);
+
+  const cancelHandler = () => {
+    navigation.goBack();
+  };
 
   const pickImage = useCallback(async () => {
     try {
@@ -419,106 +406,87 @@ const CreateIdea = ({ navigation }) => {
       </View>
 
       <View style={styles.formContainer}>
-        <Text style={styles.heading}>Create a Product</Text>
+        <Text style={styles.heading}>Create a Customer</Text>
 
         <Input
-          placeholder="Name"
-          id="name"
-          label="Name"
+          placeholder="First Name"
+          id="firstName"
+          label="First name"
           icon="user-o"
           iconPack={FontAwesome}
           onInputChanged={inputChangedHandler}
           autoCapitalize="none"
-          errorText={formState.inputValidities['name']}
+          errorText={formState.inputValidities["firstName"]}
         />
 
         <Input
-          placeholder="Description"
-          id="description"
-          label="Description"
+          placeholder="Last Name"
+          id="lastName"
+          label="Last name"
           icon="user-o"
           iconPack={FontAwesome}
           onInputChanged={inputChangedHandler}
           autoCapitalize="none"
-          errorText={formState.inputValidities['description']}
+          errorText={formState.inputValidities["lastName"]}
         />
 
         <Input
-          placeholder="New Price"
-          id="price"
-          label="New Price"
+          placeholder="Address"
+          id="address"
+          label="Address"
           icon="user-o"
-          keyboardType="numeric"
           iconPack={FontAwesome}
           onInputChanged={inputChangedHandler}
           autoCapitalize="none"
-          errorText={formState.inputValidities['price']}
+          errorText={formState.inputValidities["address"]}
         />
 
         <Input
-          placeholder="Old Price"
-          id="oPrice"
-          label="Old Price"
-          keyboardType="numeric"
-          icon="lock"
+          placeholder="Email"
+          id="email"
+          label="Email"
+          keyboardType="email-address"
+          icon="mail"
           iconPack={Feather}
           onInputChanged={inputChangedHandler}
           autoCapitalize="none"
-          errorText={formState.inputValidities['oPrice']}
+          errorText={formState.inputValidities["email"]}
         />
 
         <Input
-          placeholder="Category"
-          id="category"
-          label="Category"
+          placeholder="Nic"
+          id="nic"
+          label="Nic"
           icon="lock"
           autoCapitalize="none"
+          secureTextEntry
           iconPack={Feather}
           onInputChanged={inputChangedHandler}
-          errorText={formState.inputValidities['category']}
+          errorText={formState.inputValidities["nic"]}
         />
 
         <Input
-          placeholder="Brand"
-          id="brand"
-          label="Brand"
+          placeholder="Password"
+          id="password"
+          label="Password"
           icon="lock"
           autoCapitalize="none"
+          secureTextEntry
           iconPack={Feather}
           onInputChanged={inputChangedHandler}
-          errorText={formState.inputValidities['brand']}
-        />
-
-        <Input
-          placeholder="Stock"
-          id="stock"
-          label="Stock"
-          keyboardType="number-pad"
-          icon="lock"
-          autoCapitalize="none"
-          iconPack={Feather}
-          onInputChanged={inputChangedHandler}
-          errorText={formState.inputValidities['stock']}
-        />
-
-        <SelectPicker
-          placeholder="Shop"
-          id="shop"
-          label="Shop"
-          icon="lock"
-          datas={shops}
-          autoCapitalize="none"
-          iconPack={Feather}
-          onInputChanged={inputChangedHandler}
-          errorText={formState.inputValidities['shop']}
+          errorText={formState.inputValidities["password"]}
         />
 
         {isLoading ? (
-          <ActivityIndicator size="small" color="#12845f" style={{ marginTop: 10 }} />
+          <ActivityIndicator
+            size="small"
+            color={colors.primary}
+            style={{ marginTop: 10 }}
+          />
         ) : (
           <SubmitButton
             title="Create"
-            onPress={createProductHandler}
+            onPress={authHandler}
             style={{ marginTop: 20 }}
             disabled={!formState.formIsValid}
           />
@@ -528,37 +496,37 @@ const CreateIdea = ({ navigation }) => {
   );
 };
 
-export default CreateIdea;
+export default CreatePerson;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
-    padding: 16
+    backgroundColor: "#f5f5f5",
+    padding: 16,
   },
   logoContainer: {
-    alignItems: 'center',
-    borderRadius: 8
+    alignItems: "center",
+    borderRadius: 8,
   },
   logo: {
     width: 150,
     height: 150,
-    borderRadius: 75
+    borderRadius: 75,
   },
   formContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 16,
     marginVertical: 8,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
-    elevation: 5
+    elevation: 5,
   },
   heading: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 16,
-    textAlign: 'center'
+    textAlign: "center",
   },
 });

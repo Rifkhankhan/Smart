@@ -16,7 +16,6 @@
 // import { Asset } from "expo-asset";
 // import plusImage from "./../assets/images/plus.png";
 
-
 // const AdminHome = ({ navigation }) => {
 // 	const [isClicked, setIsClicked] = useState(false)
 
@@ -88,27 +87,34 @@
 // 	}
 // })
 
-
-import React, { useState, useCallback } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, FlatList } from 'react-native';
-import CategoryComponent from './../components/CategoryComponent';
-import HomeItemList from './../components/HomeItemList';
-import BigItemList from './../components/BigItemList';
-import CardContainer from '../components/CardContainer';
-import { Asset } from 'expo-asset';
-import plusImage from './../assets/images/plus.png';
+import React, { useState, useCallback } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
+import CategoryComponent from "./../components/CategoryComponent";
+import HomeItemList from "./../components/HomeItemList";
+import BigItemList from "./../components/BigItemList";
+import CardContainer from "../components/CardContainer";
+import { Asset } from "expo-asset";
+import plusImage from "./../assets/images/plus.png";
 
 const AdminHome = ({ navigation }) => {
   const [isClicked, setIsClicked] = useState(false);
 
   // Callback to toggle search visibility
   const toggleSearchHandler = useCallback(() => {
-    setIsClicked(prevState => !prevState);
+    setIsClicked((prevState) => !prevState);
   }, []);
 
   // Navigate to create idea screen
   const createIdea = useCallback(() => {
-    navigation.navigate('CreateIdea');
+    navigation.navigate("CreateIdea");
   }, [navigation]);
 
   return (
@@ -130,7 +136,7 @@ const AdminHome = ({ navigation }) => {
         />
       )}
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.plusButton}
         activeOpacity={0.8}
         onPress={createIdea}
@@ -139,7 +145,7 @@ const AdminHome = ({ navigation }) => {
           source={plusImage}
           style={styles.plusImage}
         />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </>
   );
 };
@@ -148,20 +154,20 @@ export default React.memo(AdminHome);
 
 const styles = StyleSheet.create({
   plusButton: {
-    position: 'absolute',
+    position: "absolute",
     right: 15,
     bottom: 20,
     width: 50,
     height: 50,
   },
   plusImage: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   title: {
     paddingLeft: 8,
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: "600",
     paddingVertical: 8,
   },
 });

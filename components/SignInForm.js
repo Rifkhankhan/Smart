@@ -107,24 +107,23 @@
 
 // export default SignInForm
 
-
-import React, { useCallback, useEffect, useReducer, useState } from 'react';
-import Input from '../components/Input';
-import SubmitButton from '../components/SubmitButton';
-import { Feather } from '@expo/vector-icons';
-import { validateInput } from '../utils/actions/formActions';
-import { reducer } from '../utils/reducers/formReducer';
-import { signIn } from '../utils/actions/authActions';
-import { ActivityIndicator, Alert } from 'react-native';
-import { useDispatch } from 'react-redux';
-import colors from '../constants/colors';
+import React, { useCallback, useEffect, useReducer, useState } from "react";
+import Input from "../components/Input";
+import SubmitButton from "../components/SubmitButton";
+import { Feather } from "@expo/vector-icons";
+import { validateInput } from "../utils/actions/formActions";
+import { reducer } from "../utils/reducers/formReducer";
+import { signIn } from "../utils/actions/authActions";
+import { ActivityIndicator, Alert } from "react-native";
+import { useDispatch } from "react-redux";
+import colors from "../constants/colors";
 
 const isTestMode = true;
 
 const initialState = {
   inputValues: {
-    email: isTestMode ? 'kather@gmail.com' : '',
-    password: isTestMode ? '123456' : '',
+    email: isTestMode ? "customer@gmail.com" : "",
+    password: isTestMode ? "123456" : "",
   },
   inputValidities: {
     email: isTestMode,
@@ -152,7 +151,10 @@ const SignInForm = () => {
       setIsLoading(true);
       setError(null);
 
-      const action = signIn(formState.inputValues.email, formState.inputValues.password);
+      const action = signIn(
+        formState.inputValues.email,
+        formState.inputValues.password
+      );
       await dispatch(action);
     } catch (error) {
       setError(error.message);
@@ -163,7 +165,7 @@ const SignInForm = () => {
 
   useEffect(() => {
     if (error) {
-      Alert.alert('An error occurred', error, [{ text: 'Okay' }]);
+      Alert.alert("An error occurred", error, [{ text: "Okay" }]);
     }
   }, [error]);
 
@@ -178,7 +180,7 @@ const SignInForm = () => {
         keyboardType="email-address"
         onInputChanged={inputChangedHandler}
         initialValue={formState.inputValues.email}
-        errorText={formState.inputValidities['email']}
+        errorText={formState.inputValidities["email"]}
       />
 
       <Input
@@ -190,11 +192,15 @@ const SignInForm = () => {
         secureTextEntry
         onInputChanged={inputChangedHandler}
         initialValue={formState.inputValues.password}
-        errorText={formState.inputValidities['password']}
+        errorText={formState.inputValidities["password"]}
       />
 
       {isLoading ? (
-        <ActivityIndicator size="small" color={colors.primary} style={{ marginTop: 10 }} />
+        <ActivityIndicator
+          size="small"
+          color={colors.primary}
+          style={{ marginTop: 10 }}
+        />
       ) : (
         <SubmitButton
           title="Sign in"

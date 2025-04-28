@@ -331,7 +331,6 @@
 //   },
 // });
 
-
 import {
   ScrollView,
   StyleSheet,
@@ -350,13 +349,13 @@ import React, {
 } from "react";
 import { Ionicons, Feather, FontAwesome } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
-import colors from "../constants/colors";
-import ProfileImage from "../components/ProfileImage";
-import SubmitButton from "../components/SubmitButton";
-import Input from "../components/Input";
-import { validateInput } from "../utils/actions/formActions";
-import { reducer } from "../utils/reducers/formReducer";
-import { updateShop } from "../utils/actions/shopActions";
+import colors from "../../../constants/colors";
+import ProfileImage from "../../../components/ProfileImage";
+import SubmitButton from "../../../components/SubmitButton";
+import Input from "../../../components/Input";
+import { validateInput } from "../../../utils/actions/formActions";
+import { reducer } from "../../../utils/reducers/formReducer";
+import { updateShop } from "../../../utils/actions/shopActions";
 
 const EditShop = ({ route, navigation }) => {
   const dispatch = useDispatch();

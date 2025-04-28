@@ -348,13 +348,13 @@ import React, {
 } from "react";
 import { Ionicons, Feather, FontAwesome } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
-import colors from "../constants/colors";
-import { validateInput } from "../utils/actions/formActions";
-import ProfileImage from "../components/ProfileImage";
-import { reducer } from "../utils/reducers/formReducer";
-import { updateCutomer } from "../utils/actions/userActions";
-import SubmitButton from "../components/SubmitButton";
-import Input from "../components/Input";
+import colors from "../../../constants/colors";
+import { validateInput } from "../../../utils/actions/formActions";
+import ProfileImage from "../../../components/ProfileImage";
+import { reducer } from "../../../utils/reducers/formReducer";
+import { updateCutomer } from "../../../utils/actions/userActions";
+import SubmitButton from "../../../components/SubmitButton";
+import Input from "../../../components/Input";
 
 const EditPerson = ({ route, navigation }) => {
   const [error, setError] = useState(null);

@@ -12,7 +12,13 @@
     "name": "Smart",
     "slug": "smart",
     "version": "1.0.0",
-    "icon": "./assets/logo.png",
-    "platforms": ["ios", "android"]
+    "icon": "./assets/icon.jpg",
+    "platforms": [
+      "ios",
+      "android"
+    ],
+    "plugins": [
+      "expo-localization"
+    ]
   }
 }

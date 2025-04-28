@@ -110,6 +110,8 @@ import CardContainer from "../components/CardContainer";
 import ServiceListComponent from "./Services/ServiceListComponent";
 
 const AdminHome = ({ navigation }) => {
+  console.log("in");
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
