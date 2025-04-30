@@ -116,7 +116,6 @@
 //   },
 // });
 
-
 import React, { useState, useLayoutEffect, useCallback } from "react";
 import {
   FlatList,
@@ -127,12 +126,12 @@ import {
   View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import IconButton from "../UI/IconButton";
-import PageContainer from "../components/PageContainer";
-import PageTitle from "../components/PageTitle";
-import ShopListItem from "../components/ShopListItem";
+import IconButton from "./../../../UI/IconButton";
+import PageContainer from "./../../../components/PageContainer";
+import PageTitle from "./../../../components/PageTitle";
+import ShopListItem from "./../../../components/ShopListItem";
 import { Asset } from "expo-asset";
-import plusImage from "./../assets/images/plus.png";
+import plusImage from "./../../../assets/images/plus.png";
 
 const SellerListPage = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -196,7 +195,9 @@ const SellerListPage = ({ navigation }) => {
           <FlatList
             data={shops}
             keyExtractor={(shop) => shop.shopKey}
-            renderItem={({ item }) => <ShopListItem key={item.shopKey} shop={item} />}
+            renderItem={({ item }) => (
+              <ShopListItem key={item.shopKey} shop={item} />
+            )}
           />
         )}
 

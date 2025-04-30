@@ -91,18 +91,43 @@ const ViewServicesByCategory = ({ navigation, route }) => {
               onPress={() =>
                 navigation.navigate("ViewService", { service: item })
               }
+              activeOpacity={0.85}
             >
               <Image
-                source={item.images[0]} // Dynamic image
+                source={
+                  typeof item.image === "string"
+                    ? { uri: item.image }
+                    : item.image
+                }
                 style={styles.cardImage}
               />
               <View style={styles.cardContent}>
-                <Text style={styles.cardTitle}>{item.name}</Text>
-                <Text style={styles.cardDescription}>
-                  {item.description.length > 50
-                    ? item.description.substring(0, 50) + "..."
-                    : item.description}
+                <Text style={styles.cardTitle} numberOfLines={1}>
+                  {item.name}
                 </Text>
+
+                {item.category && (
+                  <Text style={styles.cardCategory}>{item.category}</Text>
+                )}
+
+                {item.description && (
+                  <Text style={styles.cardDescription} numberOfLines={2}>
+                    {item.description}
+                  </Text>
+                )}
+
+                <View style={styles.infoRow}>
+                  <Text style={styles.cardRatings}>
+                    ⭐ {item.ratings?.toFixed(1) || "N/A"}
+                  </Text>
+                  <Text style={styles.cardSold}>
+                    🔥 {item.soldCount || 0} used
+                  </Text>
+                </View>
+
+                {item.price && (
+                  <Text style={styles.cardPrice}>From ${item.price}</Text>
+                )}
               </View>
             </TouchableOpacity>
           )}
@@ -133,21 +158,73 @@ const styles = StyleSheet.create({
     marginBottom: 15, // Space between rows
   },
   card: {
-    flex: 1, // Ensure cards stretch evenly
-    backgroundColor: "#fff", // White card background
-    borderRadius: 15, // Rounded corners for modern design
-    margin: 5, // Space between cards
-    overflow: "hidden", // Ensure content stays within the card
-    elevation: 3, // Elevation for shadow (Android)
+    flex: 1,
+    backgroundColor: "#fff",
+    borderRadius: 16,
+    margin: 6,
+    overflow: "hidden",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+    transition: "all 0.3s",
   },
+
   cardImage: {
     width: "100%",
-    height: 120, // Fixed height for the image
-    resizeMode: "cover", // Ensure image scales nicely
+    height: 130,
+    resizeMode: "cover",
   },
+
   cardContent: {
-    padding: 10,
+    padding: 12,
   },
+
+  cardTitle: {
+    fontSize: 15,
+    fontWeight: "700",
+    color: "#1a1a1a",
+  },
+
+  cardCategory: {
+    fontSize: 12,
+    color: "#888",
+    marginTop: 2,
+    textTransform: "capitalize",
+  },
+
+  cardDescription: {
+    fontSize: 13,
+    color: "#555",
+    marginTop: 6,
+  },
+
+  infoRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
+  },
+
+  cardRatings: {
+    fontSize: 12,
+    color: "#28a745",
+    fontWeight: "500",
+  },
+
+  cardSold: {
+    fontSize: 12,
+    color: "#ff5722",
+    fontWeight: "500",
+  },
+
+  cardPrice: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#0077cc",
+    marginTop: 6,
+  },
+
   cardTitle: {
     fontSize: 16,
     fontWeight: "bold",
@@ -172,6 +249,23 @@ const styles = StyleSheet.create({
     fontSize: 16,
     height: 25,
     width: "100%",
+  },
+  cardCategory: {
+    fontSize: 12,
+    color: "#888",
+    marginTop: 2,
+  },
+
+  cardCategory: {
+    fontSize: 12,
+    color: "#888",
+    marginTop: 2,
+  },
+
+  cardDescription: {
+    fontSize: 13,
+    color: "#555",
+    marginTop: 4,
   },
 });
 

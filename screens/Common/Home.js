@@ -103,11 +103,11 @@ import { StyleSheet, View, FlatList, SafeAreaView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 // Components
-import CategoryComponent from "../components/CategoryComponent";
-import HomeItemList from "../components/HomeItemList";
-import BigItemList from "../components/BigItemList";
-import CardContainer from "../components/CardContainer";
-import ServiceListComponent from "./Services/ServiceListComponent";
+import CategoryComponent from "../../components/CategoryComponent";
+import HomeItemList from "../../components/HomeItemList";
+import BigItemList from "../../components/BigItemList";
+import CardContainer from "../../components/CardContainer";
+import ServiceListComponent from "../Services/ServiceListComponent";
 
 const AdminHome = ({ navigation }) => {
   console.log("in");

@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 const ServiceListComponent = ({ title, subTitle }) => {
   const navigation = useNavigation();
   const onPressHandler = () => {
-    navigation.navigate("ServiceListPage");
+    navigation.navigate("ServiceStack");
   };
 
   const services = [

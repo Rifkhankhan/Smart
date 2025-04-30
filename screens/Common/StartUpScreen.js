@@ -48,15 +48,14 @@
 
 // export default StartUpScreen;
 
-
 import React, { useEffect, useCallback } from "react";
 import { ActivityIndicator, View } from "react-native";
-import colors from "../constants/colors";
-import commonStyles from "../constants/commonStyles";
+import colors from "../../constants/colors";
+import commonStyles from "../../constants/commonStyles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
-import { authenticate, setDidTryAutoLogin } from "../store/authSlice";
-import { getUserData } from "../utils/actions/userActions";
+import { authenticate, setDidTryAutoLogin } from "../../store/authSlice";
+import { getUserData } from "../../utils/actions/userActions";
 
 const StartUpScreen = () => {
   const dispatch = useDispatch();

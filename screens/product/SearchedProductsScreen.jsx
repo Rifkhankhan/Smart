@@ -229,7 +229,6 @@
 
 // export default SearchedProductsScreen;
 
-
 import React, { useEffect, useState } from "react";
 import {
   FlatList,
@@ -242,13 +241,11 @@ import {
 } from "react-native";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
-import PageContainer from "../components/PageContainer";
-import { useDebouncedCallback } from "use-debounce";
-import { searchItems } from "../utils/actions/searchAction";
-import { setSearchProducts } from "../store/productSlice";
+import PageContainer from "./../../components/PageContainer";
+
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Cart from "./Cart";
-import Card from "../components/Card";
+import Cart from "./../Cart";
+import Card from "./../../components/Card";
 
 // Define CartScreen as a functional component
 const CartScreen = ({ navigation }) => {
@@ -313,11 +310,19 @@ const SearchedProductsScreen = ({ route, navigation }) => {
   const mainPage = () => (
     <PageContainer>
       <View style={styles.mainContainer}>
-        <Pressable onPress={() => navigation.goBack()} style={styles.headerLeftContainer}>
+        <Pressable
+          onPress={() => navigation.goBack()}
+          style={styles.headerLeftContainer}
+        >
           <Ionicons name="chevron-back" size={24} color="black" />
         </Pressable>
         <View style={styles.searchContainer}>
-          <Ionicons name="search-outline" style={styles.searchIcon} size={18} color="aqua" />
+          <Ionicons
+            name="search-outline"
+            style={styles.searchIcon}
+            size={18}
+            color="aqua"
+          />
           <TextInput
             value={searchTerm}
             onPress={() => navigation.goBack()}
@@ -327,7 +332,10 @@ const SearchedProductsScreen = ({ route, navigation }) => {
 
         <View style={styles.cartAndFilterContainer}>
           <View style={styles.cartContainer}>
-            <TouchableHighlight underlayColor="lightgray" style={styles.cartButton}>
+            <TouchableHighlight
+              underlayColor="lightgray"
+              style={styles.cartButton}
+            >
               <AntDesign name="shoppingcart" size={28} color="black" />
             </TouchableHighlight>
             <Pressable
@@ -339,7 +347,10 @@ const SearchedProductsScreen = ({ route, navigation }) => {
           </View>
 
           <View style={styles.filterContainer}>
-            <TouchableHighlight underlayColor="lightgray" style={styles.filterButton}>
+            <TouchableHighlight
+              underlayColor="lightgray"
+              style={styles.filterButton}
+            >
               <AntDesign name="filter" size={28} color="black" />
             </TouchableHighlight>
             <Text style={styles.filterText}>Filter</Text>

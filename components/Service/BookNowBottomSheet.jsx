@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useReducer, useRef } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import { AntDesign } from "@expo/vector-icons";
@@ -6,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { reducer } from "./../../utils/reducers/formReducer";
 import defaultImage from "./../../assets/images/man.png";
 import { CustomBotttomSheetBarStyles } from "./../../StylesSheets/CustomBotttomSheetBar";
-import { CustomBottomSheetBar } from "./../../functions/BuyNowBottomSheetFunctions";
+import { CustomBottomSheetBar } from "./CustomBotttomSheetBar";
 import { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 
 const initialState = {
@@ -15,9 +21,15 @@ const initialState = {
   formIsValid: false,
 };
 
-const BookNowBottomSheet = ({ service, bottomSheetRef, placeOrderHandler }) => {
+const BookNowBottomSheet = ({
+  service,
+  bottomSheetRef,
+  placeOrderHandler,
+  bottomPaymentSheetRef,
+}) => {
   const { authData } = useSelector((state) => state.auth);
   const [formState, dispatchFormState] = useReducer(reducer, initialState);
+  const [shouldOpenPaymentSheet, setShouldOpenPaymentSheet] = useState(false);
 
   const placeOrderHandlerData = useCallback(() => {
     placeOrderHandler({
@@ -38,11 +50,25 @@ const BookNowBottomSheet = ({ service, bottomSheetRef, placeOrderHandler }) => {
         service={service}
         CustomBottomSheetBarStyles={CustomBotttomSheetBarStyles}
         formState={formState}
+        bottomSheetRef={bottomSheetRef}
+        setShouldOpenPaymentSheet={setShouldOpenPaymentSheet}
       />
     );
   }, [placeOrderHandlerData, service, formState]);
 
-  const sheetSize = ["85%"];
+  const CustomerPaymentCustomerSheetBarComponent = useCallback(() => {
+    return (
+      <CustomBottomSheetBar
+        placeOrderHandlerData={placeOrderHandlerData}
+        service={service}
+        CustomBottomSheetBarStyles={CustomBotttomSheetBarStyles}
+        formState={formState}
+        bottomSheetRef={bottomSheetRef}
+      />
+    );
+  }, [placeOrderHandlerData, service, formState]);
+
+  const sheetSize = ["80%"];
 
   useEffect(() => {
     bottomSheetRef?.current?.snapToIndex(0);
@@ -63,7 +89,12 @@ const BookNowBottomSheet = ({ service, bottomSheetRef, placeOrderHandler }) => {
       enablePanDownToClose={true}
       snapPoints={sheetSize}
       index={-1} // ⬅️ This keeps it closed initially
-      onClose={() => bottomSheetRef?.current?.close()} // this now runs AFTER close animation
+      onClose={() => {
+        if (shouldOpenPaymentSheet) {
+          bottomPaymentSheetRef?.current?.expand(); // or `.expand()` depending on your setup
+          setShouldOpenPaymentSheet(false); // reset flag
+        }
+      }}
       backgroundStyle={{
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
@@ -105,18 +136,18 @@ const BookNowBottomSheet = ({ service, bottomSheetRef, placeOrderHandler }) => {
         </View>
 
         <View style={styles.colorContainer}>
-          <Text style={styles.sectionTitle}>Color</Text>
+          <Text style={styles.sectionTitle}>Delivery History</Text>
           <View style={styles.colorsRow}>
             {[...Array(10)].map((_, index) => (
               <View key={index} style={styles.colorItem}>
                 <Image style={styles.colorImage} source={defaultImage} />
-                <Text style={styles.colorText}>Color {index + 1}</Text>
+                <Text style={styles.colorText}>Serv Img {index + 1}</Text>
               </View>
             ))}
           </View>
         </View>
 
-        <View style={styles.quantityContainer}>
+        {/* <View style={styles.quantityContainer}>
           <Text style={styles.sectionTitle}>Quantity</Text>
           <View style={styles.quantityControls}>
             <Pressable onPress={minusHandler} style={styles.qtyButton}>
@@ -127,28 +158,28 @@ const BookNowBottomSheet = ({ service, bottomSheetRef, placeOrderHandler }) => {
               <Text style={styles.qtyText}>+</Text>
             </Pressable>
           </View>
-        </View>
+        </View> */}
 
         <View style={styles.orderSummary}>
-          <Text style={styles.sectionTitle}>Order Summary</Text>
+          <Text style={styles.sectionTitle}>Service Summary</Text>
           <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Items Total</Text>
+            <Text style={styles.summaryLabel}>Service Charge</Text>
             <Text style={styles.summaryValue}>Rs.{service?.price}</Text>
           </View>
           <View style={styles.summaryRow}>
-            <Text style={styles.summaryLabel}>Delivery Fee</Text>
+            <Text style={styles.summaryLabel}>Other Charge</Text>
             <Text style={styles.summaryValue}>Rs.100</Text>
           </View>
           <View style={styles.summaryRow}>
             <Text style={styles.summaryLabel}>Total Payment</Text>
-            <Text style={styles.summaryValue}>
-              Rs.{service?.price * formState.inputValues.qty + 100}
-            </Text>
+            <Text style={styles.summaryValue}>Rs.{service?.price + 100}</Text>
           </View>
         </View>
       </BottomSheetScrollView>
 
       <CustomBotttomSheetBarComponent />
+
+      {/* <CustomerPaymentCustomerSheetBarComponent /> */}
     </BottomSheet>
   );
 };

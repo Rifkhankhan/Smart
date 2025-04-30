@@ -6,9 +6,7 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import ItemsList from "../../screens/ItemsList";
-import ProductDetails from "../../screens/product/ProductDetails";
-import IconButton from "../../UI/IconButton";
+
 import {
   AntDesign,
   Entypo,
@@ -17,7 +15,9 @@ import {
   Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import { AccountOverView } from "./AccountStacks";
+import { AccountOverView, AccountStacks } from "./../Comman/AccountStacks";
+import { HomeOverView } from "./../Comman/HomeOverView";
+import SettingsScreen from "../../screens/Common/SettingsScreen";
 
 // Memoizing options for the Tab.Navigator
 const getHomeOverViewOptions = {
@@ -46,50 +46,50 @@ const getTabBarIcon = (IconComponent, name, size, color) => (
 );
 
 // Memoizing the navigation screens
-const HomeOverView = React.memo(() => (
-  <Stack.Navigator initialRouteName="Home">
-    <Stack.Screen
-      name="Home"
-      component={Home}
-      options={{
-        headerShown: true,
-        headerStyle: { backgroundColor: "#333333" },
-        headerTitle: "",
-        headerLeft: () => (
-          <Text
-            style={{
-              color: "white",
-              fontFamily: "monospace",
-              fontSize: 30,
-              paddingInline: 10,
-            }}
-          >
-            Smart
-          </Text>
-        ),
-        headerRight: ({ color }) => (
-          <IconButton name="search" color="white" size={24} />
-        ),
-      }}
-    />
-    <Stack.Screen
-      name="ProductDetails"
-      component={ProductDetails}
-      options={{ headerShown: false, headerTitleAlign: "left" }}
-    />
-    <Stack.Screen
-      name="ItemsList"
-      component={ItemsList}
-      options={{
-        headerShown: true,
-        headerStyle: { backgroundColor: "#333333" },
-        headerTintColor: "white",
-        headerTitle: "Gifts",
-        headerTitleAlign: "left",
-      }}
-    />
-  </Stack.Navigator>
-));
+// const HomeOverView = React.memo(() => (
+//   <Stack.Navigator initialRouteName="Home">
+//     <Stack.Screen
+//       name="Home"
+//       component={Home}
+//       options={{
+//         headerShown: true,
+//         headerStyle: { backgroundColor: "#333333" },
+//         headerTitle: "",
+//         headerLeft: () => (
+//           <Text
+//             style={{
+//               color: "white",
+//               fontFamily: "monospace",
+//               fontSize: 30,
+//               paddingInline: 10,
+//             }}
+//           >
+//             Smart
+//           </Text>
+//         ),
+//         headerRight: ({ color }) => (
+//           <IconButton name="search" color="white" size={24} />
+//         ),
+//       }}
+//     />
+//     <Stack.Screen
+//       name="ProductDetails"
+//       component={ProductDetails}
+//       options={{ headerShown: false, headerTitleAlign: "left" }}
+//     />
+//     <Stack.Screen
+//       name="ItemsList"
+//       component={ItemsList}
+//       options={{
+//         headerShown: true,
+//         headerStyle: { backgroundColor: "#333333" },
+//         headerTintColor: "white",
+//         headerTitle: "Gifts",
+//         headerTitleAlign: "left",
+//       }}
+//     />
+//   </Stack.Navigator>
+// ));
 
 export const CustomerTabNavigators = React.memo(() => {
   return (
@@ -106,7 +106,7 @@ export const CustomerTabNavigators = React.memo(() => {
         options={{
           tabBarIcon: ({ color, size }) =>
             getTabBarIcon(FontAwesome, "home", size, color),
-          tabBarLabel: ({ focused }) => getTabBarLabel(focused, "Products"),
+          tabBarLabel: ({ focused }) => getTabBarLabel(focused, "For You"),
         }}
       />
 
@@ -116,7 +116,7 @@ export const CustomerTabNavigators = React.memo(() => {
         options={{
           tabBarIcon: ({ color, size }) =>
             getTabBarIcon(AntDesign, "message1", size, color),
-          tabBarLabel: ({ focused }) => getTabBarLabel(focused, "Products"),
+          tabBarLabel: ({ focused }) => getTabBarLabel(focused, "Messages"),
         }}
       />
 
@@ -131,8 +131,8 @@ export const CustomerTabNavigators = React.memo(() => {
       />
 
       <Tab.Screen
-        name="AccountOverView"
-        component={AccountOverView}
+        name="AccountStacks"
+        component={AccountStacks}
         options={{
           tabBarIcon: ({ color, size }) =>
             getTabBarIcon(MaterialCommunityIcons, "account", size, color),

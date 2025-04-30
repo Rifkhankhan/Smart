@@ -3,11 +3,11 @@ import { Text } from "react-native";
 import Cart from "../../screens/Cart";
 import DashboardScreen from "../../screens/Client/Dashboard";
 import ProductDetails from "../../screens/product/ProductDetails";
-import SearchedProductsScreen from "../../screens/SearchedProductsScreen";
+import SearchedProductsScreen from "./../../screens/product/SearchedProductsScreen";
 import SearchScreen from "../../screens/SearchScreen";
 import ServiceListPage from "../../screens/Services/ServiceListPage";
 import ViewServicesByCategory from "../../screens/Services/ViewServicesByCategory";
-import SettingsScreen from "../../screens/SettingsScreen";
+import SettingsScreen from "../../screens/Common/SettingsScreen";
 
 import { Ionicons } from "@expo/vector-icons";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";

@@ -97,12 +97,11 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import CategoryComponent from "./../components/CategoryComponent";
-import HomeItemList from "./../components/HomeItemList";
-import BigItemList from "./../components/BigItemList";
-import CardContainer from "../components/CardContainer";
+import CategoryComponent from "../../components/CategoryComponent";
+import HomeItemList from "../../components/HomeItemList";
+import BigItemList from "../../components/BigItemList";
+import CardContainer from "../../components/CardContainer";
 import { Asset } from "expo-asset";
-import plusImage from "./../assets/images/plus.png";
 
 const AdminHome = ({ navigation }) => {
   const [isClicked, setIsClicked] = useState(false);

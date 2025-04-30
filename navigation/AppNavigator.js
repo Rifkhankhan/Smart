@@ -2,9 +2,9 @@ import React, { useMemo } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 
 import MainNavigator from "./MainNavigator";
-import AuthScreen from "../screens/AuthScreen";
+import AuthScreen from "../screens/Auth/AuthScreen";
 import { useSelector } from "react-redux";
-import StartUpScreen from "../screens/StartUpScreen";
+import StartUpScreen from "../screens/Common/StartUpScreen";
 import BuyNowBottomSheet from "../components/BuyNowBottomSheet";
 
 // Memoize components to avoid unnecessary re-renders

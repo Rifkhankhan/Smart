@@ -4,10 +4,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 const ServiceCard = ({ service }) => {
-  const navigation = useNavigation();  
+  const navigation = useNavigation();
 
   // console.log(service);
-  
 
   const detailsHandler = () => {
     navigation.push("ViewService", {
@@ -27,10 +26,7 @@ const ServiceCard = ({ service }) => {
         style={styles.image}
       /> */}
 
-        <Image
-            source={ service?.images[0]}
-            style={styles.image}
-        />
+      <Image source={service?.images[0]} style={styles.image} />
 
       {/* Service Details */}
       <View style={styles.details}>
@@ -42,7 +38,8 @@ const ServiceCard = ({ service }) => {
           <Text style={styles.reviewRate}>4/5 (71)</Text>
         </View>
         <Text style={styles.description} numberOfLines={2}>
-          {service?.description || "Brief description of the service goes here."}
+          {service?.description ||
+            "Brief description of the service goes here."}
         </Text>
       </View>
 
@@ -122,7 +119,6 @@ const styles = StyleSheet.create({
 });
 
 export default ServiceCard;
-
 
 // import React, { memo } from "react";
 // import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";

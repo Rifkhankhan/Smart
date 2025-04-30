@@ -325,24 +325,16 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
-import defaultImage from "./../assets/images/man.png";
+import defaultImage from "./../../assets/images/man.png";
 
 const Account = ({ route, navigation }) => {
   const { authData } = useSelector((state) => state.auth);
   const { userOrders } = useSelector((state) => state.order);
+  console.log(authData);
 
   useEffect(() => {
     navigation.setOptions({
       headerTitle: authData?.firstLast,
-      // headerRight: () => {
-      //   return (
-      //     <TouchableOpacity
-      //       onPress={() => navigation.navigate("SettingsScreen")}
-      //     >
-      //       <AntDesign name="setting" size={24} color="white" />
-      //     </TouchableOpacity>
-      //   );
-      // },
     });
   }, [navigation, route?.params]);
 

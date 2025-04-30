@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CreateIdea from "../../screens/Admin/service/CreateIdea";
 import ItemsList from "../../screens/ItemsList";
-import AdminHome from "./../../screens/AdminHome";
+import AdminHome from "./../../screens/Admin/AdminHome";
 import ProductDetails from "./../../screens/product/ProductDetails";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { ActivityIndicator, Text, View } from "react-native";
@@ -11,11 +11,11 @@ import {
   Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import CustomerListPage from "../../screens/CustomersListPage";
+import CustomerListPage from "../../screens/Admin/Customer/CustomersListPage";
 import CreatePerson from "../../screens/Admin/client/CreatePerson";
 import ViewPerson from "../../screens/Admin/client/ViewPerson";
 import EditPerson from "../../screens/Admin/client/EditPerson";
-import SellerListPage from "../../screens/SellerListPage";
+import SellerListPage from "./../../screens/Admin/client/SellerListPage";
 import CreateShop from "../../screens/Admin/client/CreateShop";
 import ViewShop from "../../screens/Admin/client/ViewShop";
 import EditShop from "../../screens/Admin/client/EditShop";
@@ -25,7 +25,7 @@ import CreateProduct from "../../screens/product/CreateProduct";
 import ProductListPage from "../../screens/product/ProductListPage";
 import IconButton from "../../UI/IconButton";
 import Orders from "../../screens/Orders";
-import Account from "../../screens/Account";
+import Account from "../../screens/Common/Account";
 import { useSelector } from "react-redux";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -42,7 +42,7 @@ import {
   getShops,
   getUsers,
 } from "../../utils/Subscribefunctions/Admin";
-import SettingsScreen from "../../screens/SettingsScreen";
+import SettingsScreen from "../../screens/Common/SettingsScreen";
 import { getUserCarts } from "../../utils/Subscribefunctions/Client";
 
 export const AdminNavigator = () => {

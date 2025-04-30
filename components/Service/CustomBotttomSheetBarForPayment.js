@@ -1,49 +1,26 @@
-// import { Text, View } from "react-native";
-// import { Pressable } from "react-native";
-
-// export const CustomBotttomSheetBar = ({ placeOrderHandlerData,product,CustomBotttomSheetBarStyles,formState}) => {
-//     return (
-//       <View style={CustomBotttomSheetBarStyles.container}>
-//         <View style={CustomBotttomSheetBarStyles.priceContainer}>
-//           <View style={{ flexDirection: "row", alignItems: "center" }}>
-//             <Text style={{ fontSize: 20 }}>Total : </Text>
-//             <Text>
-//               <Text style={{ color: "red", fontSize: 20, fontWeight: "bold" }}>
-//                 Rs.
-//               </Text>{" "}
-//               <Text style={{ color: "red", fontSize: 20, fontWeight: "bold" }}>
-//                 {product?.price * formState.inputValues.qty + 100}
-//               </Text>
-//             </Text>
-//           </View>
-//         </View>
-//         <View style={CustomBotttomSheetBarStyles.rightBtnsContainer}>
-//           <Pressable
-//             onPress={placeOrderHandlerData}
-//             style={CustomBotttomSheetBarStyles.addToCardbutton}
-//           >
-//             <Text style={CustomBotttomSheetBarStyles.buttonText}>Place Order</Text>
-//           </Pressable>
-//         </View>
-//       </View>
-//     );
-//   };
-
 import React, { useCallback } from "react";
 import { Text, View, Pressable, StyleSheet } from "react-native";
 
-export const CustomBottomSheetBar = React.memo(
+export const CustomBotttomSheetBarForPayment = React.memo(
   ({
     placeOrderHandlerData,
-    product,
+    service,
     CustomBottomSheetBarStyles,
     formState,
+
+    bottomPaymentSheetRef,
+    setConfirmOrder,
+    confirmOrderHandler,
   }) => {
     const handlePlaceOrder = useCallback(() => {
       placeOrderHandlerData();
+      // setShouldOpenPaymentSheet(true);
+      // setConfirmOrder(true);
+      confirmOrderHandler();
+      bottomPaymentSheetRef.current?.close(); // Trigger close
     }, [placeOrderHandlerData]);
 
-    const totalAmount = product?.price * formState.inputValues.qty + 100;
+    const totalAmount = service?.price * formState.inputValues.qty + 100;
 
     return (
       <View style={[styles.container, CustomBottomSheetBarStyles.container]}>
@@ -77,7 +54,7 @@ export const CustomBottomSheetBar = React.memo(
             <Text
               style={[styles.buttonText, CustomBottomSheetBarStyles.buttonText]}
             >
-              Confirm Service
+              Place Service
             </Text>
           </Pressable>
         </View>

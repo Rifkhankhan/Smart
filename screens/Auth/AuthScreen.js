@@ -63,7 +63,7 @@
 //     letterSpacing: 0.3,
 //   },
 //   imageContainer: {
-  
+
 //     height:300,
 //     justifyContent: "center",
 //     alignItems: "center",
@@ -72,7 +72,7 @@
 //   image: {
 //     flex:1,
 //     borderRadius:50
-    
+
 //   },
 //   keyboardAvoidingView: {
 //     flex: 1,
@@ -81,7 +81,6 @@
 // });
 
 // export default AuthScreen;
-
 
 import React, { useState, useCallback } from "react";
 import {
@@ -96,12 +95,12 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import PageContainer from "../components/PageContainer";
-import SignInForm from "../components/SignInForm";
-import SignUpForm from "../components/SignUpForm";
-import colors from "../constants/colors";
+import PageContainer from "../../components/PageContainer";
+import SignInForm from "../../components/SignInForm";
+import SignUpForm from "../../components/SignUpForm";
+import colors from "../../constants/colors";
 
-import logo from "../assets/images/logo.jpg";
+import logo from "./../../assets/images/logo.jpg";
 
 // Memoize the AuthScreen component to avoid unnecessary re-renders
 const AuthScreen = React.memo((props) => {

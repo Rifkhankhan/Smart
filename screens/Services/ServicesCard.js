@@ -98,16 +98,24 @@ const ServicesCard = memo(({ service }) => {
     <TouchableOpacity style={styles.container} onPress={onPressHandler}>
       <Image source={imageSource} style={styles.image} />
 
-      <Text style={styles.name} numberOfLines={2}>
+      <Text style={styles.name} numberOfLines={1}>
         {service?.name}
       </Text>
 
-      {/* Ratings */}
-      {/* {service.ratings && (
-                <Text style={styles.ratings}>
-                    ⭐ {service?.ratings?.toFixed(1) || 'N/A'}
-                </Text>
-            )} */}
+      {service?.category && (
+        <Text style={styles.category}>{service.category}</Text>
+      )}
+
+      <View style={styles.infoRow}>
+        <Text style={styles.ratings}>
+          ⭐ {service?.ratings?.toFixed(1) || "N/A"}
+        </Text>
+        <Text style={styles.sold}>🔥 {service?.soldCount || 0} used</Text>
+      </View>
+
+      {service?.price && (
+        <Text style={styles.price}>From ${service.price}</Text>
+      )}
     </TouchableOpacity>
   );
 });
@@ -149,5 +157,29 @@ const styles = StyleSheet.create({
     color: "#28a745",
     textAlign: "left",
     marginVertical: 2,
+  },
+  infoRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "90%",
+    marginTop: 4,
+  },
+
+  sold: {
+    fontSize: 12,
+    color: "#555",
+    fontWeight: "500",
+  },
+  category: {
+    fontSize: 11,
+    color: "#888",
+    marginTop: 2,
+  },
+
+  price: {
+    fontSize: 12,
+    color: "#000",
+    fontWeight: "600",
+    marginTop: 2,
   },
 });

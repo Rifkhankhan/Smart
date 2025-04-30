@@ -117,13 +117,7 @@
 //   },
 // });
 
-
-import React, {
-  useState,
-  useLayoutEffect,
-  useMemo,
-  useCallback,
-} from "react";
+import React, { useState, useLayoutEffect, useMemo, useCallback } from "react";
 import {
   FlatList,
   Image,
@@ -133,11 +127,11 @@ import {
   View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import IconButton from "../UI/IconButton";
-import UserListItem from "../components/UserListItem";
-import PageTitle from "../components/PageTitle";
-import PageContainer from "../components/PageContainer";
-import plusImage from "../assets/images/plus.png";
+import IconButton from "../../../UI/IconButton";
+import UserListItem from "../../../components/UserListItem";
+import PageTitle from "../../../components/PageTitle";
+import PageContainer from "../../../components/PageContainer";
+import plusImage from "./../../../assets/images/plus.png";
 
 const CustomerListPage = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -150,7 +144,8 @@ const CustomerListPage = ({ navigation }) => {
     return Object.values(users || {}).filter(
       (user) =>
         user.role === "customer" &&
-        (user.name?.toLowerCase().includes(searchQuery.toLowerCase()) || !searchQuery)
+        (user.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          !searchQuery)
     );
   }, [users, searchQuery]);
 
