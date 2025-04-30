@@ -110,8 +110,6 @@ import CardContainer from "../../components/CardContainer";
 import ServiceListComponent from "../Services/ServiceListComponent";
 
 const AdminHome = ({ navigation }) => {
-  console.log("in");
-
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -129,6 +127,13 @@ const AdminHome = ({ navigation }) => {
   const renderHeaderComponents = useCallback(
     () => (
       <View>
+        {/* Delivery in 
+        15 minutes 
+        live location address now */}
+
+        {/* searbar */}
+
+        {/* carousel banner */}
         <CategoryComponent />
         <ServiceListComponent title="Services" />
         <BigItemList title="Today Offers" subTitle="Limited" />

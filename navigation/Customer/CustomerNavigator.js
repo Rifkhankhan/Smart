@@ -1,175 +1,98 @@
-// import { createNativeStackNavigator } from '@react-navigation/native-stack'
-// import CreateIdea from '../../screens/CreateIdea'
-// import ItemsList from '../../screens/ItemsList'
-// import AdminHome from './../../screens/AdminHome'
-// import ProductDetails from './../../screens/ProductDetails'
-// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-// import { Text } from 'react-native'
-// import {
-// 	FontAwesome,
-// 	FontAwesome6,
-// 	Ionicons,
-// 	MaterialCommunityIcons
-// } from '@expo/vector-icons'
-
-// import IconButton from '../../UI/IconButton'
-// import Orders from '../../screens/Orders'
-// import Account from '../../screens/Account'
-// const Stack = createNativeStackNavigator()
-// const Tab = createBottomTabNavigator()
-
-// export const CustomerNavigators = () => {
-// 	return (
-// 		<Tab.Navigator
-// 			initialRouteName="HomeOverView"
-// 			screenOptions={{
-// 				headerShown: false,
-// 				tabBarStyle: { backgroundColor: '#333333' },
-// 				tabBarActiveTintColor: 'white',
-// 				tabBarShowLabel: false
-// 			}}>
-// 			<Tab.Screen
-// 				name="HomeOverView"
-// 				component={HomeOverView}
-// 				options={{
-// 					tabBarIcon: ({ color, size }) => (
-// 						<Ionicons name="home" size={24} color="{color}" />
-// 					)
-// 				}}
-// 			/>
-// 			<Tab.Screen
-// 				name="Card"
-// 				component={Card}
-// 				options={{
-// 					tabBarIcon: ({ color, size }) => {
-// 						return <AntDesign name="shoppingcart" size={32} color={color} />
-// 					}
-// 				}}
-// 			/>
-// 			<Tab.Screen
-// 				name="AccountOverView"
-// 				component={AccountOverView}
-// 				options={{
-// 					tabBarIcon: ({ color, size }) => {
-// 						return (
-// 							<MaterialCommunityIcons name="account" size={32} color={color} />
-// 						)
-// 					}
-// 				}}
-// 			/>
-// 		</Tab.Navigator>
-// 	)
-// }
-
-// const HomeOverView = () => {
-// 	return (
-// 		<Stack.Navigator>
-// 			<Stack.Screen
-// 				name="Home"
-// 				component={Home}
-// 				options={{
-// 					headerShown: true,
-// 					headerStyle: { backgroundColor: '#333333' },
-// 					// headerTintColor:'white',
-// 					// headerTitleAlign: 'left',
-// 					headerTitle: '',
-// 					// headerRight:,
-// 					headerLeft: ({ size, color }) => {
-// 						return (
-// 							<Text
-// 								style={{
-// 									color: 'white',
-// 									fontFamily: 'monospace',
-// 									fontSize: 30,
-// 									paddingInline: 10
-// 								}}>
-// 								Smart
-// 							</Text>
-// 						)
-// 					},
-// 					headerRight: ({ size, color }) => {
-// 						return <IconButton name="search" color="white" size={24} />
-// 					}
-// 				}}
-// 			/>
-
-// 			<Stack.Screen
-// 				name="ProductDetails"
-// 				component={ProductDetails}
-// 				options={{
-// 					headerShown: false,
-// 					// headerTransparent: true,
-
-// 					// headerTintColor: 'white',
-// 					// headerTitle: () => <SearchBar width="0.6" />,
-// 					headerTitleAlign: 'left'
-// 				}}
-// 			/>
-// 			<Stack.Screen
-// 				name="ItemsList"
-// 				component={ItemsList}
-// 				options={{
-// 					headerShown: true,
-// 					// headerTransparent: true,
-// 					headerStyle: { backgroundColor: '#333333' },
-// 					headerTintColor: 'white',
-// 					headerTitle: 'Gifts',
-// 					// headerTitle: () => <SearchBar width="0.6" />,
-// 					headerTitleAlign: 'left'
-// 				}}
-// 			/>
-// 		</Stack.Navigator>
-// 	)
-// }
-
-// const AccountOverView = () => {
-// 	return (
-// 		<Stack.Navigator initialRouteName="Account">
-// 			<Stack.Screen
-// 				name="Account"
-// 				component={Account}
-// 				options={{
-// 					headerShown: true,
-// 					tabBarActiveTintColor: 'white',
-// 					headerTitle: 'Mohammed Rifkhan',
-// 					headerStyle: { backgroundColor: '#8B008B' },
-// 					headerTintColor: 'white',
-// 					headerRight: ({ size, color }) => {
-// 						return (
-// 							<IconButton name="settings-outline" color="white" size={24} />
-// 						)
-// 					},
-// 					headerLeft: () => {
-// 						return (
-// 							<IconButton
-// 								name="add"
-// 								size={24}
-// 								color="red"
-// 								backgroundColor={true}
-// 							/>
-// 						)
-// 					}
-// 				}}
-// 			/>
-// 			<Stack.Screen
-// 				name="Orders"
-// 				component={Orders}
-// 				options={{
-// 					headerShown: true,
-// 					tabBarActiveTintColor: 'white',
-// 					headerTitle: 'My Orders',
-// 					headerStyle: { backgroundColor: 'white' },
-// 					headerTintColor: 'black'
-// 				}}
-// 			/>
-// 		</Stack.Navigator>
-// 	)
-// }
-
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 
 import { CustomerTabNavigators } from "./CustomerTabNavigator";
+import { useDispatch, useSelector } from "react-redux";
+import { getFirebaseApp } from "../../utils/firebaseHelper";
+import { child, getDatabase, onValue, ref, off, get } from "firebase/database";
+import { ActivityIndicator, View } from "react-native";
+import colors from "../../constants/colors";
+import commonStyles from "../../constants/commonStyles";
 
+import {
+  getOrdersOfaShop,
+  getOrdersOfaUser,
+  getUserCarts,
+  getUserWishes,
+} from "../../utils/Subscribefunctions/Client";
+import { resetOrders } from "../../store/orderSlice";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+const RootStack = createNativeStackNavigator();
+import { getProducts, getShops } from "../../utils/Subscribefunctions/Admin";
+import ProductDetails from "../../screens/product/ProductDetails";
 export const CustomerNavigators = React.memo(() => {
-  return <CustomerTabNavigators />;
+  const dispatch = useDispatch();
+
+  const { isUsersLoading } = useSelector((state) => state.user);
+  const { shopsIsLoading } = useSelector((state) => state.shop);
+  const { authData } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    // console.log("Subscribing to firebase Client listeners");
+
+    const app = getFirebaseApp();
+    const dbRef = ref(getDatabase(app));
+
+    const refs = [];
+
+    // wee need to get all the and products
+
+    //   get Products----------
+    const prouctsRef = child(dbRef, "products");
+    refs.push(prouctsRef);
+
+    const productAction = getProducts(prouctsRef);
+    dispatch(productAction);
+    //   get Products end ------------
+
+    // get user's orders
+
+    const orderIdsRef = child(dbRef, `usersOrders/${authData?.uid}`);
+    refs.push(orderIdsRef);
+    const getUserOrdersAction = getOrdersOfaUser(dbRef, orderIdsRef, refs);
+    dispatch(getUserOrdersAction);
+
+    // get user Carts
+    const cartIdsRef = child(dbRef, `carts/${authData?.uid}`);
+    refs.push(cartIdsRef);
+    const getUserCartsAction = getUserCarts(dbRef, cartIdsRef, refs);
+    dispatch(getUserCartsAction);
+
+    // get user wishLists
+    const wishIdsRef = child(dbRef, `wishes/${authData?.uid}`);
+    refs.push(cartIdsRef);
+    const getUserwishListsAction = getUserWishes(dbRef, wishIdsRef, refs);
+    dispatch(getUserwishListsAction);
+
+    // Cleanup all listeners to prevent memory leaks
+    return () => {
+      off(dbRef); // Remove all listeners
+    };
+  }, [authData]);
+
+  if (isUsersLoading || shopsIsLoading) {
+    return (
+      <View style={commonStyles.center}>
+        <ActivityIndicator size={"large"} color={colors.primary} />
+      </View>
+    );
+  }
+
+  return (
+    <RootStack.Navigator screenOptions={{ headerShown: false }}>
+      <RootStack.Screen name="CustomerTabs" component={CustomerTabNavigators} />
+      <RootStack.Screen
+        name="ProductDetails"
+        component={ProductDetails}
+        options={{
+          headerShown: false,
+          // headerTransparent: true,
+
+          // headerTintColor: 'white',
+          // headerTitle: () => <SearchBar width="0.6" />,
+          headerTitleAlign: "left",
+        }}
+      />
+    </RootStack.Navigator>
+  );
 });

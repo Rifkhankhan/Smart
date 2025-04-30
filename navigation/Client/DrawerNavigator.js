@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
-import { ProductStacks } from "./ProductStacks";
+import { ProductStacks } from "./../Comman/ProductStacks";
 import { HomeOverView } from "./HomeStacks";
 import { SellerOrderStacks } from "./OrderStacks";
 import { AccountOverView } from "./../Comman/AccountStacks";

@@ -46,18 +46,6 @@ export const HomeOverView = () => {
       />
 
       <Stack.Screen
-        name="ProductDetails"
-        component={ProductDetails}
-        options={{
-          headerShown: false,
-          // headerTransparent: true,
-
-          // headerTintColor: 'white',
-          // headerTitle: () => <SearchBar width="0.6" />,
-          headerTitleAlign: "left",
-        }}
-      />
-      <Stack.Screen
         name="ItemsList"
         component={ItemsList}
         options={{
