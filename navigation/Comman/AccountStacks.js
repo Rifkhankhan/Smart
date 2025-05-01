@@ -67,7 +67,7 @@ const HeaderRightButton = React.memo(() => {
 
 export const AccountStacks = React.memo(() => {
   return (
-    <Stack.Navigator initialRouteName="Account">
+    <Stack.Navigator initialRouteName="SettingsScreen">
       <Stack.Screen
         name="Account"
         component={Account}

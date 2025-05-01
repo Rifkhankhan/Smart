@@ -1,38 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { View, FlatList, Image, Text, Dimensions } from "react-native";
-import defaultImage1 from "./../../assets/images/service/homemadethings.jpg";
 
-const reviewImages = [
-  defaultImage1,
-  defaultImage1,
-  defaultImage1,
-  defaultImage1,
-  defaultImage1,
-  defaultImage1,
-  defaultImage1,
-  defaultImage1,
-  defaultImage1,
-];
+const ReviewImageCarousel = ({
+  images,
+  selectedIndex,
+  onScrollIndexChange,
+  flatListRef,
+}) => {
+  useEffect(() => {
+    flatListRef.current?.scrollToIndex({
+      index: selectedIndex,
+      animated: true,
+    });
+  }, [selectedIndex]);
 
-const ReviewImageCarousel = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  // Function to handle page change
   const handleViewableItemsChanged = ({ viewableItems }) => {
     if (viewableItems && viewableItems.length > 0) {
-      setCurrentIndex(viewableItems[0].index);
+      const index = viewableItems[0].index;
+      if (index !== selectedIndex) {
+        onScrollIndexChange(index);
+      }
     }
   };
 
   return (
     <View style={{ position: "relative" }}>
-      {/* Image Carousel */}
       <FlatList
-        data={reviewImages}
+        data={images}
         keyExtractor={(item, index) => index.toString()}
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
+        ref={flatListRef}
         renderItem={({ item }) => (
           <Image
             source={item}
@@ -41,17 +40,14 @@ const ReviewImageCarousel = () => {
               height: 220,
               resizeMode: "cover",
               borderRadius: 10,
-              marginHorizontal: 16,
             }}
           />
         )}
         onViewableItemsChanged={handleViewableItemsChanged}
         viewabilityConfig={{
-          itemVisiblePercentThreshold: 50, // Set threshold for when an item is considered "viewable"
+          itemVisiblePercentThreshold: 50,
         }}
       />
-
-      {/* Display the current image number */}
       <Text
         style={{
           position: "absolute",
@@ -62,7 +58,7 @@ const ReviewImageCarousel = () => {
           fontWeight: "bold",
         }}
       >
-        {currentIndex + 1}/{reviewImages.length}
+        {selectedIndex + 1}/{images.length}
       </Text>
     </View>
   );

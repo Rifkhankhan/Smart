@@ -7,6 +7,7 @@ import ViewServicesByCategory from "./../../screens/Services/ViewServicesByCateg
 import ServiceListPage from "./../../screens/Services/ServiceListPage";
 import ReviewListScreen from "../../screens/Services/ReviewListScreen";
 import { ReviewStack } from "./ReviewStack";
+import Header from "../../components/Common/Header";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,9 +31,10 @@ export const ServiceStack = React.memo(() => {
       <Stack.Screen
         name="ViewService"
         component={ViewService}
-        options={{
-          headerShown: false,
-        }}
+        // screenOptions={{
+        //   header: () => <Header />,
+        // }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="ViewServicesByCategory"

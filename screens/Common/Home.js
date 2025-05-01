@@ -1,105 +1,11 @@
-// import {
-//   StyleSheet,
-//   Text,
-//   View,
-//   Image,
-//   ScrollView,
-//   TouchableOpacity,
-//   FlatList,
-//   SafeAreaView,
-// } from "react-native";
-// import React, { useState, useEffect } from "react";
-// import CategoryComponent from "../components/CategoryComponent";
-// import HomeItemList from "../components/HomeItemList";
-// import BigItemList from "../components/BigItemList";
-// import Card from "../components/Card";
-// import CardContainer from "../components/CardContainer";
-// import { Ionicons } from "@expo/vector-icons";
-// import ServiceList from "./Services/ServiceListComponent";
-// import ServiceListComponent from "./Services/ServiceListComponent";
-
-// const AdminHome = ({ navigation }) => {
-//   const [isClicked, setIsClicked] = useState(false);
-
-//   useEffect(() => {
-//     navigation.setOptions({
-//       headerRight: ({ size, color }) => {
-//         return (
-//           <Ionicons
-//             onPress={() => navigation.navigate("SearchScreen")}
-//             style={{ marginRight: 10 }}
-//             name="search"
-//             color="white"
-//             size={24}
-//           />
-//         );
-//       },
-//     });
-//   }, []);
-
-//   const renderComponents = () => (
-//     <>
-//       <CategoryComponent />
-//       <ServiceListComponent title="Services" />
-//       {/* <HomeItemList title="Services" /> */}
-//       <BigItemList title="Today Offers" subTitle="Limited" />
-//       <HomeItemList title="Everything Under" subTitle="Rs.99" />
-//     </>
-//   );
-
-//   return (
-//     <>
-//       <SafeAreaView>
-//         <FlatList
-//           showsVerticalScrollIndicator={false}
-//           ListHeaderComponent={renderComponents}
-//           ListFooterComponent={() => (
-//             <>
-//               <CardContainer header="Just For You" />
-//             </>
-//           )}
-//         />
-//       </SafeAreaView>
-//     </>
-//   );
-// };
-
-// export default AdminHome;
-
-// const styles = StyleSheet.create({
-//   productCardContainer: {
-//     padding: 4,
-//     backgroundColor: "#15df",
-//     marginHorizontal: 8,
-//     marginVertical: 10,
-//     borderRadius: 8,
-//     elevation: 3,
-//   },
-//   plusButton: {
-//     position: "absolute",
-//     right: 15,
-//     bottom: 20,
-//     width: 50,
-//     height: 50,
-//   },
-//   plusImage: {
-//     width: "100%",
-//     height: "100%",
-//   },
-//   title: {
-//     paddingLeft: 8,
-//     fontSize: 20,
-//     fontWeight: "600",
-//     paddingVertical: 8,
-//   },
-//   cards: {
-//     flexDirection: "row",
-//     flexWrap: "wrap",
-//   },
-// });
-
-import React, { useEffect, useCallback } from "react";
-import { StyleSheet, View, FlatList, SafeAreaView } from "react-native";
+import React, { useEffect, useCallback, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  SafeAreaView,
+  Animated,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 // Components
@@ -108,8 +14,20 @@ import HomeItemList from "../../components/HomeItemList";
 import BigItemList from "../../components/BigItemList";
 import CardContainer from "../../components/CardContainer";
 import ServiceListComponent from "../Services/ServiceListComponent";
+import Header from "../../components/Common/Header";
+import Carouselcomponent from "../../components/HomeComponents/Carousel";
 
 const AdminHome = ({ navigation }) => {
+  const [scrollY, setScrollY] = useState(new Animated.Value(0));
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const flatListRef = React.useRef(null);
+
+  const backgroundColor = scrollY.interpolate({
+    inputRange: [0, 10],
+    outputRange: ["#f0ffff", "#b2ffff"], // adjust as needed
+    extrapolate: "clamp",
+  });
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -121,19 +39,26 @@ const AdminHome = ({ navigation }) => {
           size={24}
         />
       ),
+
+      header: () => (
+        <Header
+          backgroundColor={backgroundColor}
+          placeHolder="Search in SmartServe"
+        />
+      ),
     });
   }, [navigation]);
 
   const renderHeaderComponents = useCallback(
     () => (
-      <View>
+      <View style={styles.container}>
         {/* Delivery in 
         15 minutes 
         live location address now */}
 
-        {/* searbar */}
-
         {/* carousel banner */}
+        <Carouselcomponent />
+
         <CategoryComponent />
         <ServiceListComponent title="Services" />
         <BigItemList title="Today Offers" subTitle="Limited" />
@@ -150,13 +75,41 @@ const AdminHome = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        data={[]} // Required placeholder data
+      <Animated.FlatList
+        ref={flatListRef}
+        data={[]}
         keyExtractor={(item, index) => index.toString()}
         ListHeaderComponent={renderHeaderComponents}
         ListFooterComponent={renderFooterComponent}
         showsVerticalScrollIndicator={false}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          {
+            useNativeDriver: false,
+            listener: (event) => {
+              const offsetY = event.nativeEvent.contentOffset.y;
+              setShowScrollTop(offsetY > 200); // show button after scrolling down 200px
+            },
+          }
+        )}
+        scrollEventThrottle={16}
       />
+
+      {showScrollTop && (
+        <View style={styles.scrollTopContainer}>
+          <Ionicons
+            name="arrow-up-circle"
+            size={50}
+            color="#007AFF"
+            onPress={() => {
+              flatListRef.current?.scrollToOffset({
+                offset: 0,
+                animated: true,
+              });
+            }}
+          />
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -170,5 +123,12 @@ const styles = StyleSheet.create({
   },
   headerIcon: {
     marginRight: 10,
+  },
+  scrollTopContainer: {
+    position: "absolute",
+    bottom: 30,
+    right: 20,
+    zIndex: 100,
+    backgroundColor: "transparent",
   },
 });

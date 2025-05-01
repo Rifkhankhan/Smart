@@ -11,6 +11,7 @@ import {
   Image,
   Platform,
   ToastAndroid,
+  Animated,
 } from "react-native";
 import React, {
   memo,
@@ -38,14 +39,37 @@ import ServiceMiniCard from "../../components/Service/ServiceMiniCard";
 import { services } from "../../assets/data/services";
 import commonStyles from "../../constants/commonStyles";
 import colors from "../../constants/colors";
+import Header from "../../components/Common/Header";
 
 // Memoize the Card component
 const MemoizedCard = memo(({ service }) => (
-  <ServiceMiniCard key={service.id} service={service} />
+  <ServiceMiniCard service={service} />
 ));
+
 const ViewService = ({ route, navigation }) => {
   const [open, setOpen] = useState(false);
   const [confirmedOrder, setConfirmOrder] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const flatListRef = React.useRef(null);
+  const [scrollY, setScrollY] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Ionicons
+          onPress={() => navigation.navigate("SearchScreen")}
+          style={styles.headerIcon}
+          name="search"
+          color="white"
+          size={24}
+        />
+      ),
+
+      header: () => (
+        <Header logo="arrow-back" placeHolder="Search in SmartServe" />
+      ),
+    });
+  }, [navigation]);
 
   const { service } = route?.params;
 
@@ -58,19 +82,21 @@ const ViewService = ({ route, navigation }) => {
     (pro) => pro.provider === service?.provider
   );
 
-  const renderItem = ({ item }) => {
-    return <MemoizedCard key={item.id} service={item} />;
-  };
+  const renderItem = useCallback(
+    ({ item }) => <MemoizedCard service={item} />,
+    []
+  );
 
-  const headerLeft = () => (
-    <>
+  const headerLeft = useCallback(
+    () => (
       <Pressable
         onPress={() => navigation.goBack()}
         style={{ marginRight: "auto" }}
       >
         <Ionicons name="chevron-back" size={24} color="black" />
       </Pressable>
-    </>
+    ),
+    [navigation]
   );
 
   useEffect(() => {
@@ -79,7 +105,7 @@ const ViewService = ({ route, navigation }) => {
       headerTitle: service?.name,
       headerShown: true,
     });
-  }, [route?.params]);
+  }, [navigation, headerLeft, service?.name]);
 
   const reviews = [
     {
@@ -311,6 +337,7 @@ const ViewService = ({ route, navigation }) => {
       <View style={{ position: "relative" }}>
         <FlatList
           showsVerticalScrollIndicator={false}
+          ref={flatListRef}
           ListHeaderComponent={renderHeader}
           // contentContainerStyle={{ paddingBottom: 100 }}
           // ListFooterComponentStyle={{ paddingBottom: 20 }}
@@ -343,14 +370,35 @@ const ViewService = ({ route, navigation }) => {
               </View>
             </View>
           )}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+            {
+              useNativeDriver: false,
+              listener: (event) => {
+                const offsetY = event.nativeEvent.contentOffset.y;
+                setShowScrollTop(offsetY > 150); // show button after scrolling down 200px
+              },
+            }
+          )}
+          scrollEventThrottle={16}
         />
+        {showScrollTop && (
+          <View style={styles.scrollTopContainer}>
+            <Ionicons
+              name="arrow-up-circle"
+              size={50}
+              color="#007AFF"
+              onPress={() => {
+                flatListRef.current?.scrollToOffset({
+                  offset: 0,
+                  animated: true,
+                });
+              }}
+            />
+          </View>
+        )}
 
-        {/* bottomSheet */}
-
-        {/* <CustomBottomBar /> */}
         <BookPlusBtn />
-
-        {/* buttonBar */}
       </View>
 
       <BookNowBottomSheet
@@ -409,7 +457,7 @@ const styles = StyleSheet.create({
   bookBtnContainer: {
     position: "absolute",
     right: 20,
-    bottom: 20,
+    bottom: 80,
     backgroundColor: "#FF6B00",
     paddingHorizontal: 20,
     paddingVertical: 12,
@@ -747,6 +795,8 @@ const styles = StyleSheet.create({
   cards: {
     flexDirection: "row",
     flexWrap: "wrap",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   container: {
@@ -825,451 +875,13 @@ const styles = StyleSheet.create({
   priceContainerTotal: {
     fontSize: 20,
   },
+  scrollTopContainer: {
+    position: "absolute",
+    bottom: 150,
+    right: 20,
+    zIndex: 100,
+    backgroundColor: "transparent",
+  },
 });
 
 export default ViewService;
-
-// import {
-//   ScrollView,
-//   StyleSheet,
-//   Text,
-//   View,
-//   FlatList,
-//   Button,
-//   Pressable,
-//   ActivityIndicator,
-// } from "react-native";
-// import React, {
-//   memo,
-//   useCallback,
-//   useEffect,
-//   useLayoutEffect,
-//   useRef,
-//   useState,
-// } from "react";
-// import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-// import { Image } from "react-native";
-// import { Asset } from "expo-asset";
-
-// import {
-//   Ionicons,
-//   FontAwesome5,
-//   MaterialCommunityIcons,
-//   MaterialIcons,
-//   AntDesign,
-// } from "@expo/vector-icons";
-// import { TouchableOpacity } from "react-native";
-// import { useDispatch, useSelector } from "react-redux";
-// import {
-//   addIntoWish,
-//   createCart,
-//   deleteWishItem,
-//   placeOrder,
-// } from "./../../utils/actions/cartActions";
-// import ProductImageCarousel from "../Services/ServiceImageCarousel";
-// import CardContainer from "../../components/CardContainer";
-// import BuyNowBottomSheet from "../../components/BuyNowBottomSheet";
-// import HomeCard from "../../components/HomeCard";
-
-// // Memoize the Card component
-// const MemoizedCard = memo(({ product }) => (
-//   <HomeCard key={product.productKey} product={product} />
-// ));
-
-// const ViewService = ({ route, navigation }) => {
-//   const [open, setOpen] = useState(false);
-//   const dispatch = useDispatch();
-//   const { service } = route?.params;
-//   const { products } = useSelector((state) => state.product);
-//   const { shops } = useSelector((state) => state.shop);
-//   const { authData } = useSelector((state) => state.auth);
-//   const { carts, wishList } = useSelector((state) => state.cart);
-//   const [loading, setLoading] = useState(false);
-
-//   const renderItem = ({ item }) => {
-//     return <MemoizedCard key={item.productKey} product={item} />;
-//   };
-
-//   const headerLeft = () => (
-//     <>
-//       <Pressable
-//         onPress={() => navigation.goBack()}
-//         style={{ marginRight: "auto" }}
-//       >
-//         <Ionicons name="chevron-back" size={24} color="black" />
-//       </Pressable>
-//     </>
-//   );
-
-//   useEffect(() => {
-//     navigation.setOptions({
-//       headerLeft,
-//       headerTitle: service?.name,
-//       headerShown: true,
-//     });
-//   }, [route?.params]);
-
-//   const CustomBottomBar = () => {
-//     return (
-//       <View style={styles.container}>
-//         <View style={styles.rightBtnsContainer}>
-//           <Pressable
-//             style={styles.buyNowbutton}
-//             onPress={() => setOpen((prev) => !prev)}
-//           >
-//             <Text style={styles.buttonText}>Book</Text>
-//           </Pressable>
-
-//           <Pressable style={styles.addToCardbutton}>
-//             <Text style={styles.buttonText}>Learn More</Text>
-//           </Pressable>
-//         </View>
-//       </View>
-//     );
-//   };
-
-//   const renderHeader = () => {
-//     return (
-//       <>
-//         <View style={styles.imageContainer}>
-//           <ProductImageCarousel serviceImages={service?.images} />
-//         </View>
-
-//         <View style={styles.cardComponent}>
-//           <Text style={styles.name} numberOfLines={3}>
-//             {service?.description}
-//           </Text>
-//           {/* price */}
-//           <View style={styles.price}>
-//             <Text style={styles.newPrice}>
-//               Rs.{service?.ChargePerItem || service?.chargePerKM}
-//             </Text>
-//             <Text style={styles.oldPrice}>
-//               Rs.{service?.oldChargePerItem || service?.oldChargePerKM}
-//             </Text>
-//           </View>
-//           {/* stars */}
-//           <View style={styles.startContainer}>
-//             <Text style={styles.icon}>
-//               <Ionicons name="star" color="red" size={18} />
-//             </Text>
-//             <Text style={styles.reviewRate}>
-//               {service.ratings} (5)
-//             </Text>
-//           </View>
-
-//           {/* service provider */}
-//           <View style={styles.shopContainer}>
-//             {/* <Image
-//               source={shop3Image}
-//               style={styles.shopImage}
-//             /> */}
-//             {/* <Text style={styles.shopName}>{shop?.name}</Text> */}
-//           </View>
-//         </View>
-
-//         {/* Rating & reviews */}
-//         <View style={styles.ratingContainer}>
-//           <Text style={styles.ratingHeader}>Rating & Reviews</Text>
-//           {/* Rating */}
-//           <View style={styles.ratingInnerContainer}>
-//             <Text style={styles.ratePoints}>5.0</Text>
-//             <Text style={styles.ratingStars}>
-//               <Ionicons name="star" color="#FF8C00" size={24} />
-//               <Ionicons name="star" color="#FF8C00" size={24} />
-//               <Ionicons name="star" color="#FF8C00" size={24} />
-//               <Ionicons name="star" color="#FF8C00" size={24} />
-//               <Ionicons name="star" color="#FF8C00" size={24} />
-//             </Text>
-//             <Text style={styles.ratingText}>Excellent</Text>
-//           </View>
-
-//           <View style={styles.boxContainer}>
-//             <View style={styles.box}>
-//               <Ionicons name="camera" size={20} color="black" />
-//               <Text style={styles.boxText}>Photos(5)</Text>
-//             </View>
-//             <View style={styles.box}>
-//               <Text style={styles.boxText1}>View all(15)</Text>
-//             </View>
-//           </View>
-//         </View>
-
-//         {/* Questions */}
-//         <View style={styles.questionContainer}>
-//           <Text style={styles.questionHeader}>
-//             Questions about this Products(0)
-//           </Text>
-
-//           <View style={styles.questionNoMassageContainer}>
-//             <Text style={styles.questionNoMassage}>
-//               There is no questions yet ask the seller now and their will show
-//               here
-//             </Text>
-//           </View>
-//           <Text style={styles.questionText}>Ask Questions</Text>
-//         </View>
-
-//         {/* follow and visit store */}
-//         <View style={styles.followAndVisitContainer}>
-//           <View style={styles.followContainer}>
-//             <Ionicons name="add" size={22} color="#FF8C00" />
-//             <Text style={styles.followAndVisitContainerText}>Follow</Text>
-//           </View>
-//           <View style={styles.visitStoreContainer}>
-//             <FontAwesome5 name="store" size={22} color="#FF8C00" />
-//             <Text style={styles.followAndVisitContainerText}>Visit Store</Text>
-//           </View>
-//         </View>
-//       </>
-//     );
-//   };
-
-//   const placeOrderHandler = async (data) => {
-//     await placeOrder(data);
-//     setOpen(false);
-//   };
-
-//   return (
-//     <>
-//       <View style={{ position: "relative" }}>
-//         <FlatList
-//           showsVerticalScrollIndicator={false}
-//           ListHeaderComponent={renderHeader}
-//           ListFooterComponent={() => (
-//             <View style={{ marginBottom: 50 }}>
-//               {/* from the same stores products */}
-//               <View style={styles.sameStoreContainer}>
-//                 <Text style={styles.sameStoreHeader}>From the same store</Text>
-//                 {/* <FlatList
-//                   data={servicesFromSameProvider}
-//                   keyExtractor={(item) => {
-//                     return item.productKey;
-//                   }}
-//                   renderItem={renderItem}
-//                   horizontal={true}
-//                   showsHorizontalScrollIndicator={false}
-//                 /> */}
-//               </View>
-
-//               {/* similar products */}
-//               <View style={styles.similarProductsContainer}>
-//                 <Text style={styles.similarProductsHeader}>
-//                   People who Viewed This Item Also Viewed
-//                 </Text>
-//                 <View style={styles.cards}>
-//                   <CardContainer header="" />
-//                 </View>
-//               </View>
-//             </View>
-//           )}
-//         />
-
-//         {/* bottomSheet */}
-//         {open && (
-//           <BuyNowBottomSheet
-//             product={service}
-//             open={open}
-//             setOpen={setOpen}
-//             placeOrderHandler={placeOrderHandler}
-//           />
-//         )}
-
-//         {!open && <CustomBottomBar />}
-//       </View>
-//     </>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   loadingContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
-
-//   imageContainer: {
-//     width: "100%",
-//     height: 250,
-//     marginBottom: 20,
-//     overflow: "hidden",
-//     alignSelf: "center",
-//   },
-//   image: {
-//     width: "100%",
-//     height: "100%",
-//   },
-//   cardComponent: {
-//     backgroundColor: "white",
-//     borderRadius: 4,
-//     margin: 8,
-//     padding: 16,
-//   },
-//   name: {
-//     fontSize: 20,
-//     fontWeight: "700",
-//     marginBottom: 8,
-//   },
-//   price: {
-//     flexDirection: "row",
-//     alignItems: "center",
-//     marginBottom: 8,
-//   },
-//   newPrice: {
-//     fontSize: 20,
-//     fontWeight: "500",
-//     paddingRight: 4,
-//     color: "red",
-//   },
-//   oldPrice: {
-//     textDecorationLine: "line-through",
-//   },
-//   startContainer: {
-//     flexDirection: "row",
-//     paddingVertical: 16,
-//     borderTopWidth: 0.01,
-//     borderColor: "lightblue",
-//     alignItems: "center",
-//   },
-//   icon: {
-//     paddingRight: 8,
-//   },
-//   reviewRate: {
-//     fontSize: 16,
-//   },
-//   shareOptions: {
-//     flexDirection: "row",
-//     flex: 1,
-//     justifyContent: "flex-start",
-//     marginBottom: 10,
-//   },
-//   socialMedia: {
-//     paddingRight: 16,
-//   },
-//   ratingContainer: {
-//     marginBottom: 12,
-//   },
-//   ratingHeader: {
-//     fontSize: 16,
-//     fontWeight: "bold",
-//   },
-//   ratingInnerContainer: {
-//     flexDirection: "row",
-//     justifyContent: "space-between",
-//     paddingVertical: 16,
-//   },
-//   ratePoints: {
-//     fontWeight: "700",
-//     fontSize: 22,
-//   },
-//   ratingStars: {
-//     flexDirection: "row",
-//     alignItems: "center",
-//   },
-//   ratingText: {
-//     fontSize: 16,
-//   },
-//   boxContainer: {
-//     flexDirection: "row",
-//     justifyContent: "space-between",
-//   },
-//   box: {
-//     padding: 12,
-//     borderWidth: 0.5,
-//     borderRadius: 6,
-//     marginTop: 8,
-//     flexDirection: "row",
-//     alignItems: "center",
-//     width: "48%",
-//   },
-//   boxText: {
-//     marginLeft: 8,
-//     fontSize: 14,
-//   },
-//   boxText1: {
-//     fontSize: 14,
-//     color: "#FF8C00",
-//   },
-//   questionContainer: {
-//     marginBottom: 12,
-//   },
-//   questionHeader: {
-//     fontWeight: "bold",
-//   },
-//   questionNoMassageContainer: {
-//     marginVertical: 12,
-//   },
-//   questionNoMassage: {
-//     fontSize: 14,
-//     color: "gray",
-//   },
-//   questionText: {
-//     color: "#FF8C00",
-//     fontWeight: "bold",
-//   },
-//   followAndVisitContainer: {
-//     flexDirection: "row",
-//     justifyContent: "space-between",
-//     marginVertical: 16,
-//   },
-//   followContainer: {
-//     flexDirection: "row",
-//     alignItems: "center",
-//   },
-//   visitStoreContainer: {
-//     flexDirection: "row",
-//     alignItems: "center",
-//   },
-//   followAndVisitContainerText: {
-//     fontWeight: "bold",
-//     paddingLeft: 8,
-//   },
-//   container: {
-//     position: "absolute",
-//     bottom: 0,
-//     left: 0,
-//     right: 0,
-//     backgroundColor: "white",
-//     padding: 12,
-//     borderTopLeftRadius: 12,
-//     borderTopRightRadius: 12,
-//     elevation: 2,
-//   },
-//   rightBtnsContainer: {
-//     flexDirection: "row",
-//     justifyContent: "space-between",
-//   },
-//   buyNowbutton: {
-//     backgroundColor: "#FF8C00",
-//     padding: 12,
-//     borderRadius: 6,
-//     width: "48%",
-//     justifyContent: "center",
-//     alignItems: "center",
-//   },
-//   addToCardbutton: {
-//     backgroundColor: "#fff",
-//     borderWidth: 1,
-//     borderColor: "#FF8C00",
-//     padding: 12,
-//     borderRadius: 6,
-//     width: "48%",
-//     justifyContent: "center",
-//     alignItems: "center",
-//   },
-//   buttonText: {
-//     color: "white",
-//     fontWeight: "bold",
-//   },
-//   similarProductsContainer: {
-//     marginTop: 20,
-//   },
-//   similarProductsHeader: {
-//     fontSize: 16,
-//     fontWeight: "bold",
-//   },
-//   sameStoreContainer: {
-//     marginTop: 20,
-//   },
-//   sameStoreHeader: {
-//     fontSize: 16,
-//     fontWeight: "bold",
-//   },
-// });
-// export default ViewService;

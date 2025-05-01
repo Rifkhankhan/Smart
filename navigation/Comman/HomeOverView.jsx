@@ -49,7 +49,8 @@ export const HomeOverView = () => {
         name="ItemsList"
         component={ItemsList}
         options={{
-          headerShown: true,
+          headerShown: false,
+
           // headerTransparent: true,
           headerStyle: { backgroundColor: "#333333" },
           headerTintColor: "white",
@@ -75,13 +76,17 @@ export const HomeOverView = () => {
       <Stack.Screen
         name="ViewService"
         component={ViewService}
-        options={{
-          // headerTransparent: true,
-          headerStyle: { backgroundColor: "#333333" },
-          headerTintColor: "white",
-          // headerTitle: () => <SearchBar width="0.6" />,
-          headerTitleAlign: "left",
+        screenOptions={{
+          header: () => <Header />,
         }}
+        options={{ headerShown: false }}
+        // options={{
+        //   // headerTransparent: true,
+        //   headerStyle: { backgroundColor: "#333333" },
+        //   headerTintColor: "white",
+        //   // headerTitle: () => <SearchBar width="0.6" />,
+        //   headerTitleAlign: "left",
+        // }}
       />
 
       <Stack.Screen
@@ -104,6 +109,7 @@ export const HomeOverView = () => {
           headerTintColor: "white",
           // headerTitle: () => <SearchBar width="0.6" />,
           headerTitleAlign: "left",
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

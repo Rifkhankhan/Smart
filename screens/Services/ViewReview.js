@@ -8,18 +8,26 @@ import {
   ScrollView,
   FlatList,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import defaultImage1 from "./../../assets/images/service/homemadethings.jpg";
+import defaultImage2 from "./../../assets/images/service/homemadefood.jpg";
 import { Dimensions } from "react-native";
 import ReviewImageCarousel from "./ReviewImageCarousel";
+import { ThumbnailGrid } from "./Components/ThumbnailGrid";
+import { useSelector } from "react-redux";
 const ViewReview = () => {
+  const { userData } = useSelector((state) => state.auth);
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
   const [likeCount, setLikeCount] = useState(12); // example initial count
   const [dislikeCount, setDislikeCount] = useState(2); // example initial count
 
   const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([
+    { id: 1, name: "Ali", text: "I agree with your review." },
+    { id: 2, name: "Sara", text: "Thanks for the detailed feedback!" },
+  ]);
 
   const handleLike = () => {
     if (liked) {
@@ -51,20 +59,40 @@ const ViewReview = () => {
 
   const reviewImages = [
     defaultImage1,
+    defaultImage2,
     defaultImage1,
+    defaultImage2,
     defaultImage1,
+    defaultImage2,
     defaultImage1,
-    defaultImage1,
-    defaultImage1,
-    defaultImage1,
-    defaultImage1,
+    defaultImage2,
     defaultImage1,
   ];
 
-  const comments = [
-    { id: 1, name: "Ali", text: "I agree with your review." },
-    { id: 2, name: "Sara", text: "Thanks for the detailed feedback!" },
-  ];
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const flatListRef = useRef(null);
+
+  const handleThumbnailPress = (index) => {
+    setSelectedIndex(index);
+    flatListRef.current?.scrollToIndex({ index: index, animated: true });
+  };
+
+  const handleCarouselScroll = (index) => {
+    setSelectedIndex(index);
+  };
+
+  const handleSend = () => {
+    if (comment.trim()) {
+      const newComment = {
+        id: Date.now().toString(), // or use UUID
+        name: userData?.firstlast || "You", // replace with actual user name logic
+        text: comment.trim(),
+      };
+
+      setComments((prevComments) => [newComment, ...prevComments]);
+      setComment("");
+    }
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -107,37 +135,19 @@ const ViewReview = () => {
       </Text>
 
       {/* Image Carousel */}
-      <ReviewImageCarousel />
-      {/* Image Thumnails */}
-      <View style={styles.gridContainer}>
-        <FlatList
-          data={reviewImages.slice(0, 4)} // Limit to 4 images
-          keyExtractor={(item, index) => index.toString()}
-          numColumns={3} // Maximum 3 images per row
-          renderItem={({ item, index }) => (
-            <TouchableOpacity
-              onPress={() => console.log(`Tapped image ${index}`)}
-            >
-              <Image source={item} style={styles.thumbnail} />
-            </TouchableOpacity>
-          )}
-        />
+      <ReviewImageCarousel
+        images={reviewImages}
+        selectedIndex={selectedIndex}
+        onScrollIndexChange={handleCarouselScroll}
+        flatListRef={flatListRef}
+      />
 
-        {reviewImages.length > 4 && (
-          <TouchableOpacity
-            style={styles.moreImagesContainer}
-            onPress={() => console.log("Show more images")}
-          >
-            <Image
-              source={reviewImages[4]} // Use the 5th image as the "more" thumbnail
-              style={styles.thumbnail}
-            />
-            <Text style={styles.moreImagesText}>
-              +{reviewImages.length - 4} more
-            </Text>
-          </TouchableOpacity>
-        )}
-      </View>
+      {/* Image Thumnails */}
+      <ThumbnailGrid
+        images={reviewImages}
+        selectedIndex={selectedIndex}
+        onThumbnailPress={handleThumbnailPress}
+      />
 
       {/* Like/Dislike */}
       <View style={styles.actions}>
@@ -182,6 +192,9 @@ const ViewReview = () => {
           style={styles.input}
           placeholderTextColor="#aaa"
         />
+        <TouchableOpacity onPress={handleSend} style={styles.sendButton}>
+          <Text style={styles.sendButtonText}>Send</Text>
+        </TouchableOpacity>
       </View>
 
       {/* Other Comments */}
@@ -340,16 +353,28 @@ const styles = StyleSheet.create({
   commentBox: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 20,
-    backgroundColor: "#f4f4f4",
-    padding: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
     borderRadius: 8,
+    backgroundColor: "#f2f2f2",
+    marginVertical: 10,
   },
   input: {
-    marginLeft: 10,
-    fontSize: 14,
     flex: 1,
+    marginLeft: 8,
+    fontSize: 16,
     color: "#333",
+  },
+  sendButton: {
+    marginLeft: 8,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    backgroundColor: "#007bff",
+    borderRadius: 6,
+  },
+  sendButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
   commentsSection: {
     marginTop: 20,
