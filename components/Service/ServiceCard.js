@@ -6,7 +6,7 @@ import defaultImage from "./../../assets/images/man.png";
 
 const ServiceCard = ({ service }) => {
   const navigation = useNavigation();
-  // console.log(service);
+  console.log(service);
 
   const detailsHandler = () => {
     navigation.navigate("ViewService", {

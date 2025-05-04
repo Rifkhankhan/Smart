@@ -5,7 +5,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { ProductStacks } from "./../Comman/ProductStacks";
 import { HomeOverView } from "./HomeStacks";
 import { SellerOrderStacks } from "./OrderStacks";
-import { AccountOverView } from "./../Comman/AccountStacks";
+import { AccountStacks } from "./../Comman/AccountStacks";
 import Cart from "../../screens/Cart";
 import DashboardScreen from "../../screens/Client/Dashboard";
 import { TouchableOpacity } from "react-native";
@@ -60,7 +60,7 @@ export default DrawerNavigator = () => {
       />
       <Drawer.Screen
         name="AccountOverView"
-        component={AccountOverView}
+        component={AccountStacks}
         options={{
           headerTitle: "Account",
           drawerLabel: "Account",

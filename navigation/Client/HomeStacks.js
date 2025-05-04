@@ -12,7 +12,7 @@ import SettingsScreen from "../../screens/Common/SettingsScreen";
 import { Ionicons } from "@expo/vector-icons";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import ViewService from "../../screens/Services/ViewService";
-import Home from "./../../screens/Home";
+import Home from "./../../screens/Common/Home";
 
 const Stack = createNativeStackNavigator();
 

@@ -7,6 +7,8 @@ import {
   Button,
   Pressable,
   ActivityIndicator,
+  Dimensions,
+  Animated,
 } from "react-native";
 import React, {
   memo,
@@ -16,9 +18,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { Image } from "react-native";
-import { Asset } from "expo-asset";
 
 import {
   Ionicons,
@@ -49,6 +49,10 @@ import {
   getRatingText,
   StartRating,
 } from "../../components/Common/StartRating";
+import { SafeAreaView } from "react-native";
+import plusImage from "./../../assets/images/plus.png";
+import CategoryTabs from "../../navigation/Comman/TopTabNavigator";
+import PagerView from "react-native-pager-view";
 
 const ProductDetails = ({ route, navigation }) => {
   const [open, setOpen] = useState(false);
@@ -61,12 +65,41 @@ const ProductDetails = ({ route, navigation }) => {
   const { carts, wishList } = useSelector((state) => state.cart);
   const [loading, setLoading] = useState(false);
   const bottomSheetRef = useRef(null);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  const flatListRef = React.useRef(null);
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const [activeTab, setActiveTab] = useState(0);
+  const pagerRef = useRef(null);
+  const tabRefs = useRef([]);
+  const screenHeight = Dimensions.get("window").height;
+  const [pagerHeight, setPagerHeight] = useState(screenHeight);
+
+  console.log(product);
 
   const shop = shops?.filter((shop) => shop.shopKey === product?.shopKey)[0];
 
   const productsInSameStore = products
     ?.filter((pro) => pro.shopKey === product?.shopKey)
     .filter((pro) => pro.productKey !== product?.productKey);
+
+  const categories = [...new Set(products.map((p) => p.category))];
+
+  useEffect(() => {
+    if (categories?.length) {
+      tabRefs.current = categories.map(() => React.createRef());
+    }
+  }, [categories]);
+
+  const handleTabPress = (index) => {
+    setActiveTab(index);
+    pagerRef.current?.setPage(index);
+  };
+
+  const handleSwipePageChange = (e) => {
+    const index = e.nativeEvent.position;
+    setActiveTab(index);
+  };
 
   // Memoize the Card component
   const MemoizedCard = memo(({ product }) => (
@@ -252,147 +285,157 @@ const ProductDetails = ({ route, navigation }) => {
   };
 
   const renderHeader = () => {
-    return (
-      <>
-        <ProductScreen
-          productImages={
-            product?.images?.length > 0 ? product?.images : [defaultImage]
-          }
-        />
-
-        <View style={styles.cardComponent}>
-          <Text style={styles.name}>{product?.name}</Text>
-          {/* price */}
-          <View style={styles.price}>
-            <Text style={styles.newPrice}>Rs.{product?.price}</Text>
-            <Text style={styles.oldPrice}>Rs.{product?.oPrice}</Text>
-          </View>
-          {/* stars */}
-          <View style={styles.startContainer}>
-            <Text style={styles.icon}>
-              <Ionicons name="star" color="red" size={18} />
-            </Text>
-            <Text style={styles.reviewRate}>{product?.ratings} (5)</Text>
-          </View>
-          {/* options */}
-          <View style={styles.shareOptions}>
-            <View style={styles.wishContainer}>
-              <Ionicons name="heart" color="red" size={20} />
-              <Text style={styles.text}>Add to Wishlist(5)</Text>
-            </View>
-            <View style={styles.shareContainer}>
-              <Ionicons name="share" color="red" size={20} />
-              <Text style={styles.text1}>Share Product</Text>
-            </View>
-          </View>
-
-          {/* shop */}
-          <View style={styles.shopContainer}>
-            <Image source={shop3Image} style={styles.shopImage} />
-            <Text style={styles.shopName}>{shop?.name}</Text>
-          </View>
-        </View>
-
-        {/* Rating & reviews */}
-        <View style={styles.ratingContainer}>
-          <Text style={styles.ratingHeader}>Rating & Reviews</Text>
-          {/* Rating */}
-
-          <View style={styles.ratingInnerContainer}>
-            <Text style={styles.ratePoints}>{product?.ratings}</Text>
-            <View style={styles.ratingStars}>
-              {StartRating(product?.ratings || 0)}
-            </View>
-            <Text style={styles.ratingText}>
-              {getRatingText(product?.ratings || 0)}
-            </Text>
-          </View>
-
-          <View style={styles.boxContainer}>
-            <View style={styles.box}>
-              <Ionicons name="camera" size={20} color="black" />
-              <Text style={styles.boxText}>Photos(5)</Text>
-            </View>
-            <View style={styles.box}>
-              <Text style={styles.boxText1}>View all(15)</Text>
-            </View>
-          </View>
-        </View>
-
-        {/* Questions */}
-
-        <View style={styles.questionContainer}>
-          <Text style={styles.questionHeader}>
-            Questions about this Products(0)
-          </Text>
-
-          <View style={styles.questionNoMassageContainer}>
-            <Text style={styles.questionNoMassage}>
-              There is no questions yet ask the seller now and their will show
-              here
-            </Text>
-          </View>
-          <Text style={styles.questionText}>Ask Questions</Text>
-        </View>
-
-        {/* follow and visit store */}
-        <View style={styles.followAndVisitContainer}>
-          <View style={styles.followContainer}>
-            <Ionicons name="add" size={22} color="#FF8C00" />
-            <Text style={styles.followAndVisitContainerText}>Follow</Text>
-          </View>
-          <View style={styles.visitStoreContainer}>
-            <FontAwesome5 name="store" size={22} color="#FF8C00" />
-            <Text style={styles.followAndVisitContainerText}>Visit Store</Text>
-          </View>
-        </View>
-      </>
-    );
+    return <>{/* Rating & reviews */}</>;
   };
 
   const placeOrderHandler = async (data) => {
     await placeOrder(data);
     setOpen(false);
   };
-  return (
-    <>
-      <View style={{ position: "relative" }}>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          ListHeaderComponent={renderHeader}
-          ListFooterComponent={() => (
-            <View style={{ marginBottom: 50 }}>
-              {/* from the same stores products */}
-              <View style={styles.sameStoreContainer}>
-                <Text style={styles.sameStoreHeader}>From the same store</Text>
-                <FlatList
-                  data={productsInSameStore}
-                  keyExtractor={(item) => {
-                    return item.productKey;
-                  }}
-                  renderItem={renderItem}
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                />
-              </View>
 
-              {/* similar products */}
-              <View style={styles.similarProductsContainer}>
-                <Text style={styles.similarProductsHeader}>
-                  People who Viewed This Item Also Viewed
-                </Text>
-                <View style={styles.cards}>
-                  <CardContainer header="" />
-                </View>
+  const reviews = [
+    {
+      id: 1,
+      name: "John Doe",
+      review: "Great service, very satisfied!",
+      rating: 4.5,
+      image: plusImage, // sample image
+    },
+    {
+      id: 2,
+      name: "Jane Smith",
+      review: "Good experience overall, but room for improvement.",
+      rating: 4.0,
+      image: null,
+    },
+  ];
+
+  const DATA = [
+    {
+      key: "ProductScreen",
+      render: () => (
+        <ProductScreen
+          productImages={
+            product?.images?.length > 0 ? product?.images : [defaultImage]
+          }
+        />
+      ),
+    },
+    {
+      key: "ProductDetails",
+      render: () => (
+        <ProductDetailsComponent
+          product={product}
+          shop={shop}
+          styles={styles}
+        />
+      ),
+    },
+    {
+      key: "Rating And Reviews",
+      render: () => (
+        <RatingAndReviews
+          reviews={reviews}
+          product={product}
+          navigation={navigation}
+          styles={styles}
+        />
+      ),
+    },
+    {
+      key: "Questions",
+      render: () => <Questions styles={styles} />,
+    },
+    {
+      key: "Follow Visit Store",
+      render: () => <FollowVisitStore styles={styles} />,
+    },
+
+    {
+      key: "From The Same store",
+      render: () => (
+        <FromSameStore
+          product={product}
+          products={productsInSameStore}
+          styles={styles}
+        />
+      ),
+    },
+    {
+      key: "tabs",
+      render: () => (
+        <CategoryTabs
+          activeTab={activeTab}
+          setActiveTab={handleTabPress}
+          categories={categories}
+          styles={styles}
+        />
+      ),
+    },
+
+    {
+      key: "pager",
+      render: () => (
+        <PagerView
+          ref={pagerRef}
+          initialPage={0}
+          onPageSelected={handleSwipePageChange}
+          style={{
+            height: pagerHeight,
+            marginTop: 5,
+          }}
+        >
+          {categories.map((category, index) => (
+            <View key={index}>
+              <View
+                onLayout={(event) => {
+                  if (index === activeTab) {
+                    const { height } = event.nativeEvent.layout;
+
+                    if (height > 0 && height !== pagerHeight) {
+                      setPagerHeight(height);
+                    }
+                  }
+                }}
+              >
+                {/* similar products */}
+                <CardContainer category={category} />
               </View>
             </View>
+          ))}
+        </PagerView>
+      ),
+    },
+  ];
+  return (
+    <>
+      <SafeAreaView
+        style={{ position: "relative", flex: 1, paddingBottom: 50 }}
+      >
+        <Animated.FlatList
+          showsVerticalScrollIndicator={false}
+          ref={flatListRef}
+          data={DATA}
+          keyExtractor={(item) => item.key}
+          renderItem={({ item }) => item.render()}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+            {
+              useNativeDriver: false,
+              listener: (event) => {
+                const offsetY = event.nativeEvent.contentOffset.y;
+                setShowScrollTop(offsetY > 200);
+              },
+            }
           )}
+          stickyHeaderIndices={[6]} // 'tabs' is index 5
+          // scrollEventThrottle={16}
         />
 
         <CustomBottomBar />
 
         {/* buttonBar */}
-      </View>
+      </SafeAreaView>
       {/* bottomSheet */}
 
       {/* {open && ( */}
@@ -882,4 +925,224 @@ const styles = StyleSheet.create({
   priceContainerTotal: {
     fontSize: 20,
   },
+  reviewsContainer: {
+    marginTop: 16,
+  },
+  reviewItem: {
+    marginBottom: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
+    paddingVertical: 6,
+    backgroundColor: "#f5f5dc",
+    borderRadius: 5,
+  },
+  reviewContent: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: 10,
+    padding: 5,
+  },
+  reviewerName: {
+    fontWeight: "bold",
+    fontSize: 16,
+    marginBottom: 4,
+  },
+  reviewRating: {
+    flexDirection: "row",
+    marginBottom: 4,
+    alignItems: "center",
+  },
+  reviewRatingPoint: {
+    fontSize: 22,
+    marginRight: 3,
+  },
+  reviewText: {
+    fontSize: 14,
+    color: "#555",
+  },
+  reviewImage: {
+    width: 100,
+    height: 80,
+    borderRadius: 8,
+    marginLeft: 10,
+  },
+  reviewRate: {
+    fontSize: 16,
+  },
+  loadMoreWrapper: {
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 6,
+    backgroundColor: "#1E90FF",
+    borderRadius: 24,
+    alignSelf: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+
+  loadMoreText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+    letterSpacing: 0.3,
+  },
 });
+
+const MemoizedCard = memo(({ product }) => <HomeCard product={product} />);
+const FromSameStore = ({ product, products, styles }) => {
+  const renderItem = useCallback(
+    ({ item }) => <MemoizedCard product={item} />,
+    []
+  );
+
+  return (
+    <View style={{ marginBottom: 5 }}>
+      {/* from the same stores products */}
+      <View style={styles.sameStoreContainer}>
+        <Text style={styles.sameStoreHeader}>From the same provider</Text>
+        <FlatList
+          data={products}
+          keyExtractor={(item) => {
+            return item.productKey;
+          }}
+          renderItem={renderItem}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
+      </View>
+    </View>
+  );
+};
+
+const FollowVisitStore = ({ styles }) => (
+  <View style={styles.followAndVisitContainer}>
+    <View style={styles.followContainer}>
+      <Ionicons name="add" size={22} color="#FF8C00" />
+      <Text style={styles.followAndVisitContainerText}>Follow</Text>
+    </View>
+    <View style={styles.visitStoreContainer}>
+      <FontAwesome5 name="store" size={22} color="#FF8C00" />
+      <Text style={styles.followAndVisitContainerText}>Visit Store</Text>
+    </View>
+  </View>
+);
+
+const Questions = ({ styles }) => (
+  <View style={styles.questionContainer}>
+    <Text style={styles.questionHeader}>Questions about this Products(0)</Text>
+
+    <View style={styles.questionNoMassageContainer}>
+      <Text style={styles.questionNoMassage}>
+        There is no questions yet ask the seller now and their will show here
+      </Text>
+    </View>
+    <Text style={styles.questionText}>Ask Questions</Text>
+  </View>
+);
+
+const RatingAndReviews = ({ reviews, product, navigation, styles }) => (
+  <>
+    {reviews.length > 0 && (
+      <View style={styles.ratingContainer}>
+        {/* Rating & reviews */}
+        <Text style={styles.ratingHeader}>Rating & Reviews</Text>
+
+        {/* Rating */}
+        <View style={styles.ratingInnerContainer}>
+          <Text style={styles.ratePoints}>{product?.ratings}</Text>
+          <View style={styles.ratingStars}>
+            <Text>{StartRating(product?.ratings || 5)}</Text>
+          </View>
+          <Text style={styles.ratingText}>
+            {getRatingText(product?.ratings || 0)}
+          </Text>
+        </View>
+
+        {/* Sample Reviews */}
+
+        <View style={styles.reviewsContainer}>
+          {reviews?.map((item) => (
+            <TouchableOpacity
+              key={item.id}
+              style={styles.reviewItem}
+              onPress={() => navigation.navigate("ViewReview")}
+            >
+              <View style={styles.reviewContent}>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.reviewerName}>{item.name}</Text>
+                  <View style={styles.reviewRating}>
+                    <Text style={styles.reviewRatingPoint}>{item.rating}</Text>{" "}
+                    {StartRating(item.rating)}
+                  </View>
+                  <Text style={styles.reviewText}>{item.review}</Text>
+                </View>
+                {item.image && (
+                  <Image
+                    source={item.image}
+                    style={styles.reviewImage}
+                    resizeMode="contain"
+                  />
+                )}
+              </View>
+            </TouchableOpacity>
+          ))}
+
+          {/* Footer - Load More */}
+          {/* Load More Reviews Footer */}
+
+          <TouchableOpacity
+            style={styles.loadMoreWrapper}
+            onPress={() => {
+              navigation.navigate("ReviewListScreen");
+            }}
+          >
+            (
+            <View>
+              <Text style={styles.loadMoreText}>Load More Reviews</Text>
+            </View>
+            )
+          </TouchableOpacity>
+        </View>
+      </View>
+    )}
+  </>
+);
+
+const ProductDetailsComponent = ({ product, shop, styles }) => (
+  <View style={styles.cardComponent}>
+    <Text style={styles.name}>{product?.name}</Text>
+    {/* price */}
+    <View style={styles.price}>
+      <Text style={styles.newPrice}>Rs.{product?.price}</Text>
+      <Text style={styles.oldPrice}>Rs.{product?.oPrice}</Text>
+    </View>
+    {/* stars */}
+    <View style={styles.startContainer}>
+      <Text style={styles.icon}>
+        <Ionicons name="star" color="red" size={18} />
+      </Text>
+      <Text style={styles.reviewRate}>{product?.ratings} (5)</Text>
+    </View>
+    {/* options */}
+    <View style={styles.shareOptions}>
+      <View style={styles.wishContainer}>
+        <Ionicons name="heart" color="red" size={20} />
+        <Text style={styles.text}>Add to Wishlist(5)</Text>
+      </View>
+      <View style={styles.shareContainer}>
+        <Ionicons name="share" color="red" size={20} />
+        <Text style={styles.text1}>Share Product</Text>
+      </View>
+    </View>
+
+    {/* shop */}
+    <View style={styles.shopContainer}>
+      <Image source={shop3Image} style={styles.shopImage} />
+      <Text style={styles.shopName}>{shop?.name}</Text>
+    </View>
+  </View>
+);

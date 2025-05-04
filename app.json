@@ -5,20 +5,13 @@
         "projectId": "ab00163c-6c82-40ba-ae70-d2ad964775f9"
       }
     },
-    "owner": "rifkhan",
     "android": {
       "package": "com.rifkhan.smart"
     },
-    "name": "Smart",
-    "slug": "smart",
-    "version": "1.0.0",
-    "icon": "./assets/icon.jpg",
-    "platforms": [
-      "ios",
-      "android"
-    ],
-    "plugins": [
-      "expo-localization"
-    ]
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "exclude": ["react-native-awesome-alerts", "react-native-chart-kit"]
+      }
+    }
   }
 }

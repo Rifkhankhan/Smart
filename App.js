@@ -11,16 +11,16 @@ import { store } from "./store/store";
 import "react-native-reanimated";
 // tmidcee
 import { Asset } from "expo-asset";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Ignore specific logs
 LogBox.ignoreLogs(["AsyncStorage has been extracted"]);
-
+LogBox.ignoreLogs(["Reading from `value` during component render."]);
 // Prevent splash screen from hiding automatically
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [appIsLoaded, setAppIsLoaded] = useState(false);
-
   useEffect(() => {
     const prepare = async () => {
       try {

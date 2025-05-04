@@ -1,6 +1,5 @@
 import React from "react";
 import { Text } from "react-native";
-import Home from "./../../screens/Home";
 import Cart from "../../screens/Cart";
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();

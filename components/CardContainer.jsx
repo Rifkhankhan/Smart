@@ -1,106 +1,78 @@
-// import React, { memo } from 'react'
-// import { StyleSheet, Text, View, Dimensions, Image } from 'react-native'
-// import { FlatList } from 'react-native'
-// import Card from './../components/Card'
-// import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from "react";
+import { View, FlatList, StyleSheet, Text } from "react-native";
+import { useSelector } from "react-redux";
+import Card from "../components/Card";
+import CardSkeleton from "./Common/CardSkeleton";
 
-// // Memoize the Card component
-// const MemoizedCard = memo(({ product }) => <Card product={product} />)
+const SKELETON_COUNT = 6;
 
-// const CardContainer = ({ header }) => {
-// 	const products = useSelector(state => state.product.products)
+const CardContainer = ({ category }) => {
+  const products = useSelector((state) => state.product.products);
+  const [filtered, setFiltered] = useState([]);
+  const [loading, setLoading] = useState(true);
+  // console.log(products);
 
-// 	const renderItem = ({ item }) => <MemoizedCard product={item} />
+  useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => {
+      const result = products.filter((p) => p.category === category);
+      setFiltered(result);
+      setLoading(false);
+    }, 100); // Simulate loading delay (adjust if needed)
 
-// 	return (
-// 		<View style={styles.productCardContainer}>
-// 			{header && <Text style={styles.title}>{header}</Text>}
-// 			<View style={styles.cards}>
-// 				<FlatList
-// 					data={products}
-// 					renderItem={renderItem}
-// 					keyExtractor={item => item.productKey}
-// 					numColumns={2}
-// 				/>
-// 			</View>
-// 		</View>
-// 	)
-// }
+    return () => clearTimeout(timer);
+  }, [category, products]);
 
-// export default CardContainer
+  const renderSkeleton = () => {
+    return (
+      <FlatList
+        data={Array.from({ length: SKELETON_COUNT })}
+        keyExtractor={(_, index) => index.toString()}
+        numColumns={2}
+        renderItem={() => <CardSkeleton />}
+        contentContainerStyle={styles.listContainer}
+        scrollEnabled
+      />
+    );
+  };
 
-// const styles = StyleSheet.create({
-// 	productCardContainer: {
-// 		flexDirection: 'column',
-// 		justifyContent:'center',
-// 		alignItems:'center'
-// 	},
-// 	title: {
-// 		paddingLeft: 8,
-// 		fontSize: 20,
-// 		textTransform: 'capitalize',
-// 		fontWeight: '600',
-// 		paddingVertical: 8
-// 	},
-// 	cards: {
-// 		flexDirection: 'row',
-// 		flexWrap: 'wrap',
-// 	}
-// })
+  if (loading) return renderSkeleton();
 
+  if (filtered.length === 0) {
+    return (
+      <View style={styles.emptyContainer}>
+        <Text>No products in this category</Text>
+      </View>
+    );
+  }
 
-import React, { memo, useCallback } from 'react'
-import { StyleSheet, Text, View, FlatList } from 'react-native'
-import Card from './../components/Card'
-import { useSelector } from 'react-redux'
+  return (
+    <FlatList
+      data={filtered}
+      keyExtractor={(item) => item.productKey}
+      numColumns={2}
+      renderItem={({ item }) => <Card product={item} />}
+      contentContainerStyle={styles.listContainer}
+    />
+  );
+};
 
-// Memoized Card component
-const MemoizedCard = memo(({ product }) => <Card product={product} />)
-
-const CardContainer = ({ header }) => {
-	const products = useSelector(state => state.product.products)
-
-	// Optimize renderItem to avoid unnecessary re-renders
-	const renderItem = useCallback(
-		({ item }) => <MemoizedCard product={item} />,
-		[] // Empty dependency array ensures this function is created only once
-	)
-	
-	return (
-		<View style={styles.productCardContainer}>
-			{header && <Text style={styles.title}>{header}</Text>}
-			<View style={styles.cards}>
-				<FlatList
-					data={products}
-					renderItem={renderItem}
-					keyExtractor={item => item.productKey}
-					numColumns={2}
-					initialNumToRender={10} // Optimizing initial render
-					maxToRenderPerBatch={10} // Batch rendering for better performance
-					windowSize={5} // The number of items to keep in memory
-				/>
-			</View>
-		</View>
-	)
-}
-
-export default CardContainer
+export default CardContainer;
 
 const styles = StyleSheet.create({
-	productCardContainer: {
-		flexDirection: 'column',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	title: {
-		paddingLeft: 8,
-		fontSize: 20,
-		textTransform: 'capitalize',
-		fontWeight: '600',
-		paddingVertical: 8,
-	},
-	cards: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-	},
-})
+  listContainer: {
+    padding: 10,
+  },
+  emptyContainer: {
+    padding: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  skeletonCard: {
+    backgroundColor: "#e0e0e0",
+    height: 180,
+    flex: 1,
+    margin: 5,
+    borderRadius: 12,
+  },
+});

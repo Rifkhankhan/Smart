@@ -330,7 +330,6 @@ import defaultImage from "./../../assets/images/man.png";
 const Account = ({ route, navigation }) => {
   const { authData } = useSelector((state) => state.auth);
   const { userOrders } = useSelector((state) => state.order);
-  console.log(authData);
 
   useEffect(() => {
     navigation.setOptions({

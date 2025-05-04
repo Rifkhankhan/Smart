@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 
-import Home from "../../screens/Home";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createDrawerNavigator } from "@react-navigation/drawer";
