@@ -11,6 +11,7 @@ import { ServiceStack } from "./ServiceStack";
 import ViewService from "../../screens/Services/ViewService";
 import ReviewListScreen from "../../screens/Services/ReviewListScreen";
 import ViewReview from "../../screens/Services/ViewReview";
+import { ProductCategoryStack } from "./ProductCategoryStack";
 
 export const HomeOverView = () => {
   return (
@@ -63,6 +64,19 @@ export const HomeOverView = () => {
       <Stack.Screen
         name="ServiceStack"
         component={ServiceStack}
+        options={{
+          // headerTransparent: true,
+          headerShown: false,
+          headerStyle: { backgroundColor: "#333333" },
+          headerTintColor: "white",
+          // headerTitle: () => <SearchBar width="0.6" />,
+          headerTitleAlign: "left",
+        }}
+      />
+
+      <Stack.Screen
+        name="ProductCategoryStack"
+        component={ProductCategoryStack}
         options={{
           // headerTransparent: true,
           headerShown: false,

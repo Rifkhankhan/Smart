@@ -21,6 +21,7 @@ import HomeItemList from "../../components/HomeItemList";
 import CardContainer from "../../components/CardContainer";
 import CategoryTabs from "../../navigation/Comman/TopTabNavigator";
 import { LayoutAnimation } from "react-native"; // at the top
+import HomeCategoryComponent from "../../components/HomeCategoryComponent";
 
 const AdminHome = ({ navigation }) => {
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -89,7 +90,9 @@ const AdminHome = ({ navigation }) => {
     },
     {
       key: "Categories",
-      render: () => <HomeItemList title="Categories" />,
+      render: () => (
+        <HomeCategoryComponent title="Categories" subTitle="Shop More" />
+      ),
     },
     {
       key: "tabs",
