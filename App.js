@@ -1,4 +1,6 @@
 import "react-native-gesture-handler";
+import "react-native-reanimated";
+
 import React, { useCallback, useEffect, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { LogBox, StatusBar as RNStatusBar, StyleSheet } from "react-native";

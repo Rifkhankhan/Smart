@@ -17,6 +17,7 @@ import {
 import { AccountOverView, AccountStacks } from "./../Comman/AccountStacks";
 import { HomeOverView } from "./../Comman/HomeOverView";
 import SettingsScreen from "../../screens/Common/SettingsScreen";
+import { MessageStack } from "../Comman/MessageStack";
 
 // Memoizing options for the Tab.Navigator
 const getHomeOverViewOptions = {
@@ -110,8 +111,8 @@ export const CustomerTabNavigators = React.memo(() => {
       />
 
       <Tab.Screen
-        name="message"
-        component={HomeOverView}
+        name="MessageStack"
+        component={MessageStack}
         options={{
           tabBarIcon: ({ color, size }) =>
             getTabBarIcon(AntDesign, "message1", size, color),
