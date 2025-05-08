@@ -85,7 +85,11 @@ const ServicesCard = memo(({ service }) => {
   const navigation = useNavigation();
 
   const onPressHandler = () => {
-    navigation.navigate("ViewService", { service: service || {} });
+    // navigation.navigate("ViewService", {});
+    navigation.navigate("ServiceStacks", {
+      screen: "ViewService",
+      params: { service: service || {} },
+    });
   };
 
   const imageSource = service?.image

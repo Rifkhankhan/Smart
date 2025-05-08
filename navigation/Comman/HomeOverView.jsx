@@ -46,7 +46,7 @@ export const HomeOverView = () => {
         }}
       />
 
-      <Stack.Screen
+      {/* <Stack.Screen
         name="ItemsList"
         component={ItemsList}
         options={{
@@ -59,9 +59,9 @@ export const HomeOverView = () => {
           // headerTitle: () => <SearchBar width="0.6" />,
           headerTitleAlign: "left",
         }}
-      />
+      /> */}
 
-      <Stack.Screen
+      {/* <Stack.Screen
         name="ServiceStack"
         component={ServiceStack}
         options={{
@@ -72,9 +72,9 @@ export const HomeOverView = () => {
           // headerTitle: () => <SearchBar width="0.6" />,
           headerTitleAlign: "left",
         }}
-      />
+      /> */}
 
-      <Stack.Screen
+      {/* <Stack.Screen
         name="ProductCategoryStack"
         component={ProductCategoryStack}
         options={{
@@ -85,8 +85,8 @@ export const HomeOverView = () => {
           // headerTitle: () => <SearchBar width="0.6" />,
           headerTitleAlign: "left",
         }}
-      />
-
+      /> */}
+      {/* 
       <Stack.Screen
         name="ViewService"
         component={ViewService}
@@ -125,7 +125,7 @@ export const HomeOverView = () => {
           headerTitleAlign: "left",
           headerShown: false,
         }}
-      />
+      /> */}
     </Stack.Navigator>
   );
 };

@@ -78,7 +78,7 @@ const AdminHome = ({ navigation }) => {
   };
 
   const DATA = [
-    { key: "carousel", render: () => <Carouselcomponent /> },
+    // { key: "carousel", render: () => <Carouselcomponent /> },
     { key: "category", render: () => <CategoryComponent /> },
     {
       key: "services",

@@ -9,55 +9,48 @@ import BuyNowBottomSheet from "../components/BuyNowBottomSheet";
 
 // Memoize components to avoid unnecessary re-renders
 const MemoizedBuyNowBottomSheet = React.memo(BuyNowBottomSheet);
-const MemoizedMainNavigator = React.memo(MainNavigator);
+// const MainNavigator = React.memo(MainNavigator);
 const MemoizedAuthScreen = React.memo(AuthScreen);
 const MemoizedStartUpScreen = React.memo(StartUpScreen);
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { HomeOverView } from "./Client/ClientNavigators";
 const Drawer = createDrawerNavigator();
+
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import ProductDetails from "../screens/product/ProductDetails";
+import { ProductStacks } from "./Comman/ProductStacks";
+import { ServiceStack } from "./Comman/ServiceStack";
+import { ProductCategoryStack } from "./Comman/ProductCategoryStack";
+import { AuthStack } from "./Comman/AuthStack";
+import { ReviewStack } from "./Comman/ReviewStack";
+
+const Stack = createNativeStackNavigator();
 const AppNavigator = (props) => {
-  const isAuth = useSelector(
-    (state) => state.auth.token !== null && state.auth.token !== ""
-  );
-  const didTryAutoLogin = useSelector((state) => state.auth.didTryAutoLogin);
-
-  // Memoize rendering logic to avoid recalculating unnecessary conditions
-  // const screenToRender = useMemo(() => {
-  //   // if (isAuth) {
-  //   //   return <MemoizedBuyNowBottomSheet />
-  //   // }
-  //   if (!isAuth && didTryAutoLogin) {
-  //     return <MemoizedAuthScreen />
-  //   }
-  //   if (!isAuth && !didTryAutoLogin) {
-  //     return <MemoizedStartUpScreen />
-  //   }
-  //   return null
-  // }, [isAuth, didTryAutoLogin])
-
   return (
     <NavigationContainer>
       {/* bottomSheet */}
 
-      {isAuth && <MemoizedBuyNowBottomSheet />}
-      {isAuth && <MemoizedMainNavigator />}
-      {!isAuth && didTryAutoLogin && <MemoizedAuthScreen />}
-      {!isAuth && !didTryAutoLogin && <MemoizedStartUpScreen />}
+      <Stack.Navigator
+        initialRouteName="MainNavigator"
+        screenOptions={{ headerShown: false }}
+      >
+        <Stack.Screen name="AuthStack" component={AuthStack} />
+        <Stack.Screen name="ProductStacks" component={ProductStacks} />
+        <Stack.Screen name="ServiceStacks" component={ServiceStack} />
+        <Stack.Screen
+          name="ProductCategoryStack"
+          component={ProductCategoryStack}
+        />
+        <Stack.Screen name="ReviewStack" component={ReviewStack} />
+
+        <Stack.Screen
+          name="MainNavigator"
+          component={MainNavigator}
+          // options={getProductListPageOptions}
+        />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
 export default AppNavigator;
-
-// const AppNavigator = props => {
-
-//   return (
-//     <NavigationContainer>
-//       {isAuth && <MemoizedBuyNowBottomSheet />}
-//       {isAuth && <MemoizedMainNavigator />}
-//       {screenToRender}
-//     </NavigationContainer>
-//   )
-// }
-
-// export default AppNavigator

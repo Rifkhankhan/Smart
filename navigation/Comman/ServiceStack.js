@@ -11,53 +11,86 @@ import Header from "../../components/Common/Header";
 
 const Stack = createNativeStackNavigator();
 
+import AuthGuard from "./../Comman/AuthGuard";
+
 export const ServiceStack = React.memo(() => {
   return (
     <Stack.Navigator initialRouteName="ServiceListPage">
       <Stack.Screen
         name="AddService"
-        component={AddService}
-        options={{
-          headerShown: false,
-        }}
+        component={AuthGuard(AddService)}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="EditService"
-        component={EditService}
-        options={{
-          headerShown: false,
-        }}
+        component={AuthGuard(EditService)}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="ViewService"
         component={ViewService}
-        // screenOptions={{
-        //   header: () => <Header />,
-        // }}
         options={{ headerShown: false }}
       />
       <Stack.Screen
         name="ViewServicesByCategory"
         component={ViewServicesByCategory}
-        options={{
-          headerShown: false,
-        }}
+        options={{ headerShown: false }}
       />
-
       <Stack.Screen
         name="ServiceListPage"
-        component={ServiceListPage}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="ReviewStack"
-        component={ReviewStack}
-        options={{
-          headerShown: false,
-        }}
+        component={ServiceListPage} // can be public
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
 });
+// export const ServiceStack = React.memo(() => {
+//   return (
+//     <Stack.Navigator initialRouteName="ServiceListPage">
+//       <Stack.Screen
+//         name="AddService"
+//         component={AddService}
+//         options={{
+//           headerShown: false,
+//         }}
+//       />
+//       <Stack.Screen
+//         name="EditService"
+//         component={EditService}
+//         options={{
+//           headerShown: false,
+//         }}
+//       />
+//       <Stack.Screen
+//         name="ViewService"
+//         component={ViewService}
+//         // screenOptions={{
+//         //   header: () => <Header />,
+//         // }}
+//         options={{ headerShown: false }}
+//       />
+//       <Stack.Screen
+//         name="ViewServicesByCategory"
+//         component={ViewServicesByCategory}
+//         options={{
+//           headerShown: false,
+//         }}
+//       />
+
+//       <Stack.Screen
+//         name="ServiceListPage"
+//         component={ServiceListPage}
+//         options={{
+//           headerShown: false,
+//         }}
+//       />
+//       <Stack.Screen
+//         name="ReviewStack"
+//         component={ReviewStack}
+//         options={{
+//           headerShown: false,
+//         }}
+//       />
+//     </Stack.Navigator>
+//   );
+// });

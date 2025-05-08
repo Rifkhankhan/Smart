@@ -53,6 +53,7 @@ import { SafeAreaView } from "react-native";
 import plusImage from "./../../assets/images/plus.png";
 import CategoryTabs from "../../navigation/Comman/TopTabNavigator";
 import PagerView from "react-native-pager-view";
+import { CommonActions } from "@react-navigation/native";
 
 const ProductDetails = ({ route, navigation }) => {
   const [open, setOpen] = useState(false);
@@ -74,8 +75,9 @@ const ProductDetails = ({ route, navigation }) => {
   const tabRefs = useRef([]);
   const screenHeight = Dimensions.get("window").height;
   const [pagerHeight, setPagerHeight] = useState(screenHeight);
-
-  console.log(product);
+  const isAuth = useSelector(
+    (state) => state.auth.token !== null && state.auth.token !== ""
+  );
 
   const shop = shops?.filter((shop) => shop.shopKey === product?.shopKey)[0];
 
@@ -254,9 +256,34 @@ const ProductDetails = ({ route, navigation }) => {
     }
   }, [dispatch, product?.productKey, authData?.uid, carts]);
 
-  const handleBuyNowPress = () => {
-    bottomSheetRef.current?.expand(); // show the bottom sheet
+  const requireAuth = (callback) => {
+    if (!isAuth) {
+      navigation.dispatch(
+        CommonActions.navigate({
+          name: "AuthStack",
+          params: {
+            screen: "AuthScreen",
+            params: {
+              redirectTo: "ProductStacks",
+              redirectParams: {
+                screen: "ProductDetails",
+                params: { product: product },
+              },
+            },
+          },
+        })
+      );
+    } else {
+      callback();
+    }
   };
+
+  const handleBuyNowPress = () => {
+    requireAuth(() => {
+      bottomSheetRef.current?.expand();
+    });
+  };
+
   const CustomBottomBar = () => {
     return (
       <View style={styles.container}>
@@ -1069,7 +1096,9 @@ const RatingAndReviews = ({ reviews, product, navigation, styles }) => (
             <TouchableOpacity
               key={item.id}
               style={styles.reviewItem}
-              onPress={() => navigation.navigate("ViewReview")}
+              onPress={() =>
+                navigation.navigate("ReviewStack", { screen: "ViewReview" })
+              }
             >
               <View style={styles.reviewContent}>
                 <View style={{ flex: 1 }}>
@@ -1097,7 +1126,9 @@ const RatingAndReviews = ({ reviews, product, navigation, styles }) => (
           <TouchableOpacity
             style={styles.loadMoreWrapper}
             onPress={() => {
-              navigation.navigate("ReviewListScreen");
+              navigation.navigate("ReviewStack", {
+                screen: "ReviewListScreen",
+              });
             }}
           >
             (

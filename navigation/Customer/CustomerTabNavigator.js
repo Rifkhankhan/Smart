@@ -18,6 +18,8 @@ import { AccountOverView, AccountStacks } from "./../Comman/AccountStacks";
 import { HomeOverView } from "./../Comman/HomeOverView";
 import SettingsScreen from "../../screens/Common/SettingsScreen";
 import { MessageStack } from "../Comman/MessageStack";
+import AuthGuard from "../Comman/AuthGuard";
+import ProtectedScreenWrapper from "../Comman/ProtectedScreenWrapper ";
 
 // Memoizing options for the Tab.Navigator
 const getHomeOverViewOptions = {
@@ -112,23 +114,33 @@ export const CustomerTabNavigators = React.memo(() => {
 
       <Tab.Screen
         name="MessageStack"
-        component={MessageStack}
         options={{
           tabBarIcon: ({ color, size }) =>
             getTabBarIcon(AntDesign, "message1", size, color),
           tabBarLabel: ({ focused }) => getTabBarLabel(focused, "Messages"),
         }}
-      />
+      >
+        {() => (
+          <ProtectedScreenWrapper routeName="MessageStack">
+            <MessageStack />
+          </ProtectedScreenWrapper>
+        )}
+      </Tab.Screen>
 
       <Tab.Screen
         name="Cart"
-        component={Cart}
         options={{
           tabBarIcon: ({ color, size }) =>
             getTabBarIcon(Entypo, "shopping-cart", size, color),
           tabBarLabel: ({ focused }) => getTabBarLabel(focused, "Cart"),
         }}
-      />
+      >
+        {() => (
+          <ProtectedScreenWrapper routeName="Cart">
+            <Cart />
+          </ProtectedScreenWrapper>
+        )}
+      </Tab.Screen>
 
       <Tab.Screen
         name="AccountStacks"

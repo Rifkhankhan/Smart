@@ -44,7 +44,6 @@ const MemoizedCustomerNavigators = React.memo(CustomerNavigators);
 
 const MainNavigator = (props) => {
   const { authData } = useSelector((state) => state.auth);
-  console.log(authData);
 
   // Use useMemo to prevent unnecessary re-renders of the navigation components
   const navigatorToRender = useMemo(() => {

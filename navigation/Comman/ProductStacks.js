@@ -52,6 +52,7 @@ import ProductListPage from "../../screens/product/ProductListPage";
 import CreateProduct from "../../screens/product/CreateProduct";
 import ViewProduct from "../../screens/product/ViewProduct";
 import EditProduct from "../../screens/product/EditProduct";
+import ProductDetails from "../../screens/product/ProductDetails";
 const Stack = createNativeStackNavigator();
 
 export const ProductStacks = React.memo(() => {
@@ -91,6 +92,14 @@ export const ProductStacks = React.memo(() => {
       <Stack.Screen
         name="EditProduct"
         component={EditProduct}
+        options={{
+          headerShown: true,
+        }}
+      />
+
+      <Stack.Screen
+        name="ProductDetails"
+        component={ProductDetails}
         options={{
           headerShown: true,
         }}

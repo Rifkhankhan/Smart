@@ -12,6 +12,10 @@
       "reactNativeDirectoryCheck": {
         "exclude": ["react-native-awesome-alerts", "react-native-chart-kit"]
       }
+    },
+    "jsEngine": "hermes",
+    "experimental": {
+      "newArchEnabled": true
     }
   }
 }

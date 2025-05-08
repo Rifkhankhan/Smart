@@ -313,6 +313,7 @@ const ViewService = ({ route, navigation }) => {
           )}
           stickyHeaderIndices={[6]} // 'tabs' is index 5
           // scrollEventThrottle={16}
+          contentContainerStyle={{ paddingBottom: 40 }}
         />
         {showScrollTop && (
           <View style={styles.scrollTopContainer}>

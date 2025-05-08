@@ -20,6 +20,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 const RootStack = createNativeStackNavigator();
 import { getProducts, getShops } from "../../utils/Subscribefunctions/Admin";
 import ProductDetails from "../../screens/product/ProductDetails";
+import { ProductStacks } from "../Comman/ProductStacks";
 export const CustomerNavigators = React.memo(() => {
   const dispatch = useDispatch();
 
@@ -81,18 +82,6 @@ export const CustomerNavigators = React.memo(() => {
   return (
     <RootStack.Navigator screenOptions={{ headerShown: false }}>
       <RootStack.Screen name="CustomerTabs" component={CustomerTabNavigators} />
-      <RootStack.Screen
-        name="ProductDetails"
-        component={ProductDetails}
-        options={{
-          headerShown: false,
-          // headerTransparent: true,
-
-          // headerTintColor: 'white',
-          // headerTitle: () => <SearchBar width="0.6" />,
-          headerTitleAlign: "left",
-        }}
-      />
     </RootStack.Navigator>
   );
 });

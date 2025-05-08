@@ -49,37 +49,34 @@ import { useSelector } from "react-redux";
 
 const Stack = createNativeStackNavigator();
 
-const HeaderLeftButton = React.memo(() => {
+const HeaderLeftButton = React.memo((navigation) => {
   return <IconButton name="add" size={24} color="red" backgroundColor={true} />;
 });
 
-const HeaderRightButton = React.memo(() => {
-  return (
-    <TouchableOpacity
-      onPress={() =>
-        navigation.navigate("Account", { screen: "SettingsScreen" })
-      }
-    >
-      <AntDesign name="setting" size={24} color="white" />
-    </TouchableOpacity>
-  );
-});
-
-export const AccountStacks = React.memo(() => {
+export const AccountStacks = () => {
   return (
     <Stack.Navigator initialRouteName="SettingsScreen">
       <Stack.Screen
         name="Account"
         component={Account}
-        options={({ navigation }) => {
-          return {
-            headerShown: true,
-            headerStyle: { backgroundColor: "#8B008B" },
-            headerTintColor: "white",
-            headerLeft: () => <HeaderLeftButton />,
-            headerRight: () => <HeaderRightButton />,
-          };
-        }}
+        options={({ navigation }) => ({
+          headerShown: true,
+          headerTitle: "Account Screen",
+          headerStyle: { backgroundColor: "#8B008B" },
+          headerTintColor: "white",
+          headerLeft: () => <IconButton name="add" size={24} color="red" />,
+          headerRight: () => (
+            <TouchableOpacity
+              style={{ paddingHorizontal: 12 }}
+              onPress={() => {
+                console.log("Pressed Settings");
+                navigation.navigate("SettingsScreen");
+              }}
+            >
+              <AntDesign name="setting" size={24} color="white" />
+            </TouchableOpacity>
+          ),
+        })}
       />
       <Stack.Screen
         name="Orders"
@@ -100,4 +97,4 @@ export const AccountStacks = React.memo(() => {
       />
     </Stack.Navigator>
   );
-});
+};

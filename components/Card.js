@@ -68,7 +68,7 @@
 //     shadowOpacity: 0.2,
 //     shadowRadius: 8,
 //   },
-  
+
 //   image: {
 //     height: 170,
 //     width: "100%",
@@ -138,27 +138,32 @@
 //   },
 // });
 
-
 import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import defaultImage from './../assets/images/man.png';
+import defaultImage from "./../assets/images/man.png";
 
 const Card = ({ product }) => {
   const navigation = useNavigation();
 
-  const detailsHandler = () => {    
-    navigation.navigate("ProductDetails", {
-      product: product || {},
+  const detailsHandler = () => {
+    navigation.navigate("ProductStacks", {
+      screen: "ProductDetails",
+      params: { product: product || {} },
     });
   };
 
-  const productImage = product?.images?.length > 0 ? { uri: product.images[0] } : defaultImage;
+  const productImage =
+    product?.images?.length > 0 ? { uri: product.images[0] } : defaultImage;
 
   return (
     <TouchableOpacity style={styles.card} onPress={detailsHandler}>
-      <Image source={productImage} style={styles.image} accessibilityLabel="Product image" />
+      <Image
+        source={productImage}
+        style={styles.image}
+        accessibilityLabel="Product image"
+      />
 
       <View style={styles.details}>
         <Text numberOfLines={2} style={styles.productName}>
@@ -177,9 +182,7 @@ const Card = ({ product }) => {
 
         <View style={styles.priceContainer}>
           <Text style={styles.price}>Rs.{product?.price || 0}</Text>
-          <Text style={styles.oldPrice}>
-            Rs.{product?.oPrice || 0}
-          </Text>
+          <Text style={styles.oldPrice}>Rs.{product?.oPrice || 0}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -203,7 +206,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 8,
   },
-  
+
   image: {
     height: 170,
     width: "100%",
@@ -213,8 +216,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 8,
     paddingVertical: 8,
-    justifyContent: 'flex-end',
-    alignItems: 'baseline',
+    justifyContent: "flex-end",
+    alignItems: "baseline",
   },
   productName: {
     fontSize: 16,

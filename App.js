@@ -1,5 +1,5 @@
-import "react-native-gesture-handler";
 import "react-native-reanimated";
+import "react-native-gesture-handler";
 
 import React, { useCallback, useEffect, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -17,7 +17,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Ignore specific logs
 LogBox.ignoreLogs(["AsyncStorage has been extracted"]);
-LogBox.ignoreLogs(["Reading from `value` during component render."]);
 // Prevent splash screen from hiding automatically
 SplashScreen.preventAutoHideAsync();
 

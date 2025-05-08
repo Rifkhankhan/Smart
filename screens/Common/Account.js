@@ -326,14 +326,19 @@ import {
 } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 import defaultImage from "./../../assets/images/man.png";
+import { RenderHeader } from "../../components/AccountScreen/RenderHeader";
 
 const Account = ({ route, navigation }) => {
   const { authData } = useSelector((state) => state.auth);
   const { userOrders } = useSelector((state) => state.order);
 
   useEffect(() => {
+    console.log("Account Screen Mounted");
+  }, []);
+
+  useEffect(() => {
     navigation.setOptions({
-      headerTitle: authData?.firstLast,
+      // headerTitle: authData?.firstLast,
     });
   }, [navigation, route?.params]);
 
@@ -395,69 +400,10 @@ const Account = ({ route, navigation }) => {
     []
   );
 
-  const renderHeader = () => (
-    <View style={styles.ordersContainer}>
-      <Text style={styles.header}>My Orders</Text>
-      <View style={styles.ordersIconsList}>
-        <Pressable
-          style={styles.iconsList}
-          onPress={() => navigation.navigate("Orders", { type: "pay" })}
-        >
-          <Ionicons name="card-outline" size={35} color="gray" />
-          <Text>To Pay</Text>
-        </Pressable>
-        <Pressable
-          style={styles.iconsList}
-          onPress={() => navigation.navigate("Orders", { type: "ship" })}
-        >
-          <FontAwesome5 name="clipboard-list" size={35} color="gray" />
-          <Text>To Ship</Text>
-        </Pressable>
-        <Pressable
-          style={styles.iconsList}
-          onPress={() => navigation.navigate("Orders", { type: "receive" })}
-        >
-          <FontAwesome5 name="shipping-fast" size={35} color="gray" />
-          <Text>To Receive</Text>
-        </Pressable>
-        <Pressable style={styles.iconsList} onPress={() => {}}>
-          <Ionicons
-            name="ios-chatbox-ellipses-outline"
-            size={35}
-            color="gray"
-          />
-          <Text>Messages</Text>
-        </Pressable>
-      </View>
-      <View style={styles.actionContainer}>
-        <Pressable
-          style={styles.actionInnerContainer}
-          onPress={() => navigation.navigate("Orders", { type: "return" })}
-        >
-          <View style={styles.actionInnerContainerReturn}>
-            <Fontisto name="arrow-return-left" size={18} color="black" />
-          </View>
-          <Text style={styles.actionText}>My Returns</Text>
-        </Pressable>
-        <Pressable
-          style={styles.actionInnerContainer}
-          onPress={() => navigation.navigate("Orders", { type: "cancel" })}
-        >
-          <MaterialCommunityIcons
-            name="text-box-remove-outline"
-            size={32}
-            color="black"
-          />
-          <Text style={styles.actionText}>My Cancellations</Text>
-        </Pressable>
-      </View>
-    </View>
-  );
-
   return (
     <FlatList
       data={userOrders}
-      ListHeaderComponent={renderHeader}
+      ListHeaderComponent={<RenderHeader styles={styles} />}
       ListFooterComponent={() => (
         <>
           <View style={styles.trackPackage}>

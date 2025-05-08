@@ -103,15 +103,11 @@ import colors from "../../constants/colors";
 import logo from "./../../assets/images/logo.jpg";
 import { useSelector } from "react-redux";
 import { CommonActions } from "@react-navigation/native";
-import { Pressable } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { Ionicons } from "@expo/vector-icons"; // or Feather if you prefer
 
 // Memoize the AuthScreen component to avoid unnecessary re-renders
 const AuthScreen = React.memo((props) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const { redirectTo, redirectParams } = props.route.params || {};
-  const navigation = useNavigation();
 
   const toggleAuthMode = useCallback(() => {
     setIsSignUp((prevState) => !prevState);
@@ -121,52 +117,32 @@ const AuthScreen = React.memo((props) => {
     (state) => state.auth.token !== null && state.auth.token !== ""
   );
 
-  // console.log(props.route);
-  // useEffect(() => {
-  //   if (isAuth) {
-  //     // if (redirectTo && redirectParams) {
-  //     // props.navigation.reset({
-  //     //   index: 1,
-  //     //   routes: [
-  //     //     {
-  //     //       name: redirectTo,
-  //     //       params: {
-  //     //         screen: redirectParams.screen,
-  //     //         params: redirectParams.params,
-  //     //       },
-  //     //     },
-  //     //   ],
-  //     // });
-  //     props.navigation.goBack();
-  //     // } else {
-  //     // props.navigation.replace("MainNavigator");
-  //     // }
-  //   }
-  // }, [isAuth]);
-
+  console.log(props.route);
   useEffect(() => {
     if (isAuth) {
-      // if (props.navigation.canGoBack()) {
+      // if (redirectTo && redirectParams) {
+      // props.navigation.reset({
+      //   index: 1,
+      //   routes: [
+      //     {
+      //       name: redirectTo,
+      //       params: {
+      //         screen: redirectParams.screen,
+      //         params: redirectParams.params,
+      //       },
+      //     },
+      //   ],
+      // });
       props.navigation.goBack();
       // } else {
-      // props.navigation.replace("MainNavigator"); // or your desired screen
+      // props.navigation.replace("MainNavigator");
       // }
     }
-  }, [isAuth, props.navigation]);
+  }, [isAuth]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <PageContainer>
-        <Pressable
-          onPress={() => props.navigation.replace("MainNavigator")}
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginBottom: 15,
-          }}
-        >
-          <Ionicons name="arrow-back" size={24} color={colors.text} />
-        </Pressable>
         <ScrollView>
           <View style={styles.imageContainer}>
             <Image style={styles.image} source={logo} resizeMode="contain" />
